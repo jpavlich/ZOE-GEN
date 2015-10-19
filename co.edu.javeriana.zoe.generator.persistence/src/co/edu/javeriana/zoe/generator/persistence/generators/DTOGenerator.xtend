@@ -1,6 +1,6 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
-import co.edu.javeriana.zoe.generator.persistence.LionPersistenceGenerator
+import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
 import co.edu.javeriana.zoe.generator.persistence.templates.DTOTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.DTO
@@ -15,7 +15,7 @@ class DTOGenerator extends SimpleGenerator<DTO> {
 	}
 
 	override getOutputConfigurationName() {
-		LionPersistenceGenerator.DTOS
+		ZoePersistenceGenerator.DTOS
 	}
 	
 	override getTemplate() {

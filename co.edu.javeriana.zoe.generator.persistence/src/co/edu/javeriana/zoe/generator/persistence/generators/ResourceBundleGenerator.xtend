@@ -1,6 +1,6 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
-import co.edu.javeriana.zoe.generator.persistence.LionPersistenceGenerator
+import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
 import co.edu.javeriana.zoe.generator.persistence.templates.ResourceBundleTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.ResourceBundle
@@ -15,7 +15,7 @@ class ResourceBundleGenerator extends SimpleGenerator<ResourceBundle> {
 	}
 
 	override getOutputConfigurationName() {
-		LionPersistenceGenerator.RESOURCE_BUNDLE
+		ZoePersistenceGenerator.RESOURCE_BUNDLE
 	}
 	
 	override getTemplate() {

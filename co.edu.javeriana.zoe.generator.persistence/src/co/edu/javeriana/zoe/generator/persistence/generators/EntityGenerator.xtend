@@ -1,6 +1,6 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
-import co.edu.javeriana.zoe.generator.persistence.LionPersistenceGenerator
+import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
 import co.edu.javeriana.zoe.generator.persistence.templates.EntityTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Entity
@@ -15,7 +15,7 @@ class EntityGenerator extends SimpleGenerator<Entity> {
 	}
 
 	override getOutputConfigurationName() {
-		LionPersistenceGenerator.ENTITIES
+		ZoePersistenceGenerator.ENTITIES
 	}
 	
 	override getTemplate() {

@@ -1,6 +1,6 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
-import co.edu.javeriana.zoe.generator.persistence.LionPersistenceGenerator
+import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
 import co.edu.javeriana.zoe.generator.persistence.templates.EnumTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Enum
@@ -15,7 +15,7 @@ class EnumGenerator extends SimpleGenerator<Enum> {
 	}
 
 	override getOutputConfigurationName() {
-		LionPersistenceGenerator.ENUM
+		ZoePersistenceGenerator.ENUM
 	}
 	
 	override getTemplate() {

@@ -12,7 +12,7 @@ import co.edu.javeriana.isml.generator.common.OutputConfiguration
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
-class LionPersistenceGenerator extends GeneratorSuite {
+class ZoePersistenceGenerator extends GeneratorSuite {
 	@OutputConfiguration
 	public static final String ENTITIES = "entities";
 	
