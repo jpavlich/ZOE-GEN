@@ -1,0 +1,263 @@
+package co.com.heinsohn.lion.generator.persistence.templates;
+
+import co.com.heinsohn.lion.generator.persistence.templates.ReferenceTemplate;
+import co.edu.javeriana.isml.isml.Action;
+import co.edu.javeriana.isml.isml.ActionCall;
+import co.edu.javeriana.isml.isml.BinaryOperator;
+import co.edu.javeriana.isml.isml.Block;
+import co.edu.javeriana.isml.isml.Controller;
+import co.edu.javeriana.isml.isml.Expression;
+import co.edu.javeriana.isml.isml.Instance;
+import co.edu.javeriana.isml.isml.IntValue;
+import co.edu.javeriana.isml.isml.LiteralValue;
+import co.edu.javeriana.isml.isml.Page;
+import co.edu.javeriana.isml.isml.Reference;
+import co.edu.javeriana.isml.isml.Show;
+import co.edu.javeriana.isml.isml.Statement;
+import co.edu.javeriana.isml.isml.StringValue;
+import co.edu.javeriana.isml.isml.Type;
+import co.edu.javeriana.isml.isml.TypeSpecification;
+import co.edu.javeriana.isml.isml.UnaryOperator;
+import co.edu.javeriana.isml.scoping.TypeExtension;
+import com.google.common.base.Objects;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import javax.inject.Inject;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
+
+@SuppressWarnings("all")
+public class ExpressionTemplate {
+  @Inject
+  @Extension
+  private TypeExtension _typeExtension;
+  
+  @Inject
+  @Extension
+  private ReferenceTemplate _referenceTemplate;
+  
+  protected CharSequence _writeExpression(final Type expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    TypeSpecification _typeSpecification = expression.getTypeSpecification();
+    String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification);
+    String _firstUpper = StringExtensions.toFirstUpper(_typeSpecificationString);
+    _builder.append(_firstUpper, "");
+    _builder.append(".class");
+    return _builder;
+  }
+  
+  protected CharSequence _writeExpression(final Instance expression) {
+    String _xblockexpression = null;
+    {
+      String text = "";
+      EObject _eContainer = expression.eContainer();
+      EObject _eContainer_1 = _eContainer.eContainer();
+      if ((_eContainer_1 instanceof Show)) {
+        EObject _findAncestor = this._typeExtension.findAncestor(expression, Controller.class);
+        Controller controller = ((Controller) _findAncestor);
+        Map<String, Object> _neededAttributes = this._typeExtension.getNeededAttributes(controller);
+        Object _get = _neededAttributes.get("neededAttributes");
+        Map<String, Type> neededAttributes = ((Map<String, Type>) _get);
+        Set<Map.Entry<String, Type>> _entrySet = neededAttributes.entrySet();
+        for (final Map.Entry<String, Type> entry : _entrySet) {
+          Type _value = entry.getValue();
+          TypeSpecification _typeSpecification = _value.getTypeSpecification();
+          String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification);
+          Type _type = expression.getType();
+          TypeSpecification _typeSpecification_1 = _type.getTypeSpecification();
+          String _typeSpecificationString_1 = this._typeExtension.getTypeSpecificationString(_typeSpecification_1);
+          boolean _equals = _typeSpecificationString.equals(_typeSpecificationString_1);
+          if (_equals) {
+            String _text = text;
+            String _key = entry.getKey();
+            String _plus = ("this." + _key);
+            String _plus_1 = (_plus + "=");
+            text = (_text + _plus_1);
+          }
+        }
+      }
+      String _text_1 = text;
+      Type _type_1 = expression.getType();
+      TypeSpecification _typeSpecification_2 = _type_1.getTypeSpecification();
+      String _typeSpecificationString_2 = this._typeExtension.getTypeSpecificationString(_typeSpecification_2);
+      String _firstUpper = StringExtensions.toFirstUpper(_typeSpecificationString_2);
+      String _plus_2 = ("new " + _firstUpper);
+      String _plus_3 = (_plus_2 + "(");
+      text = (_text_1 + _plus_3);
+      int i = 0;
+      EList<Expression> _parameters = expression.getParameters();
+      for (final Expression parameter : _parameters) {
+        {
+          String _text_2 = text;
+          CharSequence _writeExpression = this.writeExpression(parameter);
+          text = (_text_2 + _writeExpression);
+          EList<Expression> _parameters_1 = expression.getParameters();
+          int _size = _parameters_1.size();
+          int _minus = (_size - 1);
+          boolean _notEquals = (i != _minus);
+          if (_notEquals) {
+            String _text_3 = text;
+            text = (_text_3 + ",");
+          }
+          i++;
+        }
+      }
+      String _text_2 = text;
+      _xblockexpression = text = (_text_2 + ")");
+    }
+    return _xblockexpression;
+  }
+  
+  protected CharSequence _writeExpression(final BinaryOperator expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    Expression _left = expression.getLeft();
+    CharSequence _writeExpression = this.writeExpression(_left);
+    _builder.append(_writeExpression, "");
+    _builder.append(" ");
+    String _symbol = expression.getSymbol();
+    CharSequence _writeSymbol = this.writeSymbol(_symbol);
+    _builder.append(_writeSymbol, "");
+    _builder.append(" ");
+    Expression _right = expression.getRight();
+    CharSequence _writeExpression_1 = this.writeExpression(_right);
+    _builder.append(_writeExpression_1, "");
+    return _builder;
+  }
+  
+  protected CharSequence _writeExpression(final UnaryOperator expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _symbol = expression.getSymbol();
+    CharSequence _writeSymbol = this.writeSymbol(_symbol);
+    _builder.append(_writeSymbol, "");
+    _builder.append(" ");
+    Expression _expression = expression.getExpression();
+    CharSequence _writeExpression = this.writeExpression(_expression);
+    _builder.append(_writeExpression, "");
+    return _builder;
+  }
+  
+  protected CharSequence _writeExpression(final LiteralValue expression) {
+    StringConcatenation _builder = new StringConcatenation();
+    CharSequence _writeLiteral = this.writeLiteral(expression);
+    _builder.append(_writeLiteral, "");
+    return _builder;
+  }
+  
+  protected CharSequence _writeExpression(final Reference reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    CharSequence _writeReference = this._referenceTemplate.writeReference(reference);
+    _builder.append(_writeReference, "");
+    return _builder;
+  }
+  
+  /**
+   * Este método escribe el equivalente en java de los símbolos (Operadores Binarios)
+   * utilizados en el lenguaje ISML
+   */
+  public CharSequence writeSymbol(final String symbol) {
+    boolean _equals = symbol.equals("and");
+    if (_equals) {
+      return "&&";
+    } else {
+      boolean _equals_1 = symbol.equals("or");
+      if (_equals_1) {
+        return "||";
+      } else {
+        boolean _equals_2 = symbol.equals("not");
+        if (_equals_2) {
+          return "!";
+        } else {
+          return symbol;
+        }
+      }
+    }
+  }
+  
+  /**
+   * Este método escribe los valores literales para JAVA
+   */
+  public CharSequence writeLiteral(final LiteralValue literal) {
+    if ((literal instanceof StringValue)) {
+      Object _literal = ((StringValue)literal).getLiteral();
+      String _plus = ("\"" + _literal);
+      return (_plus + "\"");
+    } else {
+      boolean _and = false;
+      if (!(literal instanceof IntValue)) {
+        _and = false;
+      } else {
+        EObject _findAncestor = this._typeExtension.findAncestor(literal, Page.class);
+        boolean _equals = Objects.equal(_findAncestor, null);
+        _and = _equals;
+      }
+      if (_and) {
+        Object _literal_1 = literal.getLiteral();
+        return (_literal_1 + "L");
+      } else {
+        Object _literal_2 = literal.getLiteral();
+        return _literal_2.toString();
+      }
+    }
+  }
+  
+  /**
+   * Este método busca los controladores de los ActionCall que puedan existir en el
+   * Controller que entra por parámetros, para ser inyectados como atributos del
+   * BackingBean
+   */
+  public EList<Controller> getActionCallControllers(final Controller controller) {
+    EList<Controller> actionCallList = new BasicEList<Controller>();
+    Iterable<Action> _actions = this._typeExtension.getActions(controller);
+    for (final Action action : _actions) {
+      Block _body = action.getBody();
+      EList<Statement> _statements = _body.getStatements();
+      for (final Statement statement : _statements) {
+        if ((statement instanceof ActionCall)) {
+          Action _action = this._typeExtension.getAction(((ActionCall)statement));
+          EObject _eContainer = _action.eContainer();
+          Controller c = ((Controller) _eContainer);
+          boolean _and = false;
+          boolean _contains = actionCallList.contains(c);
+          boolean _not = (!_contains);
+          if (!_not) {
+            _and = false;
+          } else {
+            String _name = c.getName();
+            String _name_1 = controller.getName();
+            boolean _equals = _name.equals(_name_1);
+            boolean _not_1 = (!_equals);
+            _and = _not_1;
+          }
+          if (_and) {
+            actionCallList.add(c);
+          }
+        }
+      }
+    }
+    return actionCallList;
+  }
+  
+  public CharSequence writeExpression(final Expression expression) {
+    if (expression instanceof Type) {
+      return _writeExpression((Type)expression);
+    } else if (expression instanceof Reference) {
+      return _writeExpression((Reference)expression);
+    } else if (expression instanceof BinaryOperator) {
+      return _writeExpression((BinaryOperator)expression);
+    } else if (expression instanceof Instance) {
+      return _writeExpression((Instance)expression);
+    } else if (expression instanceof LiteralValue) {
+      return _writeExpression((LiteralValue)expression);
+    } else if (expression instanceof UnaryOperator) {
+      return _writeExpression((UnaryOperator)expression);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(expression).toString());
+    }
+  }
+}

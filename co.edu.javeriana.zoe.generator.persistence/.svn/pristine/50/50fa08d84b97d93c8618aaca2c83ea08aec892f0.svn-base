@@ -1,0 +1,47 @@
+package co.com.heinsohn.lion.generator.persistence.templates;
+
+import co.edu.javeriana.isml.generator.common.SimpleTemplate;
+import co.edu.javeriana.isml.isml.Assignment;
+import co.edu.javeriana.isml.isml.Block;
+import co.edu.javeriana.isml.isml.Expression;
+import co.edu.javeriana.isml.isml.Resource;
+import co.edu.javeriana.isml.isml.ResourceBundle;
+import co.edu.javeriana.isml.isml.ResourceReference;
+import co.edu.javeriana.isml.isml.Statement;
+import co.edu.javeriana.isml.isml.StringValue;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend2.lib.StringConcatenation;
+
+@SuppressWarnings("all")
+public class ResourceBundleTemplate extends SimpleTemplate<ResourceBundle> {
+  public void preprocess(final ResourceBundle resource) {
+  }
+  
+  /**
+   * @«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)
+   */
+  public CharSequence template(final ResourceBundle resource) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      Block _body = resource.getBody();
+      EList<Statement> _statements = _body.getStatements();
+      for(final Statement stmnt : _statements) {
+        {
+          if ((stmnt instanceof Assignment)) {
+            Expression _left = ((Assignment)stmnt).getLeft();
+            Resource _referencedElement = ((ResourceReference) _left).getReferencedElement();
+            String _name = _referencedElement.getName();
+            String _substring = _name.substring(1);
+            _builder.append(_substring, "");
+            _builder.append("=");
+            Expression _right = ((Assignment)stmnt).getRight();
+            Object _literal = ((StringValue) _right).getLiteral();
+            _builder.append(_literal, "");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    return _builder;
+  }
+}

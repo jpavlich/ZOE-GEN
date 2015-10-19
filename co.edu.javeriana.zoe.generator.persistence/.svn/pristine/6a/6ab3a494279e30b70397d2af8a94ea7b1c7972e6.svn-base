@@ -1,0 +1,507 @@
+package co.com.heinsohn.lion.generator.persistence.templates;
+
+import co.com.heinsohn.lion.generator.persistence.templates.ExpressionTemplate;
+import co.edu.javeriana.isml.isml.Action;
+import co.edu.javeriana.isml.isml.ActionCall;
+import co.edu.javeriana.isml.isml.Assignment;
+import co.edu.javeriana.isml.isml.Attribute;
+import co.edu.javeriana.isml.isml.Controller;
+import co.edu.javeriana.isml.isml.Entity;
+import co.edu.javeriana.isml.isml.EnumItem;
+import co.edu.javeriana.isml.isml.Expression;
+import co.edu.javeriana.isml.isml.Method;
+import co.edu.javeriana.isml.isml.MethodCall;
+import co.edu.javeriana.isml.isml.NamedElement;
+import co.edu.javeriana.isml.isml.Parameter;
+import co.edu.javeriana.isml.isml.ParameterizedType;
+import co.edu.javeriana.isml.isml.Reference;
+import co.edu.javeriana.isml.isml.Resource;
+import co.edu.javeriana.isml.isml.ResourceReference;
+import co.edu.javeriana.isml.isml.Service;
+import co.edu.javeriana.isml.isml.Show;
+import co.edu.javeriana.isml.isml.Type;
+import co.edu.javeriana.isml.isml.TypeSpecification;
+import co.edu.javeriana.isml.isml.VariableReference;
+import co.edu.javeriana.isml.isml.VariableTypeElement;
+import co.edu.javeriana.isml.isml.ViewInstance;
+import co.edu.javeriana.isml.scoping.TypeExtension;
+import com.google.common.base.Objects;
+import java.util.Arrays;
+import java.util.Map;
+import javax.inject.Inject;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
+
+@SuppressWarnings("all")
+public class ReferenceTemplate {
+  @Inject
+  @Extension
+  private TypeExtension _typeExtension;
+  
+  @Inject
+  @Extension
+  private ExpressionTemplate _expressionTemplate;
+  
+  protected CharSequence _writeReference(final MethodCall reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    Method _method = this._typeExtension.getMethod(reference);
+    String _name = _method.getName();
+    _builder.append(_name, "");
+    _builder.append("(");
+    {
+      boolean _and = false;
+      Method _referencedElement = reference.getReferencedElement();
+      EObject _eContainer = _referencedElement.eContainer();
+      if (!(_eContainer instanceof Service)) {
+        _and = false;
+      } else {
+        Method _referencedElement_1 = reference.getReferencedElement();
+        Type _type = _referencedElement_1.getType();
+        TypeSpecification _typeSpecification = _type.getTypeSpecification();
+        String _name_1 = _typeSpecification.getName();
+        boolean _equalsIgnoreCase = _name_1.equalsIgnoreCase("void");
+        boolean _not = (!_equalsIgnoreCase);
+        _and = _not;
+      }
+      if (_and) {
+        Method _referencedElement_2 = reference.getReferencedElement();
+        Type _type_1 = _referencedElement_2.getType();
+        String _writeType = this._typeExtension.writeType(_type_1, false);
+        _builder.append(_writeType, "");
+        _builder.append(".class");
+        {
+          EList<Expression> _parameters = reference.getParameters();
+          boolean _isEmpty = _parameters.isEmpty();
+          boolean _not_1 = (!_isEmpty);
+          if (_not_1) {
+            _builder.append(", ");
+          }
+        }
+      }
+    }
+    {
+      EList<Expression> _parameters_1 = reference.getParameters();
+      boolean _hasElements = false;
+      for(final Expression parameter : _parameters_1) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(",", "");
+        }
+        CharSequence _writeExpression = this._expressionTemplate.writeExpression(parameter);
+        _builder.append(_writeExpression, "");
+      }
+    }
+    _builder.append(")");
+    return _builder;
+  }
+  
+  protected CharSequence _writeReference(final ActionCall reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      boolean _and = false;
+      Controller _controllerIfExists = this._typeExtension.getControllerIfExists(reference);
+      boolean _notEquals = (!Objects.equal(_controllerIfExists, null));
+      if (!_notEquals) {
+        _and = false;
+      } else {
+        Controller _controllerIfExists_1 = this._typeExtension.getControllerIfExists(reference);
+        String _name = _controllerIfExists_1.getName();
+        Action _referencedElement = reference.getReferencedElement();
+        Controller _controllerIfExists_2 = this._typeExtension.getControllerIfExists(_referencedElement);
+        String _name_1 = _controllerIfExists_2.getName();
+        boolean _equals = _name.equals(_name_1);
+        _and = _equals;
+      }
+      if (_and) {
+        _builder.append("return ");
+      }
+    }
+    Action _action = this._typeExtension.getAction(reference);
+    String _name_2 = _action.getName();
+    _builder.append(_name_2, "");
+    _builder.append("(");
+    {
+      EList<Expression> _validateParameterForActionCall = this._typeExtension.validateParameterForActionCall(reference);
+      boolean _hasElements = false;
+      for(final Expression parameter : _validateParameterForActionCall) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(",", "");
+        }
+        CharSequence _writeExpression = this._expressionTemplate.writeExpression(parameter);
+        _builder.append(_writeExpression, "");
+      }
+    }
+    _builder.append(")");
+    return _builder;
+  }
+  
+  protected CharSequence _writeReference(final ResourceReference reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\"#{messages[\'");
+    Resource _referencedElement = reference.getReferencedElement();
+    String _name = _referencedElement.getName();
+    String _substring = _name.substring(1);
+    _builder.append(_substring, "");
+    _builder.append("\']}\"");
+    return _builder;
+  }
+  
+  public ViewInstance getViewInstanceIfExists(final EObject object) {
+    EObject returnObject = null;
+    EObject tmpObject = object;
+    while (((!Objects.equal(tmpObject, null)) && Objects.equal(returnObject, null))) {
+      {
+        boolean _and = false;
+        boolean _and_1 = false;
+        boolean _and_2 = false;
+        EObject _eContainer = tmpObject.eContainer();
+        boolean _notEquals = (!Objects.equal(_eContainer, null));
+        if (!_notEquals) {
+          _and_2 = false;
+        } else {
+          EObject _eContainer_1 = tmpObject.eContainer();
+          _and_2 = (_eContainer_1 instanceof ViewInstance);
+        }
+        if (!_and_2) {
+          _and_1 = false;
+        } else {
+          EObject _eContainer_2 = tmpObject.eContainer();
+          EObject _eContainer_3 = _eContainer_2.eContainer();
+          boolean _notEquals_1 = (!Objects.equal(_eContainer_3, null));
+          _and_1 = _notEquals_1;
+        }
+        if (!_and_1) {
+          _and = false;
+        } else {
+          _and = (!(tmpObject.eContainer().eContainer() instanceof Show));
+        }
+        if (_and) {
+          EObject _eContainer_4 = tmpObject.eContainer();
+          returnObject = _eContainer_4;
+        }
+        EObject _eContainer_5 = tmpObject.eContainer();
+        tmpObject = _eContainer_5;
+      }
+    }
+    return ((ViewInstance) returnObject);
+  }
+  
+  protected CharSequence _writeReference(final VariableReference reference) {
+    VariableTypeElement _referencedElement = reference.getReferencedElement();
+    String str = _referencedElement.getName();
+    EObject _eContainer = reference.eContainer();
+    EObject show = _eContainer.eContainer();
+    VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
+    if ((_referencedElement_1 instanceof Attribute)) {
+      VariableTypeElement _referencedElement_2 = reference.getReferencedElement();
+      Attribute attr = ((Attribute) _referencedElement_2);
+      boolean _and = false;
+      EObject _eContainer_1 = attr.eContainer();
+      if (!(_eContainer_1 instanceof TypeSpecification)) {
+        _and = false;
+      } else {
+        ViewInstance _viewInstanceIfExists = this.getViewInstanceIfExists(reference);
+        boolean _equals = Objects.equal(_viewInstanceIfExists, null);
+        _and = _equals;
+      }
+      if (_and) {
+        VariableTypeElement _referencedElement_3 = reference.getReferencedElement();
+        String _name = _referencedElement_3.getName();
+        String _firstUpper = StringExtensions.toFirstUpper(_name);
+        String _plus = ("get" + _firstUpper);
+        String _plus_1 = (_plus + "()");
+        str = _plus_1;
+      }
+      EObject _eContainer_2 = reference.eContainer();
+      EObject _eContainer_3 = _eContainer_2.eContainer();
+      if ((_eContainer_3 instanceof Assignment)) {
+        EObject _eContainer_4 = reference.eContainer();
+        EObject _eContainer_5 = _eContainer_4.eContainer();
+        Assignment assignment = ((Assignment) _eContainer_5);
+        Expression _left = assignment.getLeft();
+        VariableTypeElement _referencedElement_4 = ((VariableReference) _left).getReferencedElement();
+        String _name_1 = _referencedElement_4.getName();
+        EObject _eContainer_6 = reference.eContainer();
+        VariableTypeElement _referencedElement_5 = ((VariableReference) _eContainer_6).getReferencedElement();
+        String _name_2 = _referencedElement_5.getName();
+        boolean _equals_1 = _name_1.equals(_name_2);
+        if (_equals_1) {
+          VariableTypeElement _referencedElement_6 = reference.getReferencedElement();
+          String _name_3 = _referencedElement_6.getName();
+          String _firstUpper_1 = StringExtensions.toFirstUpper(_name_3);
+          String _plus_2 = ("set" + _firstUpper_1);
+          str = _plus_2;
+        } else {
+          Expression _right = assignment.getRight();
+          VariableTypeElement _referencedElement_7 = ((VariableReference) _right).getReferencedElement();
+          String _name_4 = _referencedElement_7.getName();
+          EObject _eContainer_7 = reference.eContainer();
+          VariableTypeElement _referencedElement_8 = ((VariableReference) _eContainer_7).getReferencedElement();
+          String _name_5 = _referencedElement_8.getName();
+          boolean _equals_2 = _name_4.equals(_name_5);
+          if (_equals_2) {
+            VariableTypeElement _referencedElement_9 = reference.getReferencedElement();
+            String _name_6 = _referencedElement_9.getName();
+            String _firstUpper_2 = StringExtensions.toFirstUpper(_name_6);
+            String _plus_3 = ("get" + _firstUpper_2);
+            String _plus_4 = (_plus_3 + "()");
+            str = _plus_4;
+          }
+        }
+      }
+    } else {
+      VariableTypeElement _referencedElement_10 = reference.getReferencedElement();
+      if ((_referencedElement_10 instanceof EnumItem)) {
+        VariableTypeElement _referencedElement_11 = reference.getReferencedElement();
+        String _name_7 = _referencedElement_11.getName();
+        String _upperCase = _name_7.toUpperCase();
+        str = _upperCase;
+      }
+    }
+    if ((show instanceof Show)) {
+      Parameter param = null;
+      Expression _expression = ((Show)show).getExpression();
+      Type _type = ((ViewInstance) _expression).getType();
+      TypeSpecification _typeSpecification = _type.getTypeSpecification();
+      EList<Parameter> _parameters = _typeSpecification.getParameters();
+      for (final Parameter methodParam : _parameters) {
+        boolean _or = false;
+        VariableTypeElement _referencedElement_12 = reference.getReferencedElement();
+        Type _type_1 = _referencedElement_12.getType();
+        TypeSpecification _typeSpecification_1 = _type_1.getTypeSpecification();
+        String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification_1);
+        Type _type_2 = methodParam.getType();
+        TypeSpecification _typeSpecification_2 = _type_2.getTypeSpecification();
+        String _typeSpecificationString_1 = this._typeExtension.getTypeSpecificationString(_typeSpecification_2);
+        boolean _equals_3 = _typeSpecificationString.equals(_typeSpecificationString_1);
+        if (_equals_3) {
+          _or = true;
+        } else {
+          Reference _tail = reference.getTail();
+          boolean _notEquals = (!Objects.equal(_tail, null));
+          _or = _notEquals;
+        }
+        if (_or) {
+          boolean _evaluateReference = this.evaluateReference(reference);
+          if (_evaluateReference) {
+            param = methodParam;
+          }
+          boolean _equals_4 = Objects.equal(param, null);
+          if (_equals_4) {
+            Reference _tail_1 = reference.getTail();
+            boolean _notEquals_1 = (!Objects.equal(_tail_1, null));
+            if (_notEquals_1) {
+              param = methodParam;
+            }
+          }
+        }
+      }
+      boolean _notEquals_2 = (!Objects.equal(param, null));
+      if (_notEquals_2) {
+        String cast = "";
+        EList<Object> retData = this.evaluateToCastShowParameter(param, reference);
+        Object _get = retData.get(0);
+        if ((((Boolean) _get)).booleanValue()) {
+          Object _get_1 = retData.get(1);
+          String _string = _get_1.toString();
+          String _plus_5 = ("(" + _string);
+          String _plus_6 = (_plus_5 + ")");
+          cast = _plus_6;
+        }
+        String _name_8 = param.getName();
+        String _plus_7 = ("this." + _name_8);
+        String _plus_8 = (_plus_7 + "=");
+        String _plus_9 = (_plus_8 + cast);
+        String _plus_10 = (_plus_9 + str);
+        str = _plus_10;
+      } else {
+        return "";
+      }
+    }
+    Reference r = reference.getTail();
+    while ((!Objects.equal(r, null))) {
+      {
+        String _str = str;
+        CharSequence _writeReference = this.writeReference(r);
+        String _plus_11 = ("." + _writeReference);
+        str = (_str + _plus_11);
+        Reference _tail_2 = r.getTail();
+        r = _tail_2;
+      }
+    }
+    return str;
+  }
+  
+  protected CharSequence _writeReference(final Type reference) {
+    String text = null;
+    boolean _and = false;
+    NamedElement _referencedElement = this._typeExtension.referencedElement(reference);
+    if (!(_referencedElement instanceof Entity)) {
+      _and = false;
+    } else {
+      Reference _tail = reference.getTail();
+      boolean _equals = Objects.equal(_tail, null);
+      _and = _equals;
+    }
+    if (_and) {
+      NamedElement _referencedElement_1 = this._typeExtension.referencedElement(reference);
+      String _name = _referencedElement_1.getName();
+      String _firstUpper = StringExtensions.toFirstUpper(_name);
+      String _plus = (_firstUpper + ".class");
+      text = _plus;
+    } else {
+      NamedElement _referencedElement_2 = this._typeExtension.referencedElement(reference);
+      String _name_1 = _referencedElement_2.getName();
+      String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+      text = _firstUpper_1;
+      Reference _tail_1 = reference.getTail();
+      boolean _notEquals = (!Objects.equal(_tail_1, null));
+      if (_notEquals) {
+        String _text = text;
+        Reference _tail_2 = reference.getTail();
+        CharSequence _writeReference = this.writeReference(_tail_2);
+        String _plus_1 = ("." + _writeReference);
+        text = (_text + _plus_1);
+      }
+    }
+    return text;
+  }
+  
+  public boolean evaluateReference(final Reference parameter) {
+    boolean pass = true;
+    NamedElement _referencedElement = this._typeExtension.referencedElement(parameter);
+    if ((_referencedElement instanceof Parameter)) {
+      Action _actionIfExists = this.getActionIfExists(parameter);
+      boolean _notEquals = (!Objects.equal(_actionIfExists, null));
+      if (_notEquals) {
+        EObject _eContainer = parameter.eContainer();
+        Controller controller = this._typeExtension.getControllerIfExists(_eContainer);
+        Map<String, Object> _neededAttributes = this._typeExtension.getNeededAttributes(controller);
+        Object _get = _neededAttributes.get("neededAttributes");
+        Map<String, Type> attributesMap = ((Map<String, Type>) _get);
+        boolean _and = false;
+        NamedElement _referencedElement_1 = this._typeExtension.referencedElement(parameter);
+        String _name = ((Parameter) _referencedElement_1).getName();
+        boolean _containsKey = attributesMap.containsKey(_name);
+        if (!_containsKey) {
+          _and = false;
+        } else {
+          Reference _tail = parameter.getTail();
+          boolean _equals = Objects.equal(_tail, null);
+          _and = _equals;
+        }
+        if (_and) {
+          pass = false;
+        }
+      }
+    }
+    return pass;
+  }
+  
+  public Action getActionIfExists(final EObject o) {
+    Action a = null;
+    EObject tmp = o;
+    while (((!Objects.equal(tmp, null)) && Objects.equal(a, null))) {
+      {
+        boolean _and = false;
+        EObject _eContainer = tmp.eContainer();
+        boolean _notEquals = (!Objects.equal(_eContainer, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          EObject _eContainer_1 = tmp.eContainer();
+          _and = (_eContainer_1 instanceof Action);
+        }
+        if (_and) {
+          EObject _eContainer_2 = tmp.eContainer();
+          a = ((Action) _eContainer_2);
+        }
+        EObject _eContainer_3 = tmp.eContainer();
+        tmp = _eContainer_3;
+      }
+    }
+    return a;
+  }
+  
+  public EList<Object> evaluateToCastShowParameter(final Parameter param, final Reference reference) {
+    boolean doCast = false;
+    EObject _findAncestor = this._typeExtension.findAncestor(reference, Controller.class);
+    Map<String, Object> _neededAttributes = this._typeExtension.getNeededAttributes(((Controller) _findAncestor));
+    Object _get = _neededAttributes.get("neededAttributes");
+    Map<String, Type> neededAttributes = ((Map<String, Type>) _get);
+    Type tailType = this._typeExtension.getTailType(reference);
+    EList<Object> returnData = new BasicEList<Object>();
+    String castText = "";
+    String _name = param.getName();
+    boolean _containsKey = neededAttributes.containsKey(_name);
+    if (_containsKey) {
+      TypeSpecification _typeSpecification = tailType.getTypeSpecification();
+      String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification);
+      String _name_1 = param.getName();
+      Type _get_1 = neededAttributes.get(_name_1);
+      TypeSpecification _typeSpecification_1 = _get_1.getTypeSpecification();
+      String _typeSpecificationString_1 = this._typeExtension.getTypeSpecificationString(_typeSpecification_1);
+      boolean _equalsIgnoreCase = _typeSpecificationString.equalsIgnoreCase(_typeSpecificationString_1);
+      boolean _not = (!_equalsIgnoreCase);
+      doCast = _not;
+    }
+    if ((!doCast)) {
+      boolean _and = false;
+      if (!(tailType instanceof ParameterizedType)) {
+        _and = false;
+      } else {
+        String _name_2 = param.getName();
+        Type _get_2 = neededAttributes.get(_name_2);
+        _and = (_get_2 instanceof ParameterizedType);
+      }
+      if (_and) {
+        EList<Type> _typeParameters = ((ParameterizedType) tailType).getTypeParameters();
+        Type _get_3 = _typeParameters.get(0);
+        TypeSpecification _typeSpecification_2 = _get_3.getTypeSpecification();
+        String _typeSpecificationString_2 = this._typeExtension.getTypeSpecificationString(_typeSpecification_2);
+        String _name_3 = param.getName();
+        Type _get_4 = neededAttributes.get(_name_3);
+        EList<Type> _typeParameters_1 = ((ParameterizedType) _get_4).getTypeParameters();
+        Type _get_5 = _typeParameters_1.get(0);
+        TypeSpecification _typeSpecification_3 = _get_5.getTypeSpecification();
+        String _typeSpecificationString_3 = this._typeExtension.getTypeSpecificationString(_typeSpecification_3);
+        boolean _equalsIgnoreCase_1 = _typeSpecificationString_2.equalsIgnoreCase(_typeSpecificationString_3);
+        boolean _not_1 = (!_equalsIgnoreCase_1);
+        doCast = _not_1;
+        if (doCast) {
+          TypeSpecification _typeSpecification_4 = tailType.getTypeSpecification();
+          String _typeSpecificationString_4 = this._typeExtension.getTypeSpecificationString(_typeSpecification_4);
+          String _firstUpper = StringExtensions.toFirstUpper(_typeSpecificationString_4);
+          castText = _firstUpper;
+        }
+      }
+    }
+    returnData.add(Boolean.valueOf(doCast));
+    returnData.add(castText);
+    return returnData;
+  }
+  
+  public CharSequence writeReference(final Reference reference) {
+    if (reference instanceof ActionCall) {
+      return _writeReference((ActionCall)reference);
+    } else if (reference instanceof MethodCall) {
+      return _writeReference((MethodCall)reference);
+    } else if (reference instanceof ResourceReference) {
+      return _writeReference((ResourceReference)reference);
+    } else if (reference instanceof Type) {
+      return _writeReference((Type)reference);
+    } else if (reference instanceof VariableReference) {
+      return _writeReference((VariableReference)reference);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(reference).toString());
+    }
+  }
+}

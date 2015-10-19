@@ -1,0 +1,726 @@
+package co.com.heinsohn.lion.generator.persistence.templates;
+
+import co.edu.javeriana.isml.generator.common.SimpleTemplate;
+import co.edu.javeriana.isml.isml.Attribute;
+import co.edu.javeriana.isml.isml.DTO;
+import co.edu.javeriana.isml.isml.ParameterizedType;
+import co.edu.javeriana.isml.isml.Primitive;
+import co.edu.javeriana.isml.isml.Type;
+import co.edu.javeriana.isml.isml.TypeSpecification;
+import co.edu.javeriana.isml.scoping.TypeExtension;
+import co.edu.javeriana.isml.validation.TypeChecker;
+import com.google.inject.Inject;
+import java.util.Collection;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
+
+@SuppressWarnings("all")
+public class DTOTemplate extends SimpleTemplate<DTO> {
+  @Inject
+  @Extension
+  private TypeChecker _typeChecker;
+  
+  /**
+   * Inyección de las clases auxiliares con metodos utilitarios
+   */
+  @Inject
+  @Extension
+  private IQualifiedNameProvider _iQualifiedNameProvider;
+  
+  @Inject
+  @Extension
+  private TypeExtension _typeExtension;
+  
+  /**
+   * Metodo callback llamado previo a la ejecución del template
+   */
+  public void preprocess(final DTO e) {
+  }
+  
+  public boolean evaluateAttributeToImport(final Attribute attribute, final DTO dto) {
+    boolean needImport = false;
+    Type _type = attribute.getType();
+    boolean _isCollection = this._typeChecker.isCollection(_type);
+    boolean _not = (!_isCollection);
+    if (_not) {
+      Type _type_1 = attribute.getType();
+      TypeSpecification _typeSpecification = _type_1.getTypeSpecification();
+      EObject _eContainer = _typeSpecification.eContainer();
+      QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer);
+      EObject _eContainer_1 = dto.eContainer();
+      QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_1);
+      boolean _equals = _fullyQualifiedName.equals(_fullyQualifiedName_1);
+      boolean _not_1 = (!_equals);
+      needImport = _not_1;
+    } else {
+      Type _type_2 = attribute.getType();
+      EList<Type> _typeParameters = ((ParameterizedType) _type_2).getTypeParameters();
+      Type _get = _typeParameters.get(0);
+      TypeSpecification _typeSpecification_1 = _get.getTypeSpecification();
+      EObject _eContainer_2 = _typeSpecification_1.eContainer();
+      QualifiedName _fullyQualifiedName_2 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_2);
+      EObject _eContainer_3 = dto.eContainer();
+      QualifiedName _fullyQualifiedName_3 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_3);
+      boolean _equals_1 = _fullyQualifiedName_2.equals(_fullyQualifiedName_3);
+      boolean _not_2 = (!_equals_1);
+      needImport = _not_2;
+    }
+    return needImport;
+  }
+  
+  public boolean isDatePresent(final DTO dto) {
+    boolean hasDate = false;
+    Iterable<Attribute> _attributes = this._typeExtension.getAttributes(dto);
+    for (final Attribute attr : _attributes) {
+      boolean _and = false;
+      Type _type = attr.getType();
+      TypeSpecification _typeSpecification = _type.getTypeSpecification();
+      if (!(_typeSpecification instanceof Primitive)) {
+        _and = false;
+      } else {
+        Type _type_1 = attr.getType();
+        TypeSpecification _typeSpecification_1 = _type_1.getTypeSpecification();
+        String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification_1);
+        boolean _equalsIgnoreCase = _typeSpecificationString.equalsIgnoreCase("Date");
+        _and = _equalsIgnoreCase;
+      }
+      if (_and) {
+        hasDate = true;
+      }
+    }
+    return hasDate;
+  }
+  
+  /**
+   * Plantilla para generar entidades
+   */
+  public CharSequence template(final DTO dto) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    EObject _eContainer = dto.eContainer();
+    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer);
+    _builder.append(_fullyQualifiedName, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    {
+      boolean _isDatePresent = this.isDatePresent(dto);
+      if (_isDatePresent) {
+        _builder.append("import java.util.Date;");
+        _builder.newLine();
+      }
+    }
+    _builder.append("\t\t");
+    _builder.newLine();
+    {
+      Collection<Type> _parents = this._typeExtension.getParents(dto);
+      for(final Type parent : _parents) {
+        {
+          EObject _eContainer_1 = parent.eContainer();
+          EObject _eContainer_2 = _eContainer_1.eContainer();
+          QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_2);
+          EObject _eContainer_3 = dto.eContainer();
+          QualifiedName _fullyQualifiedName_2 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_3);
+          boolean _equals = _fullyQualifiedName_1.equals(_fullyQualifiedName_2);
+          boolean _not = (!_equals);
+          if (_not) {
+            _builder.append("import ");
+            TypeSpecification _typeSpecification = parent.getTypeSpecification();
+            QualifiedName _fullyQualifiedName_3 = this._iQualifiedNameProvider.getFullyQualifiedName(_typeSpecification);
+            _builder.append(_fullyQualifiedName_3, "");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.newLine();
+    {
+      Iterable<Attribute> _attributes = this._typeExtension.getAttributes(dto);
+      for(final Attribute attribute : _attributes) {
+        {
+          boolean _or = false;
+          if ((!(attribute.getType().getTypeSpecification() instanceof Primitive))) {
+            _or = true;
+          } else {
+            Type _type = attribute.getType();
+            boolean _isCollection = this._typeChecker.isCollection(_type);
+            _or = _isCollection;
+          }
+          if (_or) {
+            {
+              boolean _evaluateAttributeToImport = this.evaluateAttributeToImport(attribute, dto);
+              if (_evaluateAttributeToImport) {
+                {
+                  Type _type_1 = attribute.getType();
+                  if ((_type_1 instanceof ParameterizedType)) {
+                    {
+                      Type _type_2 = attribute.getType();
+                      EList<Type> _typeParameters = ((ParameterizedType) _type_2).getTypeParameters();
+                      Type _get = _typeParameters.get(0);
+                      TypeSpecification _typeSpecification_1 = _get.getTypeSpecification();
+                      if ((!(_typeSpecification_1 instanceof Primitive))) {
+                        _builder.append("import ");
+                        Type _type_3 = attribute.getType();
+                        EList<Type> _typeParameters_1 = ((ParameterizedType) _type_3).getTypeParameters();
+                        Type _get_1 = _typeParameters_1.get(0);
+                        TypeSpecification _typeSpecification_2 = _get_1.getTypeSpecification();
+                        QualifiedName _fullyQualifiedName_4 = this._iQualifiedNameProvider.getFullyQualifiedName(_typeSpecification_2);
+                        _builder.append(_fullyQualifiedName_4, "");
+                        _builder.append(";");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  } else {
+                    _builder.append("import ");
+                    Type _type_4 = attribute.getType();
+                    TypeSpecification _typeSpecification_3 = _type_4.getTypeSpecification();
+                    QualifiedName _fullyQualifiedName_5 = this._iQualifiedNameProvider.getFullyQualifiedName(_typeSpecification_3);
+                    _builder.append(_fullyQualifiedName_5, "");
+                    _builder.append(";");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    _builder.newLine();
+    {
+      Iterable<Attribute> _attributes_1 = this._typeExtension.getAttributes(dto);
+      boolean _isArrayPresent = this._typeExtension.isArrayPresent(_attributes_1);
+      if (_isArrayPresent) {
+        _builder.append("import java.util.*;");
+        _builder.newLine();
+      }
+    }
+    _builder.newLine();
+    _builder.append("/**");
+    _builder.newLine();
+    _builder.append(" ");
+    _builder.append("* This class represents a DTO object named ");
+    String _name = dto.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, " ");
+    _builder.newLineIfNotEmpty();
+    _builder.append(" ");
+    _builder.append("*/\t\t");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public ");
+    {
+      boolean _isAbstract = dto.isAbstract();
+      if (_isAbstract) {
+        _builder.append("abstract");
+      }
+    }
+    _builder.append(" class ");
+    String _name_1 = dto.getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+    _builder.append(_firstUpper_1, "");
+    {
+      EList<Type> _superTypes = dto.getSuperTypes();
+      boolean _isEmpty = _superTypes.isEmpty();
+      boolean _not_1 = (!_isEmpty);
+      if (_not_1) {
+        _builder.append("extends ");
+        EList<Type> _superTypes_1 = dto.getSuperTypes();
+        Type _get_2 = _superTypes_1.get(0);
+        TypeSpecification _typeSpecification_4 = _get_2.getTypeSpecification();
+        String _typeSpecificationString = this._typeExtension.getTypeSpecificationString(_typeSpecification_4);
+        _builder.append(_typeSpecificationString, "");
+      }
+    }
+    _builder.append("{\t\t\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    {
+      Iterable<Attribute> _attributes_2 = this._typeExtension.getAttributes(dto);
+      for(final Attribute a : _attributes_2) {
+        {
+          Type _type_5 = a.getType();
+          TypeSpecification _typeSpecification_5 = _type_5.getTypeSpecification();
+          String _typeSpecificationString_1 = this._typeExtension.getTypeSpecificationString(_typeSpecification_5);
+          boolean _equalsIgnoreCase = _typeSpecificationString_1.equalsIgnoreCase("email");
+          if (_equalsIgnoreCase) {
+            _builder.append("\t");
+            _builder.append("/**");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("* Attribute for the type String ");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("*/");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("private String ");
+            String _name_2 = a.getName();
+            _builder.append(_name_2, "\t");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+          } else {
+            {
+              Type _type_6 = a.getType();
+              boolean _isCollection_1 = this._typeChecker.isCollection(_type_6);
+              if (_isCollection_1) {
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Attribute for the type ");
+                Type _type_7 = a.getType();
+                String _collectionString = this._typeExtension.getCollectionString(((ParameterizedType) _type_7));
+                _builder.append(_collectionString, "\t ");
+                _builder.append("<");
+                Type _type_8 = a.getType();
+                EList<Type> _typeParameters_2 = ((ParameterizedType) _type_8).getTypeParameters();
+                Type _get_3 = _typeParameters_2.get(0);
+                TypeSpecification _typeSpecification_6 = _get_3.getTypeSpecification();
+                String _typeSpecificationString_2 = this._typeExtension.getTypeSpecificationString(_typeSpecification_6);
+                _builder.append(_typeSpecificationString_2, "\t ");
+                _builder.append(">");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("private ");
+                Type _type_9 = a.getType();
+                String _collectionString_1 = this._typeExtension.getCollectionString(((ParameterizedType) _type_9));
+                _builder.append(_collectionString_1, "\t");
+                _builder.append("<");
+                Type _type_10 = a.getType();
+                EList<Type> _typeParameters_3 = ((ParameterizedType) _type_10).getTypeParameters();
+                Type _get_4 = _typeParameters_3.get(0);
+                TypeSpecification _typeSpecification_7 = _get_4.getTypeSpecification();
+                String _typeSpecificationString_3 = this._typeExtension.getTypeSpecificationString(_typeSpecification_7);
+                _builder.append(_typeSpecificationString_3, "\t");
+                _builder.append("> ");
+                String _name_3 = a.getName();
+                _builder.append(_name_3, "\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+              } else {
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Attribute for the type ");
+                Type _type_11 = a.getType();
+                TypeSpecification _typeSpecification_8 = _type_11.getTypeSpecification();
+                String _typeSpecificationString_4 = this._typeExtension.getTypeSpecificationString(_typeSpecification_8);
+                String _firstUpper_2 = StringExtensions.toFirstUpper(_typeSpecificationString_4);
+                _builder.append(_firstUpper_2, "\t ");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("private ");
+                Type _type_12 = a.getType();
+                TypeSpecification _typeSpecification_9 = _type_12.getTypeSpecification();
+                String _typeSpecificationString_5 = this._typeExtension.getTypeSpecificationString(_typeSpecification_9);
+                String _firstUpper_3 = StringExtensions.toFirstUpper(_typeSpecificationString_5);
+                _builder.append(_firstUpper_3, "\t");
+                _builder.append(" ");
+                String _name_4 = a.getName();
+                _builder.append(_name_4, "\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+          }
+        }
+      }
+    }
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("/**");
+    _builder.newLine();
+    _builder.append("\t ");
+    _builder.append("* Default Constructor method for the DTO Object");
+    _builder.newLine();
+    _builder.append("\t ");
+    _builder.append("*/");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public ");
+    String _name_5 = dto.getName();
+    String _firstUpper_4 = StringExtensions.toFirstUpper(_name_5);
+    _builder.append(_firstUpper_4, "\t");
+    _builder.append("(){");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("/**");
+    _builder.newLine();
+    _builder.append("\t ");
+    _builder.append("* Optional constructor method for the DTO Object");
+    _builder.newLine();
+    _builder.append("\t ");
+    _builder.append("*/");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public ");
+    String _name_6 = dto.getName();
+    String _firstUpper_5 = StringExtensions.toFirstUpper(_name_6);
+    _builder.append(_firstUpper_5, "\t");
+    _builder.append("(");
+    {
+      Iterable<Attribute> _attributes_3 = this._typeExtension.getAttributes(dto);
+      boolean _hasElements = false;
+      for(final Attribute a_1 : _attributes_3) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(",", "\t");
+        }
+        {
+          Type _type_13 = a_1.getType();
+          TypeSpecification _typeSpecification_10 = _type_13.getTypeSpecification();
+          String _typeSpecificationString_6 = this._typeExtension.getTypeSpecificationString(_typeSpecification_10);
+          boolean _equalsIgnoreCase_1 = _typeSpecificationString_6.equalsIgnoreCase("email");
+          if (_equalsIgnoreCase_1) {
+            _builder.append("String ");
+            String _name_7 = a_1.getName();
+            _builder.append(_name_7, "\t");
+          } else {
+            {
+              Type _type_14 = a_1.getType();
+              boolean _isCollection_2 = this._typeChecker.isCollection(_type_14);
+              if (_isCollection_2) {
+                Type _type_15 = a_1.getType();
+                String _collectionString_2 = this._typeExtension.getCollectionString(((ParameterizedType) _type_15));
+                _builder.append(_collectionString_2, "\t");
+                _builder.append("<");
+                Type _type_16 = a_1.getType();
+                EList<Type> _typeParameters_4 = ((ParameterizedType) _type_16).getTypeParameters();
+                Type _get_5 = _typeParameters_4.get(0);
+                TypeSpecification _typeSpecification_11 = _get_5.getTypeSpecification();
+                String _typeSpecificationString_7 = this._typeExtension.getTypeSpecificationString(_typeSpecification_11);
+                _builder.append(_typeSpecificationString_7, "\t");
+                _builder.append("> ");
+                String _name_8 = a_1.getName();
+                _builder.append(_name_8, "\t");
+              } else {
+                Type _type_17 = a_1.getType();
+                TypeSpecification _typeSpecification_12 = _type_17.getTypeSpecification();
+                String _typeSpecificationString_8 = this._typeExtension.getTypeSpecificationString(_typeSpecification_12);
+                String _firstUpper_6 = StringExtensions.toFirstUpper(_typeSpecificationString_8);
+                _builder.append(_firstUpper_6, "\t");
+                _builder.append(" ");
+                String _name_9 = a_1.getName();
+                _builder.append(_name_9, "\t");
+              }
+            }
+          }
+        }
+      }
+    }
+    _builder.append("){");
+    _builder.newLineIfNotEmpty();
+    {
+      Iterable<Attribute> _attributes_4 = this._typeExtension.getAttributes(dto);
+      for(final Attribute attr : _attributes_4) {
+        _builder.append("\t\t");
+        _builder.append("set");
+        String _name_10 = attr.getName();
+        String _firstUpper_7 = StringExtensions.toFirstUpper(_name_10);
+        _builder.append(_firstUpper_7, "\t\t");
+        _builder.append("(");
+        String _name_11 = attr.getName();
+        String _firstLower = StringExtensions.toFirstLower(_name_11);
+        _builder.append(_firstLower, "\t\t");
+        _builder.append(");");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    {
+      Iterable<Attribute> _attributes_5 = this._typeExtension.getAttributes(dto);
+      for(final Attribute a_2 : _attributes_5) {
+        _builder.append("\t");
+        _builder.newLine();
+        {
+          Type _type_18 = a_2.getType();
+          TypeSpecification _typeSpecification_13 = _type_18.getTypeSpecification();
+          String _typeSpecificationString_9 = this._typeExtension.getTypeSpecificationString(_typeSpecification_13);
+          boolean _equalsIgnoreCase_2 = _typeSpecificationString_9.equalsIgnoreCase("email");
+          if (_equalsIgnoreCase_2) {
+            _builder.append("\t");
+            _builder.append("/**");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("* Returns the current value for the attribute ");
+            String _name_12 = a_2.getName();
+            _builder.append(_name_12, "\t ");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("*/\t\t\t");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("public String get");
+            String _name_13 = a_2.getName();
+            String _firstUpper_8 = StringExtensions.toFirstUpper(_name_13);
+            _builder.append(_firstUpper_8, "\t");
+            _builder.append("(){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t");
+            _builder.append("return ");
+            String _name_14 = a_2.getName();
+            _builder.append(_name_14, "\t\t");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("/**");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("* Sets a value for the attribute ");
+            String _name_15 = a_2.getName();
+            _builder.append(_name_15, "\t ");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append(" ");
+            _builder.append("*/ ");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("public void set");
+            String _name_16 = a_2.getName();
+            String _firstUpper_9 = StringExtensions.toFirstUpper(_name_16);
+            _builder.append(_firstUpper_9, "\t");
+            _builder.append("(String ");
+            String _name_17 = a_2.getName();
+            _builder.append(_name_17, "\t");
+            _builder.append("){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t");
+            _builder.append("this.");
+            String _name_18 = a_2.getName();
+            _builder.append(_name_18, "\t\t");
+            _builder.append("=");
+            String _name_19 = a_2.getName();
+            _builder.append(_name_19, "\t\t");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("}\t\t\t\t");
+            _builder.newLine();
+          } else {
+            _builder.append("\t");
+            _builder.newLine();
+            {
+              Type _type_19 = a_2.getType();
+              boolean _isCollection_3 = this._typeChecker.isCollection(_type_19);
+              if (_isCollection_3) {
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Returns the current value for the attribute ");
+                String _name_20 = a_2.getName();
+                _builder.append(_name_20, "\t ");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/\t\t\t");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("public ");
+                Type _type_20 = a_2.getType();
+                String _collectionString_3 = this._typeExtension.getCollectionString(((ParameterizedType) _type_20));
+                _builder.append(_collectionString_3, "\t");
+                _builder.append("<");
+                Type _type_21 = a_2.getType();
+                EList<Type> _typeParameters_5 = ((ParameterizedType) _type_21).getTypeParameters();
+                Type _get_6 = _typeParameters_5.get(0);
+                TypeSpecification _typeSpecification_14 = _get_6.getTypeSpecification();
+                String _typeSpecificationString_10 = this._typeExtension.getTypeSpecificationString(_typeSpecification_14);
+                _builder.append(_typeSpecificationString_10, "\t");
+                _builder.append("> get");
+                String _name_21 = a_2.getName();
+                String _firstUpper_10 = StringExtensions.toFirstUpper(_name_21);
+                _builder.append(_firstUpper_10, "\t");
+                _builder.append("(){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t");
+                _builder.append("return ");
+                String _name_22 = a_2.getName();
+                _builder.append(_name_22, "\t\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("}");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Sets a value for the attribute ");
+                String _name_23 = a_2.getName();
+                _builder.append(_name_23, "\t ");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("public void set");
+                String _name_24 = a_2.getName();
+                String _firstUpper_11 = StringExtensions.toFirstUpper(_name_24);
+                _builder.append(_firstUpper_11, "\t");
+                _builder.append("(");
+                Type _type_22 = a_2.getType();
+                String _collectionString_4 = this._typeExtension.getCollectionString(((ParameterizedType) _type_22));
+                _builder.append(_collectionString_4, "\t");
+                _builder.append("<");
+                Type _type_23 = a_2.getType();
+                EList<Type> _typeParameters_6 = ((ParameterizedType) _type_23).getTypeParameters();
+                Type _get_7 = _typeParameters_6.get(0);
+                TypeSpecification _typeSpecification_15 = _get_7.getTypeSpecification();
+                String _typeSpecificationString_11 = this._typeExtension.getTypeSpecificationString(_typeSpecification_15);
+                _builder.append(_typeSpecificationString_11, "\t");
+                _builder.append("> ");
+                String _name_25 = a_2.getName();
+                _builder.append(_name_25, "\t");
+                _builder.append("){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t");
+                _builder.append("this.");
+                String _name_26 = a_2.getName();
+                _builder.append(_name_26, "\t\t");
+                _builder.append("=");
+                String _name_27 = a_2.getName();
+                _builder.append(_name_27, "\t\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("}");
+                _builder.newLine();
+              } else {
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Returns the current value for the attribute ");
+                String _name_28 = a_2.getName();
+                _builder.append(_name_28, "\t ");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/\t\t\t");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("public ");
+                Type _type_24 = a_2.getType();
+                TypeSpecification _typeSpecification_16 = _type_24.getTypeSpecification();
+                String _typeSpecificationString_12 = this._typeExtension.getTypeSpecificationString(_typeSpecification_16);
+                String _firstUpper_12 = StringExtensions.toFirstUpper(_typeSpecificationString_12);
+                _builder.append(_firstUpper_12, "\t");
+                _builder.append(" get");
+                String _name_29 = a_2.getName();
+                String _firstUpper_13 = StringExtensions.toFirstUpper(_name_29);
+                _builder.append(_firstUpper_13, "\t");
+                _builder.append("(){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t");
+                _builder.append("return ");
+                String _name_30 = a_2.getName();
+                _builder.append(_name_30, "\t\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("}");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("/**");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("* Sets a value for the attribute ");
+                String _name_31 = a_2.getName();
+                _builder.append(_name_31, "\t ");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append(" ");
+                _builder.append("*/");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.append("public void set");
+                String _name_32 = a_2.getName();
+                String _firstUpper_14 = StringExtensions.toFirstUpper(_name_32);
+                _builder.append(_firstUpper_14, "\t");
+                _builder.append("(");
+                Type _type_25 = a_2.getType();
+                TypeSpecification _typeSpecification_17 = _type_25.getTypeSpecification();
+                String _typeSpecificationString_13 = this._typeExtension.getTypeSpecificationString(_typeSpecification_17);
+                String _firstUpper_15 = StringExtensions.toFirstUpper(_typeSpecificationString_13);
+                _builder.append(_firstUpper_15, "\t");
+                _builder.append(" ");
+                String _name_33 = a_2.getName();
+                _builder.append(_name_33, "\t");
+                _builder.append("){");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("\t");
+                _builder.append("this.");
+                String _name_34 = a_2.getName();
+                _builder.append(_name_34, "\t\t");
+                _builder.append("=");
+                String _name_35 = a_2.getName();
+                _builder.append(_name_35, "\t\t");
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t");
+                _builder.append("}");
+                _builder.newLine();
+              }
+            }
+            _builder.append("\t");
+            _builder.newLine();
+          }
+        }
+      }
+    }
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+}

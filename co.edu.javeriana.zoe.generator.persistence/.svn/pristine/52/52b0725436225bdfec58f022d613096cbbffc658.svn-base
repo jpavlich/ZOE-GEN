@@ -1,0 +1,25 @@
+package co.com.heinsohn.lion.generator.persistence.generators
+
+import co.com.heinsohn.lion.generator.persistence.LionPersistenceGenerator
+import co.com.heinsohn.lion.generator.persistence.templates.EnumTemplate
+import co.edu.javeriana.isml.generator.common.SimpleGenerator
+import co.edu.javeriana.isml.isml.Enum
+import com.google.inject.Inject
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+
+class EnumGenerator extends SimpleGenerator<Enum> {
+	@Inject extension IQualifiedNameProvider
+
+	override getFileName(Enum e) {
+		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +e.name.toFirstUpper + ".java"
+	}
+
+	override getOutputConfigurationName() {
+		LionPersistenceGenerator.ENUM
+	}
+	
+	override getTemplate() {
+		return new EnumTemplate
+	}
+
+}

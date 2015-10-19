@@ -1,0 +1,25 @@
+package co.com.heinsohn.lion.generator.persistence.generators
+
+import co.com.heinsohn.lion.generator.persistence.LionPersistenceGenerator
+import co.com.heinsohn.lion.generator.persistence.templates.ResourceBundleTemplate
+import co.edu.javeriana.isml.generator.common.SimpleGenerator
+import co.edu.javeriana.isml.isml.ResourceBundle
+import com.google.inject.Inject
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+
+class ResourceBundleGenerator extends SimpleGenerator<ResourceBundle> {
+	@Inject extension IQualifiedNameProvider
+
+	override getFileName(ResourceBundle rs) {
+		return rs.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +rs.name + ".properties"
+	}
+
+	override getOutputConfigurationName() {
+		LionPersistenceGenerator.RESOURCE_BUNDLE
+	}
+	
+	override getTemplate() {
+		return new ResourceBundleTemplate
+	}
+
+}

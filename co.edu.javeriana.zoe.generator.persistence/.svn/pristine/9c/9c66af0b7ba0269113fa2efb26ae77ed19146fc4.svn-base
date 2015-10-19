@@ -1,0 +1,19 @@
+package co.com.heinsohn.lion.generator.persistence.templates;
+
+import co.edu.javeriana.isml.isml.Reference;
+import org.eclipse.xtend2.lib.StringConcatenation;
+
+/**
+ * Esta clase contiene todos los templates que son reutilizados por varios otros templates.
+ */
+@SuppressWarnings("all")
+public class CommonTemplates {
+  public CharSequence reference(final Reference reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.newLine();
+    _builder.append("//imprimir los elementos referenciados.");
+    _builder.newLine();
+    _builder.newLine();
+    return _builder;
+  }
+}

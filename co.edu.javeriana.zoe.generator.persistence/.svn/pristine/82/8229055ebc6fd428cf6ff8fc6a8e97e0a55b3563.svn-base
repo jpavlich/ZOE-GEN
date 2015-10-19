@@ -1,0 +1,42 @@
+package co.com.heinsohn.lion.generator.persistence.generators;
+
+import co.com.heinsohn.lion.generator.persistence.LionPersistenceGenerator;
+import co.com.heinsohn.lion.generator.persistence.templates.EnumTemplate;
+import co.edu.javeriana.isml.generator.common.SimpleGenerator;
+import co.edu.javeriana.isml.generator.common.SimpleTemplate;
+import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
+
+@SuppressWarnings("all")
+public class EnumGenerator extends SimpleGenerator<co.edu.javeriana.isml.isml.Enum> {
+  @Inject
+  @Extension
+  private IQualifiedNameProvider _iQualifiedNameProvider;
+  
+  public String getFileName(final co.edu.javeriana.isml.isml.Enum e) {
+    EObject _eContainer = e.eContainer();
+    QualifiedName _fullyQualifiedName = null;
+    if (_eContainer!=null) {
+      _fullyQualifiedName=this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer);
+    }
+    String _string = _fullyQualifiedName.toString("/");
+    String _lowerCase = _string.toLowerCase();
+    String _plus = (_lowerCase + "/");
+    String _name = e.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    String _plus_1 = (_plus + _firstUpper);
+    return (_plus_1 + ".java");
+  }
+  
+  public String getOutputConfigurationName() {
+    return LionPersistenceGenerator.ENUM;
+  }
+  
+  public SimpleTemplate<co.edu.javeriana.isml.isml.Enum> getTemplate() {
+    return new EnumTemplate();
+  }
+}
