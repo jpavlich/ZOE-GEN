@@ -44,9 +44,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:h="http://java.sun.com/jsf/html"
 		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:p="http://primefaces.org/ui"
-		xmlns:lion="http://co.com.heinsohn.lion.tags/facelets/prime"
-		template="/lion/common/facelets/generalTemplate/default.xhtml">	
+		xmlns:p="http://primefaces.org/ui">	
 		
 		<ui:define name="metadata">
 				<f:metadata>
@@ -89,7 +87,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	}
 	
 	def CharSequence outputText(ViewInstance part) '''
-		<lion:outputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
+		<p:outputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
 	'''
 	
 //	addAllLabel="#{messages['security.user.pickList.copyAll.action']}"
@@ -104,12 +102,12 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	''' 
 	
 	def CharSequence listChooser(ViewInstance part)'''
-		<lion:objectSelectManyMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» valueList=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» filterMatchMode="contains" widgetLabel=«part.parameters.get(3).writeExpression» />		
+		««««»<lion:objectSelectManyMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» valueList=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» filterMatchMode="contains" widgetLabel=«part.parameters.get(3).writeExpression» />		
 	''' 
 	
 	
 	def CharSequence spinner(ViewInstance part)'''
-		<lion:spinner id="«part.id»" label=«part.parameters.get(0).writeExpression» title=«part.parameters.get(0).writeExpression» 
+		<p:spinner id="«part.id»" label=«part.parameters.get(0).writeExpression» title=«part.parameters.get(0).writeExpression» 
 			value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF»
 			stepFactor="«part.parameters.get(2).writeExpression»" min="«part.parameters.get(3).writeExpression»" max="«part.parameters.get(4).writeExpression»" prefix=«part.parameters.get(5).writeExpression»/>
 	'''
@@ -122,12 +120,12 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 
 	def CharSequence calendar(ViewInstance part) '''
-		 <lion:calendar id= "«part.id»" label=«part.parameters.get(0).writeExpression» 
+		 <p:calendar id= "«part.id»" label=«part.parameters.get(0).writeExpression» 
 		 	value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» pattern=«part.parameters.get(3).writeExpression» 
 		 	navigator="«part.parameters.get(4).writeExpression»" mode=«part.parameters.get(5).writeExpression» />
 	'''
 	def CharSequence checkBox(ViewInstance part) '''
-		<lion:selectBooleanCheckbox id= "«part.id»" label=«part.parameters.get(0).writeExpression» value="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"/>		
+		<p:selectBooleanCheckbox id= "«part.id»" label=«part.parameters.get(0).writeExpression» value="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"/>		
 	'''
 	
 	def CharSequence link(ViewInstance part)'''
@@ -138,7 +136,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence comboChooser(ViewInstance part)'''
 		«IF part.parameters.get(1).writeExpression instanceof Reference && (part.parameters.get(1).writeExpression as Reference).referencedElement.type.typeSpecification instanceof Entity»
-		<lion:entitySelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
+		<h:entitySelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"/>
 		«ELSE»
 		«IF part.parameters.get(1).writeExpression instanceof Reference && (part.parameters.get(1).writeExpression as Reference).referencedElement.type.typeSpecification instanceof co.edu.javeriana.isml.isml.Enum»
@@ -153,7 +151,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 
 	def CharSequence password(ViewInstance part) '''		
-		<lion:inputSecret id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF»/>
+		<p:password  id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF»/>
 	'''
 	
 	def dispatch CharSequence widgetTemplate(IfView table) '''
@@ -175,9 +173,9 @@ class PagesTemplate extends SimpleTemplate<Page> {
 
 	def CharSequence inputText(ViewInstance part) '''
 	«IF part.rows <= 1 »	
-		<lion:inputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
+		<p:inputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
 	 «ELSE» 		 
-		<lion:inputTextArea id="«part.id»" label=«part.parameters.get(0).writeExpression» value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» />
+		<p:inputTextArea id="«part.id»" label=«part.parameters.get(0).writeExpression» value=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» />
  	«ENDIF»
 	'''
 		 
@@ -211,26 +209,26 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 
 	def CharSequence radioChooser(ViewInstance part) '''
-		<lion:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
+		<p:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
 		valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"/> 
 	'''// TODO Duda en el value?
 	
 	def CharSequence panel(ViewInstance viewInstance) '''
-	 <lion:panel id= "«viewInstance.id»" header=«viewInstance.parameters.get(0).writeExpression.toString»>
-		 <lion:formFormat id="ident">
+	 <p:panel id= "«viewInstance.id»" header=«viewInstance.parameters.get(0).writeExpression.toString»>
+		«««»» <lion:formFormat id="ident">
 		«FOR partBlock : viewInstance.parameters.filter(ViewBlock)»
 			«widgetTemplate(partBlock)»
 		«ENDFOR»
-		</lion:formFormat>
-	</lion:panel>	
+		«««»</lion:formFormat>
+	</p:panel>	
 	'''
 	
 	def CharSequence panelButton(ViewInstance viewAttribute) '''
-	 <lion:panelButton id= "«viewAttribute.id»" align=«viewAttribute.parameters.get(0).writeExpression.toString»>
-		«FOR partBlock : viewAttribute.view.parameters.filter(ViewBlock)»
-				«widgetTemplate(partBlock)»
-		«ENDFOR»
-	 </lion:panelButton>
+	«««»<lion:panelButton id= "«viewAttribute.id»" align=«viewAttribute.parameters.get(0).writeExpression.toString»>
+		«««»«FOR partBlock : viewAttribute.view.parameters.filter(ViewBlock)»
+		«««»		«widgetTemplate(partBlock)»
+		«««»«ENDFOR»
+	«««» </lion:panelButton>
 	'''
 	
 	def CharSequence dataTable(ViewInstance table) '''

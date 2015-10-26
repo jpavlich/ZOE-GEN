@@ -133,6 +133,10 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 			«ENDIF»
 			«/*Se recorren los atributos de la entidad para verificar si son de tipo email, lista o tipos primitivos  */ »
 			«FOR Attribute a : entity.attributes»
+								«/*Se agregan las anotaciones segun los constaint definidos*/ »	
+				«FOR constraint : a.constraints»			
+						@«constraint.type.typeSpecification.typeSpecificationString.toFirstUpper»«constraint.parametersTemplate»
+				«ENDFOR»
 				«IF a.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
 					/**
 					 * The «a.name» for the «entity.name.toFirstUpper»
@@ -173,74 +177,12 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 				set«attr.name.toFirstUpper»(«attr.name.toFirstLower»);
 				«ENDFOR»
 			}
-			«/*Se verifica que la entidad no tenga padres para encapsular el 
-			 * id e incluir los metodos equals 
-			 * y hashCode
-			 */ »
-			«IF entity.parents.empty»
-				/**
-				 * Returns the current value for the unique id
-				 * @return current instance for id attribute
-				 */	
-				@Id
-				@GeneratedValue(strategy = GenerationType.AUTO)
-				public Long getId() {
-					return id;
-				}
-				
-				/**
-				 * Sets the value for the unique id
-				 * @param id The value to set
-				 */
-				public void setId(final Long id) {
-					this.id = id;
-				}
-				
-				/**
-				 * Equals ovewritten method for the object
-				 */
-				@Override
-				public boolean equals(Object obj) {
-					if (this == obj) {
-						return true;
-					}
-					if (obj == null) {
-						return false;
-					}
-					if (!(obj instanceof «entity.name»)) {
-						return false;
-					}
-					final «entity.name» other = («entity.name») obj;
-					if (id == null) {
-						if (other.getId() != null) {
-							return false;
-						}
-					} else if (!id.equals(other.getId())) {
-						return false;
-					}
-					return true;
-				}
-				
-				/**
-				 * Hashcode overwritten method for the object
-				 */
-				@Override
-				public int hashCode() {
-					final int prime = 31;
-					int result = 1;
-					result = prime * result
-							+ ((id == null) ? super.hashCode() : id.hashCode());
-					return result;
-				}	
-			«ENDIF»
+
 			«/*Se recorren los atributos para verificar si existen relaciones 
 			 * entre las entidades*/ »
 			«FOR Attribute a : entity.attributes»				
 				«a.associationAnnotation»
-				«/*Se agregan las anotaciones segun los constaint definidos*/ »	
-				«FOR constraint : a.constraints»			
-						@«constraint.type.typeSpecification.typeSpecificationString.toFirstUpper»«constraint.parametersTemplate»
-				«ENDFOR»
+
 				«/*Se verifica el caso especial para los tipos email y se coloca como String en los metodos set y get*/ »
 				«IF a.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
 					/**
@@ -301,7 +243,72 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 					
 				«ENDIF»			
 			«ENDFOR»
-			
+						«/*Se verifica que la entidad no tenga padres para encapsular el 
+			 * id e incluir los metodos equals 
+			 * y hashCode
+			 */ »
+			«IF entity.parents.empty»
+				/**
+				 * Returns the current value for the unique id
+				 * @return current instance for id attribute
+				 */	
+				@Id
+				@GeneratedValue(strategy = GenerationType.AUTO)
+				public Long getId() {
+					return id;
+				}
+				
+				/**
+				 * Sets the value for the unique id
+				 * @param id The value to set
+				 */
+				public void setId(final Long id) {
+					this.id = id;
+				}
+				
+				/**
+				 * Equals ovewritten method for the object
+				 */
+				@Override
+				public boolean equals(Object obj) {
+					if (this == obj) {
+						return true;
+					}
+					if (obj == null) {
+						return false;
+					}
+					if (!(obj instanceof «entity.name»)) {
+						return false;
+					}
+					final «entity.name» other = («entity.name») obj;
+					if (id == null) {
+						if (other.getId() != null) {
+							return false;
+						}
+					} else if (!id.equals(other.getId())) {
+						return false;
+					}
+					return true;
+				}
+				
+				/**
+				 * Hashcode overwritten method for the object
+				 */
+				@Override
+				public int hashCode() {
+					final int prime = 31;
+					int result = 1;
+					result = prime * result
+							+ ((id == null) ? super.hashCode() : id.hashCode());
+					return result;
+				}	
+				
+				    @Override
+    			public String toString() {
+        					return "«entity.eContainer.fullyQualifiedName».«entity.name» [ id=" + id + " ]";
+        
+    				}
+			«ENDIF»
 				
 		}
 	'''
