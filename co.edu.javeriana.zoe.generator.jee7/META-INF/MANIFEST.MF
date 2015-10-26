@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: LionJEE6Generator
+Bundle-Name: ZoeJEE7Generator
 Bundle-SymbolicName: co.edu.javeriana.zoe.generator.jee7;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: co.edu.javeriana.zoe.generator.jee7.Activator
