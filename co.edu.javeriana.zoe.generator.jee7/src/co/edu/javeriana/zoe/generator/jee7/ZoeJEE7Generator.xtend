@@ -14,7 +14,7 @@ import co.edu.javeriana.isml.generator.common.OutputConfiguration
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
-class LionJEE6Generator extends GeneratorSuite {	
+class ZoeJEE7Generator extends GeneratorSuite {	
 
 	@OutputConfiguration
 	public static final String PAGES = "pages";
