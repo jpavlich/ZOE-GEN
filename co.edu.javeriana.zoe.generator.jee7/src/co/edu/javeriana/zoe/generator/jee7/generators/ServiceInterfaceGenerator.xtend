@@ -1,7 +1,7 @@
 package co.edu.javeriana.zoe.generator.jee7.generators
 
-import co.com.heinsohn.lion.generator.jee6.LionJEE6Generator
-import co.com.heinsohn.lion.generator.jee6.templates.ServiceInterfaceTemplate
+import co.edu.javeriana.zoe.generator.jee7.ZoeJEE7Generator
+import co.edu.javeriana.zoe.generator.jee7.templates.ServiceInterfaceTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Service
 import com.google.inject.Inject
@@ -15,7 +15,7 @@ class ServiceInterfaceGenerator extends SimpleGenerator<Service> {
 	}
 
 	override getOutputConfigurationName() {
-		LionJEE6Generator.SERVICE_INTERFACE
+		ZoeJEE7Generator.SERVICE_INTERFACE
 	}
 	
 	override getTemplate() {

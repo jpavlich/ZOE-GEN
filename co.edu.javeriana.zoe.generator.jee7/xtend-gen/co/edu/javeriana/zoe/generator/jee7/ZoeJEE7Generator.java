@@ -1,14 +1,14 @@
 package co.edu.javeriana.zoe.generator.jee7;
 
-import co.com.heinsohn.lion.generator.jee6.generators.BackingBeanGenerator;
-import co.com.heinsohn.lion.generator.jee6.generators.FacesConfigXMLGenerator;
-import co.com.heinsohn.lion.generator.jee6.generators.PagesGenerator;
-import co.com.heinsohn.lion.generator.jee6.generators.QualifierGenerator;
-import co.com.heinsohn.lion.generator.jee6.generators.ServiceImplementationGenerator;
-import co.com.heinsohn.lion.generator.jee6.generators.ServiceInterfaceGenerator;
 import co.edu.javeriana.isml.generator.common.GeneratorSuite;
 import co.edu.javeriana.isml.generator.common.OutputConfiguration;
 import co.edu.javeriana.isml.generator.common.SimpleGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.BackingBeanGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.FacesConfigXMLGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.PagesGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.QualifierGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.ServiceImplementationGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.ServiceInterfaceGenerator;
 import java.util.Collections;
 import java.util.Set;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
