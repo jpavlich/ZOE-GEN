@@ -82,6 +82,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 			case "Spinner": spinner(viewInstance)
 			case "PickList": pickList(viewInstance)
 			case "OutputText": outputText(viewInstance)
+			case "Map": outputText(viewInstance)
 		}
 		
 	}
@@ -208,6 +209,10 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		</h:form>
 	'''
 
+	def CharSequence Map(ViewInstance part) '''
+		
+		<p:gmap id= "«part.id»" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" />		
+	'''
 	def CharSequence radioChooser(ViewInstance part) '''
 		<p:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
 		valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"/> 
