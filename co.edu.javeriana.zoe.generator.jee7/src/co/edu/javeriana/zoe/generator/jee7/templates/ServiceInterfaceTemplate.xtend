@@ -9,7 +9,7 @@ import co.edu.javeriana.isml.isml.ParameterizedType
 import co.edu.javeriana.isml.isml.Primitive
 import co.edu.javeriana.isml.isml.Service
 import co.edu.javeriana.isml.isml.TypeSpecification
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import java.util.HashMap
@@ -20,7 +20,7 @@ import org.eclipse.xtext.naming.QualifiedName
 class ServiceInterfaceTemplate extends SimpleTemplate<Service> {
 
 	@Inject extension IQualifiedNameProvider
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 
 	override preprocess(Service service) {
@@ -150,7 +150,7 @@ class ServiceInterfaceTemplate extends SimpleTemplate<Service> {
 					}									
 				}
 				if(feature.body!=null){
-					for(stmnt:feature.body.statements){
+					for(stmnt:feature.body){
 						isNeededImportInBody(stmnt.eAllContents.toList,imports,service)
 					}				
 				}

@@ -19,7 +19,7 @@ class ResourceBundleTemplate extends SimpleTemplate<ResourceBundle> {
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	@«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
 	override def CharSequence template(ResourceBundle resource) '''
-		«FOR stmnt:resource.body.statements»
+		«FOR stmnt:resource.body»
 			«IF stmnt instanceof Assignment»
 				«(stmnt.left as ResourceReference).referencedElement.name.substring(1)»=«(stmnt.right as StringValue).literal»
 			«ENDIF»

@@ -4,23 +4,23 @@ import co.edu.javeriana.isml.isml.ActionCall
 import co.edu.javeriana.isml.isml.BinaryOperator
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.Instance
+import co.edu.javeriana.isml.isml.IntValue
 import co.edu.javeriana.isml.isml.LiteralValue
+import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Reference
 import co.edu.javeriana.isml.isml.Show
 import co.edu.javeriana.isml.isml.StringValue
 import co.edu.javeriana.isml.isml.Type
 import co.edu.javeriana.isml.isml.UnaryOperator
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import java.util.Map
 import javax.inject.Inject
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
-import co.edu.javeriana.isml.isml.IntValue
-import co.edu.javeriana.isml.isml.Page
 
 class ExpressionTemplate {
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 	@Inject extension ReferenceTemplate
 
@@ -102,8 +102,8 @@ class ExpressionTemplate {
 	def EList<Controller> getActionCallControllers(Controller controller) {
 		var EList<Controller> actionCallList = new BasicEList();
 		for (action : controller.actions) {
-			if (action.body?.statements != null) {
-				for (statement : action.body.statements) {
+			if (action.body != null) {
+				for (statement : action.body) {
 					if (statement instanceof ActionCall) {
 						var Controller c = statement.action.eContainer as Controller
 						if (!actionCallList.contains(c) && !c.name.equals(controller.name)) {

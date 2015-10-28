@@ -10,7 +10,7 @@ import co.edu.javeriana.isml.isml.LiteralValue
 import co.edu.javeriana.isml.isml.Parameter
 import co.edu.javeriana.isml.isml.ParameterizedType
 import co.edu.javeriana.isml.isml.Primitive
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
@@ -19,7 +19,7 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 	@Inject extension TypeChecker
 	/*Inyección de las clases auxiliares con metodos utilitarios*/
 	@Inject extension IQualifiedNameProvider
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 	
 	/*Metodo callback llamado previo a la ejecución del template*/
 	override preprocess(Entity e) {

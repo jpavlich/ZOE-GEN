@@ -2,7 +2,6 @@
 
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Action
-import co.edu.javeriana.isml.isml.Block
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.For
 import co.edu.javeriana.isml.isml.If
@@ -11,20 +10,20 @@ import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Show
 import co.edu.javeriana.isml.isml.Statement
 import co.edu.javeriana.isml.isml.While
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import com.google.inject.Inject
+import java.util.HashMap
 import java.util.List
+import java.util.Map
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import java.util.Map
-import java.util.HashMap
 
 class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 
 	/*Inyección de las clases auxiliares con metodos utilitarios*/
 	@Inject extension IQualifiedNameProvider
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 
 	//	override preprocess(List<Page> is) {
 	//		allPages = new HashSet
@@ -110,7 +109,7 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 					<navigation-rule>
 						<from-view-id>/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»</from-view-id>
 						«FOR action : page.showActions»							
-							«FOR show : getShowStatements(action.body).uniqueActions.entrySet»
+							«FOR show : getShowStatements(action).uniqueActions.entrySet»
 								<navigation-case>									   
 									<from-outcome>«show.key»</from-outcome>
 									<to-view-id>/«show.value»</to-view-id>	
@@ -125,7 +124,7 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 			
 	'''
 
-	def Map<String, String> getUniqueActions(EList<Show> showStmnts) {
+	def Map<String, String> getUniqueActions(Iterable<Show> showStmnts) {
 		var Map<String, String> uniqueActions = new HashMap
 		for (stmnt : showStmnts) {
 			var String key = "goTo" + ((stmnt.expression as Instance).type.typeSpecification as Page).name
@@ -180,40 +179,12 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 	def EList<Action> getShowActions(Controller controller) {
 		var EList<Action> actions = new BasicEList
 		for (action : controller.actions) {
-			if (seekOnBody(action.body)) {
+			if (action.showStatements.toList.size >0)  {
 				actions.add(action)
 			}
 		}
 		return actions
 	}
 
-	/**
-	 * Método que determina si existen statements de tipo show un Block
-	 */
-	def boolean seekOnBody(Block body) {
-		for (statement : body.statements) {
-			return seek(statement)
-		}
-		return false
-	}
-
-	/**
-	 * Método recursivo para determinar si hay métodos show en un statement que contenga Block
-	 */
-	def boolean seek(Statement statement) {
-		if (statement instanceof Show) {
-			return true;
-		} else if (statement instanceof If) {
-			if (statement.elseBody != null) {
-				return seekOnBody(statement.elseBody)
-			}
-			return seekOnBody(statement.body)
-		} else if (statement instanceof While) {
-			return seekOnBody(statement.body)
-		} else if (statement instanceof For) {
-			return seekOnBody(statement.body)
-		}
-		return false;
-	}
 
 }

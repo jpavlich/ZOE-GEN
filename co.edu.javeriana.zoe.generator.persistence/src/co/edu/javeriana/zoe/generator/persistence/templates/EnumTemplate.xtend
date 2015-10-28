@@ -3,14 +3,14 @@ package co.edu.javeriana.zoe.generator.persistence.templates
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Enum
 import co.edu.javeriana.isml.isml.EnumItem
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 class EnumTemplate extends SimpleTemplate<Enum> {
 
 	@Inject extension IQualifiedNameProvider
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 		
 
 	override preprocess(Enum service) {

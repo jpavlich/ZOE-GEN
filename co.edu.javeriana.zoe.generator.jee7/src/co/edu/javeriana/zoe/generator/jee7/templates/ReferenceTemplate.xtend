@@ -7,6 +7,7 @@ import co.edu.javeriana.isml.isml.Attribute
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.isml.EnumItem
+import co.edu.javeriana.isml.isml.GenericTypeSpecification
 import co.edu.javeriana.isml.isml.MethodCall
 import co.edu.javeriana.isml.isml.Parameter
 import co.edu.javeriana.isml.isml.ParameterizedType
@@ -17,16 +18,15 @@ import co.edu.javeriana.isml.isml.Type
 import co.edu.javeriana.isml.isml.TypeSpecification
 import co.edu.javeriana.isml.isml.VariableReference
 import co.edu.javeriana.isml.isml.ViewInstance
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import java.util.Map
 import javax.inject.Inject
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import co.edu.javeriana.isml.isml.GenericTypeSpecification
 
 class ReferenceTemplate {
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 	@Inject extension ExpressionTemplate
 
 	def dispatch CharSequence writeReference(MethodCall reference) '''		

@@ -2,7 +2,6 @@ package co.edu.javeriana.zoe.generator.jee7.templates
 
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.ActionCall
-import co.edu.javeriana.isml.isml.Block
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.isml.For
@@ -17,21 +16,20 @@ import co.edu.javeriana.isml.isml.Service
 import co.edu.javeriana.isml.isml.Show
 import co.edu.javeriana.isml.isml.Type
 import co.edu.javeriana.isml.isml.While
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.Map
 import java.util.Map.Entry
-import javax.swing.text.html.FormView
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 class BackingBeanTemplate extends SimpleTemplate<Controller> {
 
 	@Inject extension IQualifiedNameProvider
-	@Inject extension TypeExtension
+	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 	@Inject extension ExpressionTemplate
 	@Inject extension StatementTemplate
@@ -181,7 +179,7 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 					}
 					«FOR action : controller.actions»
 						«IF action.isDefault»
-							«FOR st:action.body.statements»
+							«FOR st:action.body»
 								«IF !(st instanceof Show)»
 									«writeStatement(st as MethodStatement)»
 								«ENDIF»
@@ -300,10 +298,10 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 		return null
 	}
 
-	def boolean actionRequiresReturnSentence(Block body) {
+	def boolean actionRequiresReturnSentence(EList<?> body) {
 		var boolean requires = true
-		if (body?.statements != null) {
-			for (stmnt : body.statements) {
+		if (body != null) {
+			for (stmnt : body) {
 				if (stmnt instanceof Show || stmnt instanceof ActionCall || stmnt instanceof Return) {
 					requires = false
 				} else if (stmnt instanceof If) {

@@ -3,6 +3,7 @@
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.Entity
+import co.edu.javeriana.isml.isml.Enum
 import co.edu.javeriana.isml.isml.Expression
 import co.edu.javeriana.isml.isml.ForView
 import co.edu.javeriana.isml.isml.IfView
@@ -11,20 +12,20 @@ import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Reference
 import co.edu.javeriana.isml.isml.ResourceReference
 import co.edu.javeriana.isml.isml.VariableReference
-import co.edu.javeriana.isml.isml.ViewBlock
 import co.edu.javeriana.isml.isml.ViewInstance
 import co.edu.javeriana.isml.isml.ViewStatement
-import co.edu.javeriana.isml.scoping.TypeExtension
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import java.util.HashMap
 import java.util.LinkedHashMap
 import java.util.Map
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
 class PagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
-	@Inject extension TypeExtension	
+	@Inject extension IsmlModelNavigation	
 	@Inject extension ExpressionTemplate
 	int i;
 	Map<ViewInstance,String> forms
@@ -55,7 +56,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		
 		<ui:define name="content">
 			«IF page.body != null»
-			«widgetTemplate(page.body as ViewBlock)»
+			«widgetTemplate(page.body)»
 			«ENDIF»				
 			</ui:define>			
 		</ui:composition>	
@@ -140,7 +141,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		<h:entitySelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"/>
 		«ELSE»
-		«IF part.parameters.get(1).writeExpression instanceof Reference && (part.parameters.get(1).writeExpression as Reference).referencedElement.type.typeSpecification instanceof co.edu.javeriana.isml.isml.Enum»
+		«IF part.parameters.get(1).writeExpression instanceof Reference && (part.parameters.get(1).writeExpression as Reference).referencedElement.type.typeSpecification instanceof Enum»
 		<lion:enumSelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"
 		«ELSE»
@@ -202,7 +203,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		«forms.put(viewInstance,id)»
 		<h:form id= "«id»">
 			
-				«FOR partBlock : viewInstance.parameters.filter(ViewBlock)»
+				«FOR partBlock : viewInstance.getBody»
 				«widgetTemplate(partBlock)»
 				«ENDFOR»
 			
@@ -284,9 +285,9 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	}
 	
 	
-	def dispatch CharSequence widgetTemplate(ViewBlock partBlock)'''
+	def dispatch CharSequence widgetTemplate(EList<ViewStatement> partBlock)'''
 		«IF partBlock != null»
-			«FOR part : partBlock.parts»
+			«FOR part : partBlock»
 				
 				«widgetTemplate(part)»		
 				
