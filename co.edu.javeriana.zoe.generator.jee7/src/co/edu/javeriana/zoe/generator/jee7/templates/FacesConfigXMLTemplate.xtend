@@ -53,47 +53,6 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 			<!-- Write your navigation rules here. You are encouraged to use CDI for 
 				creating @Named managed beans. -->		
 			
-			<application>
-		        <resource-bundle>
-		            <base-name>co.com.heinsohn.lion.common.web.util.MessageProperties</base-name>
-		            <var>messages</var>
-		        </resource-bundle>
-		        <locale-config>
-		            <default-locale>es</default-locale>
-		            <supported-locale>en</supported-locale>
-		        </locale-config>
-		    </application>
-		    <converter>
-		        <converter-id>permission.ConverterPermissionPick</converter-id>
-		        <converter-class>co.com.heinsohn.lion.security.permission.converter.ConverterPermissionPick</converter-class>
-		    </converter>
-		    <converter>
-		        <converter-id>userGestion.ProfilesConverter</converter-id>
-		        <converter-class>co.com.heinsohn.lion.security.user.converter.ConverterPick</converter-class>
-		    </converter>
-		    <converter>
-		        <converter-id>objectConvert</converter-id>
-		        <converter-class>
-					co.com.heinsohn.lion.common.web.jsfconvertidores.ObjectConvert
-				</converter-class>
-		    </converter>
-		    <validator>
-		        <validator-id>dateFormatValidator</validator-id>
-		        <validator-class>co.com.heinsohn.lion.common.web.jsfvalidators.DateFormatValidator</validator-class>
-		    </validator>
-		    <validator>
-		        <validator-id>emptyStringValidator</validator-id>
-		        <validator-class>co.com.heinsohn.lion.common.web.jsfvalidators.EmptyStringValidator</validator-class>
-		    </validator>
-		    <validator>
-		        <validator-id>patternValidator</validator-id>
-		        <validator-class>co.com.heinsohn.lion.common.web.jsfvalidators.PatternValidator</validator-class>
-		    </validator> 
-			<converter>
-				<converter-id>dateCalendarConverter</converter-id>
-				<converter-class>co.com.heinsohn.lion.common.web.jsfconvertidores.DateCalendarConverter</converter-class>
-			</converter>
-			
 			<!-- Navigation Rules -->
 			
 			<navigation-rule>
