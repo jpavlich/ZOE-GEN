@@ -31,12 +31,10 @@ class StatementTemplate {
 	/**
 	 * Este método escribe los Statement contenidos en un Body
 	 */
-	def CharSequence writeStatements(EList<?> body) '''
-		«IF body?.statements != null»		
-			«FOR statement : body.statements»
-				«writeStatement(statement as MethodStatement)»	
-			«ENDFOR»
-		«ENDIF»
+	def CharSequence writeStatements(EList<MethodStatement> body) '''		
+		«FOR statement : body»
+			«writeStatement(statement as MethodStatement)»	
+		«ENDFOR»
 		
 	'''
 
@@ -54,13 +52,13 @@ class StatementTemplate {
 		if(«writeExpression(statement.condition)»){
 			«writeStatements(statement.body)»
 		}«IF statement.elseBody != null» else {
-				«writeStatements(statement.elseBody)»		
+			«writeStatements(statement.elseBody)»		
 		}«ELSE»
-				«IF statement.eContainer.eContainer instanceof Action»
-					«IF statement.eContainer instanceof Block && (statement.eContainer as Block).statements.size == 1»
-						return "";
-					«ENDIF»
+			«IF statement.findAncestor(Action) != null»
+				«IF statement.isUniqueStatement»
+					return "";
 				«ENDIF»
+			«ENDIF»
 		«ENDIF»
 	'''
 
