@@ -25,6 +25,7 @@ import java.util.Map
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import co.edu.javeriana.isml.isml.Statement
 
 class BackingBeanTemplate extends SimpleTemplate<Controller> {
 

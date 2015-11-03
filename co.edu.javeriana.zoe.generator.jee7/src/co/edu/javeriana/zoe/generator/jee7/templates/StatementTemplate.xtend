@@ -20,6 +20,7 @@ import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import com.google.inject.Inject
 import java.util.Collection
 import java.util.Map
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
 class StatementTemplate {
@@ -30,7 +31,7 @@ class StatementTemplate {
 	/**
 	 * Este método escribe los Statement contenidos en un Body
 	 */
-	def CharSequence writeStatements(Block body) '''
+	def CharSequence writeStatements(EList<?> body) '''
 		«IF body?.statements != null»		
 			«FOR statement : body.statements»
 				«writeStatement(statement as MethodStatement)»	

@@ -22,6 +22,7 @@ import java.util.LinkedHashMap
 import java.util.Map
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
+import co.edu.javeriana.isml.isml.NamedViewBlock
 
 class PagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
@@ -222,7 +223,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence panel(ViewInstance viewInstance) '''
 	 <p:panel id= "«viewInstance.id»" header=«viewInstance.parameters.get(0).writeExpression.toString»>
 		«««»» <lion:formFormat id="ident">
-		«FOR partBlock : viewInstance.parameters.filter(ViewBlock)»
+		«FOR partBlock : viewInstance.body»
 			«widgetTemplate(partBlock)»
 		«ENDFOR»
 		«««»</lion:formFormat>
@@ -231,7 +232,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence panelButton(ViewInstance viewAttribute) '''
 	«««»<lion:panelButton id= "«viewAttribute.id»" align=«viewAttribute.parameters.get(0).writeExpression.toString»>
-		«««»«FOR partBlock : viewAttribute.view.parameters.filter(ViewBlock)»
+		«««»«FOR partBlock : viewAttribute.view.body»
 		«««»		«widgetTemplate(partBlock)»
 		«««»«ENDFOR»
 	«««» </lion:panelButton>
@@ -257,7 +258,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 //	def CharSequence dataTableRows(ViewBlock viewBlock) '''
 //	 
-//		«FOR partBlock : viewAttribute.view.parameters.filter(ViewBlock)»
+//		«FOR partBlock : viewAttribute.view.body»
 //				«widgetTemplate(partBlock)»
 //		«ENDFOR»
 //	 
@@ -267,10 +268,10 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def getColumnsDataTable(ViewInstance table) {
 		val columns = new LinkedHashMap<ViewStatement, ViewStatement>
-		val header = table.parameters.filter(ViewBlock).get(0)
-		val forView = table.parameters.filter(ViewBlock).get(1).statements.get(0) as ForView
-		for (i : 0 ..< header.parts.size) {
-			columns.put(header.parts.get(i), forView.body.parts.get(i))
+		val header = table.body.get(0) as NamedViewBlock
+		val forView = table.body.get(1).cast(NamedViewBlock).body.get(0) as ForView
+		for (i : 0 ..< header.body.size) {
+			columns.put(header.body.get(i), forView.body.get(i))
 			
 		}
 		return columns
