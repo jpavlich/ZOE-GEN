@@ -1,21 +1,23 @@
 package co.edu.javeriana.zoe.generator.persistence.templates
 
+
+import co.edu.javeriana.isml.isml.Instance
+import co.edu.javeriana.isml.isml.LiteralValue
+import co.edu.javeriana.isml.isml.Parameter
+import co.edu.javeriana.isml.isml.ParameterizedType
+
+import co.edu.javeriana.isml.validation.TypeChecker
+import com.google.inject.Inject
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Attribute
 import co.edu.javeriana.isml.isml.Constraint
 import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.isml.Enum
-import co.edu.javeriana.isml.isml.Instance
-import co.edu.javeriana.isml.isml.LiteralValue
-import co.edu.javeriana.isml.isml.Parameter
-import co.edu.javeriana.isml.isml.ParameterizedType
 import co.edu.javeriana.isml.isml.Primitive
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation
-import co.edu.javeriana.isml.validation.TypeChecker
-import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-class EntityTemplate extends SimpleTemplate<Entity> {
+class ZoeEntityTemplate extends SimpleTemplate<Entity> {
 	@Inject extension TypeChecker
 	/*Inyección de las clases auxiliares con metodos utilitarios*/
 	@Inject extension IQualifiedNameProvider
@@ -23,46 +25,10 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 	
 	/*Metodo callback llamado previo a la ejecución del template*/
 	override preprocess(Entity e) {
-		//TODO Make your own implementation 
-		//var Package parent = e.eContainer as Package;
-
-		//parent.eContents
-		//parent.eAllContents
-
-	/**/
+	
 	}
 	
-	def boolean evaluateAttributeToImport(Attribute attribute, Entity entity){
-		var boolean needImport=false;
-		if(!attribute.type.isCollection){
-			needImport=!attribute.type.typeSpecification.eContainer.fullyQualifiedName.equals(entity.eContainer.fullyQualifiedName)
-		} else {
-			needImport=!(attribute.type as ParameterizedType).typeParameters.get(0).typeSpecification.eContainer.fullyQualifiedName.equals(entity.eContainer.fullyQualifiedName)
-		}
-		return needImport
-	}
 	
-	def boolean isDatePresent(Entity entity){
-		var boolean hasDate=false
-		for(attr:entity.attributes){
-			if(attr.type.typeSpecification instanceof Primitive && attr.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("Date")){
-				hasDate=true
-			}
-		}
-		return hasDate
-	}
-
-	def CharSequence getParametersTemplate(Instance constraint) '''
-		«IF !constraint.parameters.empty»
-		(«FOR Parameter parameter : setParametersValue(
-			(constraint.type.typeSpecification as Constraint).parameters, constraint.parameters) SEPARATOR ","»
-			«parameter.name»=«IF parameter.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("string")»"«(parameter.
-			value as LiteralValue).literal»"«ELSE»«(parameter.
-			value as LiteralValue).literal»«ENDIF»«ENDFOR»)
-		 «ENDIF»	
-	'''
-
-	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	Plantilla para generar entidades*/
 	override def CharSequence template(Entity entity) '''
 		package «entity.eContainer.fullyQualifiedName»;
@@ -103,13 +69,10 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 			import javax.persistence.Inheritance;
 			import javax.persistence.InheritanceType;
 		«ENDIF»
-		
-		/**
-		 * This class represents a persistent entity object named «entity.name.toFirstUpper» 
-		 */
-		@Entity
+				
 		@XmlRootElement
-		«/*Se verfica si la entidad es padre*/ »
+		@Entity
+		«/*Se verfica si la entidad es padre*/»
 		«IF isParent(entity)»
 		@Inheritance(strategy=InheritanceType.JOINED)
 		@DiscriminatorColumn(name="«entity.name.toUpperCase»_TYPE", discriminatorType=DiscriminatorType.STRING)
@@ -132,46 +95,38 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 				private Long id = null;
 			«ENDIF»
 			«/*Se recorren los atributos de la entidad para verificar si son de tipo email, lista o tipos primitivos  */ »
-			«FOR Attribute a : entity.attributes»
+			«FOR Attribute attributes : entity.attributes»
 								«/*Se agregan las anotaciones segun los constaint definidos*/ »	
-				«FOR constraint : a.constraints»			
+				«FOR constraint : attributes.constraints»			
 						@«constraint.type.typeSpecification.typeSpecificationString.toFirstUpper»«constraint.parametersTemplate»
 				«ENDFOR»
-				«IF a.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
+				«IF attributes.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
 					/**
-					 * The «a.name» for the «entity.name.toFirstUpper»
+					 * The «attributes.name» for the «entity.name.toFirstUpper»
 					 */
-					private String «a.name»;
+					private String «attributes.name»;
 				«ELSE»
-					«IF a.type.isCollection»
+					«IF attributes.type.isCollection»
 					/**
-					 * The «a.name» for the «entity.name.toFirstUpper»
+					 * The «attributes.name» for the «entity.name.toFirstUpper»
 					 */
-					private «getCollectionString(a.type as ParameterizedType)»<«(a.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> «a.name»;
+					private «getCollectionString(attributes.type as ParameterizedType)»<«(attributes.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> «attributes.name»;
 					«ELSE»
 					/**
-					 * The «a.name» for the «entity.name.toFirstUpper»
+					 * The «attributes.name» for the «entity.name.toFirstUpper»
 					 */
-					private «a.type.typeSpecification.typeSpecificationString.toFirstUpper» «a.name»;
+					private «attributes.type.typeSpecification.typeSpecificationString.toFirstUpper» «attributes.name»;
 					«ENDIF»
 				«ENDIF»
 			«ENDFOR»
-			«/*Constructor de la entidad */ »
-			/**
-			 * Default Entity constructor method
-			 */
+			«
+			/*Constructor de la entidad */ »
+	
 			public «entity.name.toFirstUpper»(){
 			}
 			
-			/**
-			 * Needed constructor to transfer entity through RESTFul
-			 */
-			public «entity.name.toFirstUpper»(String param){
-			}
 				
-			/**
-			 * Optional Entity constructor method
-			 */
+		
 			public «entity.name.toFirstUpper»(«FOR Attribute a : entity.attributes SEPARATOR ','»«IF a.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»String «a.name»«ELSE»«IF a.type.isCollection»«getCollectionString(a.type as ParameterizedType)»<«(a.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> «a.name»«ELSE»«a.type.typeSpecification.typeSpecificationString.toFirstUpper» «a.name»«ENDIF»«ENDIF»«ENDFOR»){
 				«FOR attr : entity.attributes»
 				set«attr.name.toFirstUpper»(«attr.name.toFirstLower»);
@@ -180,78 +135,75 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 
 			«/*Se recorren los atributos para verificar si existen relaciones 
 			 * entre las entidades*/ »
-			«FOR Attribute a : entity.attributes»				
-				«a.associationAnnotation»
+			«FOR Attribute attribute : entity.attributes»				
+				«attribute.associationAnnotation»
 
 				«/*Se verifica el caso especial para los tipos email y se coloca como String en los metodos set y get*/ »
-				«IF a.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
+				«IF attribute.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("email")»
 					/**
-					 * Returns the current value for the attibute «a.name»
+					 * Returns the current value for the attibute «attribute.name»
 					 *
-					 * @return current instance for «a.name.toFirstLower» attribute
+					 * @return current instance for «attribute.name.toFirstLower» attribute
 					 */			
 					@Pattern(regexp="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
-					public String get«a.name.toFirstUpper»(){
-						return «a.name»;
+					public String get«attribute.name.toFirstUpper»(){
+						return «attribute.name»;
 					}
 					
 					/**
-					 * Sets the value for the attribute «a.name»
-					 * @param «a.name.toFirstLower» The value to set
+					 * Sets the value for the attribute «attribute.name»
+					 * @param «attribute.name.toFirstLower» The value to set
 					 */
-					public void set«a.name.toFirstUpper»(String «a.name»){
-						this.«a.name»=«a.name»;
+					public void set«attribute.name.toFirstUpper»(String «attribute.name»){
+						this.«attribute.name»=«attribute.name»;
 					}				
 				«ELSE»
 					«/*Se agregan los metodos set y get a cada atributo de la entidad, verificando si son listas o tipos primitivos de datos */ »
-					«IF a.type.isCollection»
+					«IF attribute.type.isCollection»
 							/**
-							 * Returns the current value for the attibute «a.name»
+							 * Returns the current value for the attibute «attribute.name»
 							 *
-							 * @return current instance for «a.name.toFirstLower» attribute
+							 * @return current instance for «attribute.name.toFirstLower» attribute
 							 */
-							public «getCollectionString(a.type as ParameterizedType)»<«(a.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> get«a.name.toFirstUpper»(){
-								return «a.name»;
+							public «getCollectionString(attribute.type as ParameterizedType)»<«(attribute.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> get«attribute.name.toFirstUpper»(){
+								return «attribute.name»;
 							}
 							
 							/**
-							 * Sets the value for the attribute «a.name»
-							 * @param «a.name.toFirstLower» The value to set
+							 * Sets the value for the attribute «attribute.name»
+							 * @param «attribute.name.toFirstLower» The value to set
 							 */
-							public void set«a.name.toFirstUpper»(«getCollectionString(a.type as ParameterizedType)»<«(a.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> «a.name»){
-								this.«a.name»=«a.name»;
+							public void set«attribute.name.toFirstUpper»(«getCollectionString(attribute.type as ParameterizedType)»<«(attribute.type as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> «attribute.name»){
+								this.«attribute.name»=«attribute.name»;
 							}
 					«ELSE»  
 							/**
-							 * Returns the current value for the attibute «a.name»
+							 * Returns the current value for the attibute «attribute.name»
 							 *
-							 * @return current instance for «a.name.toFirstLower» attribute
+							 * @return current instance for «attribute.name.toFirstLower» attribute
 							 */
-							«IF a.type.typeSpecification instanceof Enum»@Enumerated«ENDIF»
-							public «a.type.typeSpecification.typeSpecificationString.toFirstUpper» get«a.name.toFirstUpper»(){
-								return «a.name»;
+							«IF attribute.type.typeSpecification instanceof Enum»@Enumerated«ENDIF»
+							public «attribute.type.typeSpecification.typeSpecificationString.toFirstUpper» get«attribute.name.toFirstUpper»(){
+								return «attribute.name»;
 							}
 							
 							/**
-							 * Sets the value for the attribute «a.name»
-							 * @param «a.name.toFirstLower» The value to set
+							 * Sets the value for the attribute «attribute.name»
+							 * @param «attribute.name.toFirstLower» The value to set
 							 */
-							public void set«a.name.toFirstUpper»(«a.type.typeSpecification.typeSpecificationString.toFirstUpper» «a.name»){
-								this.«a.name»=«a.name»;
+							public void set«attribute.name.toFirstUpper»(«attribute.type.typeSpecification.typeSpecificationString.toFirstUpper» «attribute.name»){
+								this.«attribute.name»=«attribute.name»;
 							}
 					«ENDIF»	
 					
 				«ENDIF»			
 			«ENDFOR»
-						«/*Se verifica que la entidad no tenga padres para encapsular el 
+		«/*Se verifica que la entidad no tenga padres para encapsular el 
 			 * id e incluir los metodos equals 
 			 * y hashCode
 			 */ »
 			«IF entity.parents.empty»
-				/**
-				 * Returns the current value for the unique id
-				 * @return current instance for id attribute
-				 */	
+		
 				@Id
 				@GeneratedValue(strategy = GenerationType.AUTO)
 				public Long getId() {
@@ -266,9 +218,7 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 					this.id = id;
 				}
 				
-				/**
-				 * Equals ovewritten method for the object
-				 */
+			
 				@Override
 				public boolean equals(Object obj) {
 					if (this == obj) {
@@ -291,22 +241,19 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 					return true;
 				}
 				
-				/**
-				 * Hashcode overwritten method for the object
-				 */
+			
 				@Override
 				public int hashCode() {
-					final int prime = 31;
-					int result = 1;
-					result = prime * result
-							+ ((id == null) ? super.hashCode() : id.hashCode());
-					return result;
+
+						int hash = 0;
+						hash += (id != null ? id.hashCode() : 0);
+      					return hash;
 				}	
+				        
 				
-				    @Override
+				 @Override
     			public String toString() {
         					return "«entity.eContainer.fullyQualifiedName».«entity.name» [ id=" + id + " ]";
-        
     				}
 			«ENDIF»
 				
@@ -315,7 +262,35 @@ class EntityTemplate extends SimpleTemplate<Entity> {
 	
 	
 	
+	def boolean evaluateAttributeToImport(Attribute attribute, Entity entity){
+		var boolean needImport=false;
+		if(!attribute.type.isCollection){
+			needImport=!attribute.type.typeSpecification.eContainer.fullyQualifiedName.equals(entity.eContainer.fullyQualifiedName)
+		} else {
+			needImport=!(attribute.type as ParameterizedType).typeParameters.get(0).typeSpecification.eContainer.fullyQualifiedName.equals(entity.eContainer.fullyQualifiedName)
+		}
+		return needImport
+	}
 	
+	def boolean isDatePresent(Entity entity){
+		var boolean hasDate=false
+		for(attr:entity.attributes){
+			if(attr.type.typeSpecification instanceof Primitive && attr.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("Date")){
+				hasDate=true
+			}
+		}
+		return hasDate
+	}
+
+	def CharSequence getParametersTemplate(Instance constraint) '''
+		«IF !constraint.parameters.empty»
+		(«FOR Parameter parameter : setParametersValue(
+			(constraint.type.typeSpecification as Constraint).parameters, constraint.parameters) SEPARATOR ","»
+			«parameter.name»=«IF parameter.type.typeSpecification.typeSpecificationString.equalsIgnoreCase("string")»"«(parameter.
+			value as LiteralValue).literal»"«ELSE»«(parameter.
+			value as LiteralValue).literal»«ENDIF»«ENDFOR»)
+		 «ENDIF»	
+	'''
 
  
 	

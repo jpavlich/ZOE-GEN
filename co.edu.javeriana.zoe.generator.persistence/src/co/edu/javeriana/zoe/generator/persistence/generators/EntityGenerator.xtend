@@ -1,7 +1,7 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
 import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
-import co.edu.javeriana.zoe.generator.persistence.templates.EntityTemplate
+import co.edu.javeriana.zoe.generator.persistence.templates.ZoeEntityTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Entity
 import com.google.inject.Inject
@@ -19,7 +19,7 @@ class EntityGenerator extends SimpleGenerator<Entity> {
 	}
 	
 	override getTemplate() {
-		return new EntityTemplate
+		return new ZoeEntityTemplate
 
 	}
 
