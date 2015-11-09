@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import co.edu.javeriana.isml.isml.NamedViewBlock
 
-class PagesTemplate extends SimpleTemplate<Page> {
+class ZoePagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
 	@Inject extension IsmlModelNavigation	
 	@Inject extension ExpressionTemplate
