@@ -27,7 +27,7 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import co.edu.javeriana.isml.isml.Statement
 
-class BackingBeanTemplate extends SimpleTemplate<Controller> {
+class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
@@ -109,7 +109,7 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 		 * This class represents a controller with name «controller.name.toFirstUpper»
 		 */
 		@Named
-		@ConversationScoped
+		«««»@ConversationScoped
 		public class «controller.name.toFirstUpper» implements Serializable {
 			
 			/**
@@ -117,17 +117,17 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 			 */
 			private static final long serialVersionUID = 1L;
 			
-			/**
-			 *This represents the object to mantain the conversational state
-			 */
-			@Inject
-			private Conversation conversation;
+			«««»/**
+			««««» *This represents the object to mantain the conversational state
+			««««»» */
+			««««»»@Inject
+			«««««private Conversation conversation;
 			
-			/**
-			 * This is an instance from FacesContext object
-			 */
-			 @Inject
-			private FacesContext facesContext;
+		««««»	/**
+		««««»»	 * This is an instance from FacesContext object
+		«««»»	 */
+		««««»	 @Inject
+		«««»»	private FacesContext facesContext;
 			
 			/**
 			 * This is the flag to avoid multiple initializations for the component
@@ -170,26 +170,7 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 			private «invokedController.name.toFirstUpper» «invokedController.name.toFirstLower»; 
 			«ENDFOR»			
 			
-			/**
-		 * Initialization method  for the controller
-		 */			
-			public void init(){
-				if(flag==Boolean.FALSE){
-					if(conversation.isTransient()){
-						conversation.begin();
-					}
-					«FOR action : controller.actions»
-						«IF action.isDefault»
-							«FOR st:action.body»
-								«IF !(st instanceof Show)»
-									«writeStatement(st as MethodStatement)»
-								«ENDIF»
-							«ENDFOR»
-						«ENDIF»
-					«ENDFOR»
-					flag=Boolean.TRUE;	
-				}			
-			}
+
 			«FOR method : controller.actions»
 				/**
 				 * Action method named «method.name»
@@ -219,7 +200,8 @@ class BackingBeanTemplate extends SimpleTemplate<Controller> {
 							return "";
 						«ENDIF»
 					}catch (Exception e)	{
-						facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",e.getMessage()));
+						JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DietaCreated"));
+						
 					} 
 					return "";
 					

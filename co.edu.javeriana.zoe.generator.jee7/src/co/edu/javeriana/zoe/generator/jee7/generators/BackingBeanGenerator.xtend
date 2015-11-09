@@ -1,7 +1,7 @@
 package co.edu.javeriana.zoe.generator.jee7.generators
 
 import co.edu.javeriana.zoe.generator.jee7.ZoeJEE7Generator
-import co.edu.javeriana.zoe.generator.jee7.templates.BackingBeanTemplate
+import co.edu.javeriana.zoe.generator.jee7.templates.ZoeControllerTemplate
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Controller
 import com.google.inject.Inject
@@ -19,7 +19,7 @@ class BackingBeanGenerator extends SimpleGenerator<Controller> {
 	}
 	
 	override getTemplate() {
-		return new BackingBeanTemplate
+		return new ZoeControllerTemplate
 	}
 
 }
