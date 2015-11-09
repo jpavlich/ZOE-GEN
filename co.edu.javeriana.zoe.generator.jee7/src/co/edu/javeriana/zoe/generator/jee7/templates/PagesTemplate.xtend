@@ -54,13 +54,14 @@ class PagesTemplate extends SimpleTemplate<Page> {
 				</f:metadata>
 		</ui:define>
 			
-		
-		<ui:define name="content">
+		<ui:composition template="/template.xhtml">
+		<ui:define name="title">
 			«IF page.body != null»
 			«widgetTemplate(page.body)»
 			«ENDIF»				
 			</ui:define>			
 		</ui:composition>	
+		
 	'''
 	
 	def dispatch CharSequence widgetTemplate(ViewInstance viewInstance) {
@@ -221,7 +222,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''// TODO Duda en el value?
 	
 	def CharSequence panel(ViewInstance viewInstance) '''
-	 <p:panel id= "«viewInstance.id»" header=«viewInstance.parameters.get(0).writeExpression.toString»>
+	 <p:panel id= "«viewInstance.id»" >
 		«««»» <lion:formFormat id="ident">
 		«FOR partBlock : viewInstance.body»
 			«widgetTemplate(partBlock)»
@@ -243,7 +244,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 		«««»»value="#{«table.containerController.name.toFirstLower».«table.forViewInBody?.collection.referencedElement.name»}"
 		«««««»#{«table.containerController.name.toFirstLower».selectedRegisters}
-		 value="#{<«table.containerController.name.toFirstLower»}" selection= "#{«table.containerController.name.toFirstLower».«table.forViewInBody?.variable.name»}">
+		 value="#{«table.containerController.name.toFirstLower»}" selection= "#{«table.containerController.name.toFirstLower».«table.forViewInBody?.variable.name»}">
 		 ««««».«table.forViewInBody.collection.toText» PENDIENTE ERROR
 			«FOR pair : table.getColumnsDataTable.entrySet»
 				«val viewInstance = pair.key as ViewInstance»
