@@ -65,61 +65,60 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
   
   public CharSequence template(final Page page) {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\t");
     _builder.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
     _builder.newLine();
-    _builder.append("<ui:composition xmlns=\"http://www.w3.org/1999/xhtml\"");
+    _builder.append("\t");
+    _builder.append("<html xmlns=\"http://www.w3.org/1999/xhtml\"");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("xmlns:ui=\"http://java.sun.com/jsf/facelets\"");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("xmlns:f=\"http://java.sun.com/jsf/core\"");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("xmlns:h=\"http://java.sun.com/jsf/html\"");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("xmlns:c=\"http://java.sun.com/jsp/jstl/core\"");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("xmlns:p=\"http://primefaces.org/ui\">\t");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("<ui:define name=\"metadata\">");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<f:metadata>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<f:event type=\"preRenderView\" listener=\"#{");
-    Controller _containerController = this._ismlModelNavigation.getContainerController(page);
-    String _name = _containerController.getName();
-    String _firstLower = StringExtensions.toFirstLower(_name);
-    _builder.append(_firstLower, "\t\t\t\t");
-    _builder.append(".init()}\" />");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t\t");
-    _builder.append("</f:metadata>");
-    _builder.newLine();
-    _builder.append("</ui:define>");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
     _builder.append("<ui:composition template=\"/template.xhtml\">");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("<ui:define name=\"title\">");
     _builder.newLine();
     {
       EList<ViewStatement> _body = page.getBody();
       boolean _notEquals = (!Objects.equal(_body, null));
       if (_notEquals) {
-        _builder.append("\t");
+        _builder.append("\t\t");
         EList<ViewStatement> _body_1 = page.getBody();
         CharSequence _widgetTemplate = this.widgetTemplate(_body_1);
-        _builder.append(_widgetTemplate, "\t");
+        _builder.append(_widgetTemplate, "\t\t");
         _builder.newLineIfNotEmpty();
       }
     }
-    _builder.append("\t");
+    _builder.append("\t\t");
     _builder.append("</ui:define>\t\t\t");
     _builder.newLine();
+    _builder.append("\t");
     _builder.append("</ui:composition>\t");
     _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("</html>\t");
+    _builder.newLine();
+    _builder.append("\t");
     _builder.newLine();
     return _builder;
   }
@@ -963,7 +962,7 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
     _builder.append(")}\" update=\"");
     CharSequence _updateTemplate = this.updateTemplate(part);
     _builder.append(_updateTemplate, " ");
-    _builder.append("\" ignoreAutoUpdate=\"true\" async=\"true\" ");
+    _builder.append("\"  async=\"true\" ");
     {
       EList<Expression> _parameters_2 = part.getParameters();
       Expression _get_1 = _parameters_2.get(1);

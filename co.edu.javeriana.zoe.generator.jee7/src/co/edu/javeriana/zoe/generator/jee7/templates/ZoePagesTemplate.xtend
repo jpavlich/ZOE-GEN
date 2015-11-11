@@ -41,18 +41,14 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 
 	override def CharSequence template(Page page) '''
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		<html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:h="http://java.sun.com/jsf/html"
 		xmlns:c="http://java.sun.com/jsp/jstl/core"
 		xmlns:p="http://primefaces.org/ui">	
 		
-		<ui:define name="metadata">
-				<f:metadata>
-						<f:event type="preRenderView" listener="#{«page.containerController.name.toFirstLower».init()}" />
-				</f:metadata>
-		</ui:define>
+	
 			
 		<ui:composition template="/template.xhtml">
 		<ui:define name="title">
@@ -61,6 +57,8 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			«ENDIF»				
 			</ui:define>			
 		</ui:composition>	
+		
+	</html>	
 		
 	'''
 	
@@ -187,7 +185,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence button(ViewInstance part) '''
 
 	<p:commandButton id= "«part.id»" value=«part.parameters.get(0).writeExpression» 
-	 action= "#{«part.containerController.name.toFirstLower».«part.actionCall?.action?.name»(«FOR param:part.actionCall.parameters SEPARATOR ','»«IF param instanceof VariableReference && (param as VariableReference).referencedElement.eContainer instanceof Page»«(part.findAncestor(Page)as Page).controller.name.toFirstLower».«ENDIF»«writeExpression(param)»«ENDFOR»)}" update="«updateTemplate(part)»" ignoreAutoUpdate="true" async="true" «IF (part.parameters.get(1) as LiteralValue).literal.equals("false")»immediate="true"«ENDIF»/>
+	 action= "#{«part.containerController.name.toFirstLower».«part.actionCall?.action?.name»(«FOR param:part.actionCall.parameters SEPARATOR ','»«IF param instanceof VariableReference && (param as VariableReference).referencedElement.eContainer instanceof Page»«(part.findAncestor(Page)as Page).controller.name.toFirstLower».«ENDIF»«writeExpression(param)»«ENDFOR»)}" update="«updateTemplate(part)»"  async="true" «IF (part.parameters.get(1) as LiteralValue).literal.equals("false")»immediate="true"«ENDIF»/>
 	'''	
 	
 	def CharSequence updateTemplate(ViewInstance part){
