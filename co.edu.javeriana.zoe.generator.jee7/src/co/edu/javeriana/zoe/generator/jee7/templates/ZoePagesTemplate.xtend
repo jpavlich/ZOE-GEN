@@ -242,7 +242,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	
 		«««»»value="#{«table.containerController.name.toFirstLower».«table.forViewInBody?.collection.referencedElement.name»}"
 		«««««»#{«table.containerController.name.toFirstLower».selectedRegisters}
-		 value="#{«table.containerController.name.toFirstLower»}" selection= "#{«table.containerController.name.toFirstLower».«table.forViewInBody?.variable.name»}">
+		 value="#{«table.containerController.name.toFirstLower».«table.forViewInBody?.collection.referencedElement.name»}" selection= "#{«table.containerController.name.toFirstLower».«table.forViewInBody?.variable.name»}">
 		 ««««».«table.forViewInBody.collection.toText» PENDIENTE ERROR
 			«FOR pair : table.getColumnsDataTable.entrySet»
 				«val viewInstance = pair.key as ViewInstance»

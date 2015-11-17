@@ -43,28 +43,27 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		var Map<String, Object> neededData = controller.getNeededAttributes
 		controllerEntities = neededData.get("controllerEntities") as EList<Entity>
 		entityToList = neededData.get("entityToList") as Entity
-		neededAttributes = neededData.get("neededAttributes") as Map<String,Type>
+		neededAttributes = neededData.get("neededAttributes") as Map<String, Type>
 //		if (neededData.containsKey("selectedRegisters")) {
 //			neededAttributes.put("selectedRegisters", neededData.get("selectedRegisters")as Type)
 //		}
 //		p.collection.lastReference.referencedElement.type.writeType()
-
 		val controlledPages = controller.controlledPages
 		val forViews = new ArrayList<ForView>()
 		for (p : controlledPages) {
 			forViews.addAll(p.eAllContents.filter(ForView).toIterable)
-			
+
 		}
-		
+
 		for (p : forViews) {
-			
-			val key = p.variable.name 
+
+			val key = p.variable.name
 			val value = p.variable.type
 			println(key + "->" + value)
-			neededAttributes.put(key , value )
-			
+			neededAttributes.put(key, value)
+
 		}
-		
+
 	}
 
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
@@ -76,11 +75,21 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				
 		import java.io.Serializable;
 		import javax.inject.*;		
+		import «controller.eContainer.fullyQualifiedName».util.JsfUtil;
 		import javax.enterprise.context.*;		
 		import java.util.*;
 		import javax.faces.application.FacesMessage;
 		import javax.faces.context.FacesContext;
+		import javax.faces.bean.ManagedBean;
+		import javax.annotation.PostConstruct;
 		
+		«/* Se importan los controladores necesarios */»
+	    «FOR invokedController : getActionCallControllers(controller)»
+			«IF !invokedController.eContainer.fullyQualifiedName.equals(controller.eContainer.fullyQualifiedName)»			
+				import «invokedController.fullyQualifiedName»;
+			«ENDIF» 
+		«ENDFOR»
+		«/* Se importan los package de los atributos necesarios */»
 		«FOR attr : neededAttributes.entrySet»
 			«IF !(attr.value instanceof ParameterizedType)»
 				«IF !attr.value.typeSpecification.eContainer.fullyQualifiedName.equals(controller.eContainer.fullyQualifiedName) && !(attr.value.typeSpecification instanceof Primitive)»			
@@ -95,20 +104,19 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
 			import «entity.value.fullyQualifiedName»;
 		«ENDFOR»
-		«FOR invokedController : getActionCallControllers(controller)»
-			«IF !invokedController.eContainer.fullyQualifiedName.equals(controller.eContainer.fullyQualifiedName)»			
-				import «invokedController.fullyQualifiedName»;
-			«ENDIF» 
-		«ENDFOR»
+		«/* Se importan los package de los servicios necesarios */»
+
 		«FOR service : controller.services»
 			import «service.type.typeSpecification.fullyQualifiedName»;
-			«IF validateService(service.type.typeSpecification as Service)»import «service.type.typeSpecification.eContainer.fullyQualifiedName».qualifier.«service.type.typeSpecification.typeSpecificationString»Qualifier;«ENDIF»
+		««««»	«IF validateService(service.type.typeSpecification as Service)»import «service.type.typeSpecification.eContainer.fullyQualifiedName».qualifier.«service.type.typeSpecification.typeSpecificationString»Qualifier;«ENDIF»
 		«ENDFOR»	
 		
 		/**
 		 * This class represents a controller with name «controller.name.toFirstUpper»
 		 */
-		@Named
+		 «/* Se declara el controlador con scope y anotaciones */»
+		@ManagedBean(name = "«controller.name.toFirstLower»")
+		@RequestScoped
 		«««»@ConversationScoped
 		public class «controller.name.toFirstUpper» implements Serializable {
 			
@@ -121,29 +129,27 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 			««««» *This represents the object to mantain the conversational state
 			««««»» */
 			««««»»@Inject
-			«««««private Conversation conversation;
+			«««««private Conversati	n conversation;
 			
 		««««»	/**
 		««««»»	 * This is an instance from FacesContext object
 		«««»»	 */
 		««««»	 @Inject
-		«««»»	private FacesContext facesContext;
+		«««»»	private Face	Contex	 facesContext;
 			
-			/**
-			 * This is the flag to avoid multiple initializations for the component
-			 */
-			private boolean flag = false;
+		
 			
+			«/* Se inyectan los servicios en el controlador */»
 			«FOR service : controller.services»
 				/**
 				 * Injection for the component named «service.type.typeSpecification.typeSpecificationString.toFirstUpper» 
 				 */
 				@Inject
-				«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
+				«««»»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
 			private «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»; 
 			«ENDFOR»
-			
+		    «/* Se declaran los atributos*/»
 			«FOR attr : neededAttributes.entrySet»
 			«IF attr.value.isCollection»
 				/**
@@ -161,7 +167,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 			«ENDFOR»
 			
 			
-			
+				«/* Se inyectan controladores por defecto*/»
 			«FOR invokedController : getActionCallControllers(controller)»
 			/**
 			 * Instance of the controller named «invokedController.name.toFirstUpper»
@@ -170,7 +176,21 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 			private «invokedController.name.toFirstUpper» «invokedController.name.toFirstLower»; 
 			«ENDFOR»			
 			
-
+		«/* Se crea un metodo init con los metodos o servicios declarados como default*/»			
+		 @PostConstruct
+		 public void init() {
+					«FOR action : controller.actions»
+						«IF action.isDefault»
+							«FOR st:action.body»
+								«IF !(st instanceof Show)»
+									«writeStatement(st as MethodStatement)»
+								«ENDIF»
+							«ENDFOR»
+						«ENDIF»
+				    «ENDFOR»
+		  }
+			
+		«/* Se declaran los metodos relacionados como acciones del controlador*/»
 			«FOR method : controller.actions»
 				/**
 				 * Action method named «method.name»
@@ -180,7 +200,8 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 *
 				 * @return String value with some navigation outcome
 				 */
-				public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDFOR»){
+				«««public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDFOR»){getCollectionString(param.value as ParameterizedType)
+				public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«IF param.type.collection» List  «param.name.toFirstLower»«ELSE» «param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDIF»«ENDFOR»){
 					try{
 						«FOR param : method.parameters»
 							«IF neededAttributes.containsKey(param.name)»
@@ -208,6 +229,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				}
 			«ENDFOR»
 			
+			«/* Se los metodos set y get para los atributos declarados respectivamente*/»
 			«FOR attr : neededAttributes.entrySet»
 				«IF attr.value.isCollection»
 					/**
@@ -253,20 +275,20 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 */
 			public «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
 			name.toFirstUpper»«ENDIF»(){
-				return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+			return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»;
-				}
-				/**
-				 * Sets the value for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
-				 * @param «service.name.toFirstLower» The value to set
-				 */
+			}
+			/**
+			 * Sets the value for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
+			 * @param «service.name.toFirstLower» The value to set
+			 */
 			public void «IF service.name != null»set«service.name.toFirstUpper»«ELSE»set«service.
 			name.toFirstUpper»«ENDIF»(«service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
 			name.toFirstLower»«ENDIF»){
-				this.«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+			this.«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»=«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»;
-				} 
+			} 
 			«ENDFOR»
 		}
 	'''
