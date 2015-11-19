@@ -82,6 +82,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import javax.faces.context.FacesContext;
 		import javax.faces.bean.ManagedBean;
 		import javax.annotation.PostConstruct;
+		import javax.ejb.EJB;
 		
 		«/* Se importan los controladores necesarios */»
 	    «FOR invokedController : getActionCallControllers(controller)»
@@ -101,15 +102,13 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				«ENDIF»
 			«ENDIF»
 		«ENDFOR»		
+			«/* Se importan los package las entidades */»
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
 			import «entity.value.fullyQualifiedName»;
 		«ENDFOR»
 		«/* Se importan los package de los servicios necesarios */»
 
-		«FOR service : controller.services»
-			import «service.type.typeSpecification.fullyQualifiedName»;
-		««««»	«IF validateService(service.type.typeSpecification as Service)»import «service.type.typeSpecification.eContainer.fullyQualifiedName».qualifier.«service.type.typeSpecification.typeSpecificationString»Qualifier;«ENDIF»
-		«ENDFOR»	
+	
 		
 		/**
 		 * This class represents a controller with name «controller.name.toFirstUpper»
@@ -144,9 +143,11 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				/**
 				 * Injection for the component named «service.type.typeSpecification.typeSpecificationString.toFirstUpper» 
 				 */
-				@Inject
-				«««»»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
-			private «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+				@EJB
+			«««»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
+			«««private «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+			«««name.toFirstLower»«ENDIF»; 
+			private «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»Facade «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»; 
 			«ENDFOR»
 		    «/* Se declaran los atributos*/»
@@ -201,7 +202,9 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 * @return String value with some navigation outcome
 				 */
 				«««public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDFOR»){getCollectionString(param.value as ParameterizedType)
+
 				public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«IF param.type.collection» List  «param.name.toFirstLower»«ELSE» «param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDIF»«ENDFOR»){
+
 					try{
 						«FOR param : method.parameters»
 							«IF neededAttributes.containsKey(param.name)»
@@ -267,29 +270,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				«ENDIF»				
 			«ENDFOR»			
 			
-			«FOR service : controller.services»
-				/**
-				 * Returns the instance for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
-				 *
-				 * @return current instance for «service.name.toFirstLower» attribute
-				 */
-			public «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
-			name.toFirstUpper»«ENDIF»(){
-			return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-			name.toFirstLower»«ENDIF»;
-			}
-			/**
-			 * Sets the value for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
-			 * @param «service.name.toFirstLower» The value to set
-			 */
-			public void «IF service.name != null»set«service.name.toFirstUpper»«ELSE»set«service.
-			name.toFirstUpper»«ENDIF»(«service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
-			name.toFirstLower»«ENDIF»){
-			this.«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-			name.toFirstLower»«ENDIF»=«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-			name.toFirstLower»«ENDIF»;
-			} 
-			«ENDFOR»
+		
 		}
 	'''
 
