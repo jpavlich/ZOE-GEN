@@ -7,6 +7,7 @@ import co.edu.javeriana.isml.isml.Package
 import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.tests.CommonTests
+
 import com.google.inject.Inject
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -14,16 +15,16 @@ import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import co.edu.javeriana.zoe.generator.jee7.templates.ZoePagesTemplate
+import co.edu.javeriana.zoe.generator.jee7.templates.ZoeControllerTemplate
 
 @InjectWith(IsmlInjectorProvider)
 @RunWith(XtextRunner)
-class PageGeneratorTest extends CommonTests {
+class BackingBeanGeneratorTest extends CommonTests {
 	@Inject extension ParseHelper<InformationSystem>
 	@Inject extension ValidationTestHelper
 	@Inject extension TestGeneratorHelper
 	@Inject extension IsmlModelNavigation
-	@Inject ZoePagesTemplate template
+	@Inject ZoeControllerTemplate template
 
 	@Test
 	def dataTableGeneration() {
@@ -52,7 +53,7 @@ class PageGeneratorTest extends CommonTests {
 		'''.parse(rs)
 		obj.assertNoErrors
 		val page = obj.body.head.cast(Package).body.get(2).cast(Page)
-		template.assertGenerates(
+		assertGenerates(template,
 			page,
 			'''
 				Entity {

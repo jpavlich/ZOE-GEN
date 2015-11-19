@@ -95,7 +95,7 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
     _builder.append("<ui:composition template=\"/template.xhtml\">");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("<ui:define name=\"title\">");
+    _builder.append("<ui:define name=\"body\">");
     _builder.newLine();
     {
       EList<ViewStatement> _body = page.getBody();
@@ -1144,19 +1144,28 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
     String _name_1 = _containerController.getName();
     String _firstLower = StringExtensions.toFirstLower(_name_1);
     _builder.append(_firstLower, "\t\t\t\t ");
-    _builder.append("}\" selection= \"#{");
-    Controller _containerController_1 = this._ismlModelNavigation.getContainerController(table);
-    String _name_2 = _containerController_1.getName();
-    String _firstLower_1 = StringExtensions.toFirstLower(_name_2);
-    _builder.append(_firstLower_1, "\t\t\t\t ");
     _builder.append(".");
     ForView _forViewInBody_1 = this._ismlModelNavigation.getForViewInBody(table);
-    Variable _variable_1 = null;
+    Reference _collection = null;
     if (_forViewInBody_1!=null) {
-      _variable_1=_forViewInBody_1.getVariable();
+      _collection=_forViewInBody_1.getCollection();
     }
-    String _name_3 = _variable_1.getName();
-    _builder.append(_name_3, "\t\t\t\t ");
+    NamedElement _referencedElement = _collection.getReferencedElement();
+    String _name_2 = _referencedElement.getName();
+    _builder.append(_name_2, "\t\t\t\t ");
+    _builder.append("}\" selection= \"#{");
+    Controller _containerController_1 = this._ismlModelNavigation.getContainerController(table);
+    String _name_3 = _containerController_1.getName();
+    String _firstLower_1 = StringExtensions.toFirstLower(_name_3);
+    _builder.append(_firstLower_1, "\t\t\t\t ");
+    _builder.append(".");
+    ForView _forViewInBody_2 = this._ismlModelNavigation.getForViewInBody(table);
+    Variable _variable_1 = null;
+    if (_forViewInBody_2!=null) {
+      _variable_1=_forViewInBody_2.getVariable();
+    }
+    String _name_4 = _variable_1.getName();
+    _builder.append(_name_4, "\t\t\t\t ");
     _builder.append("}\">");
     _builder.newLineIfNotEmpty();
     {
