@@ -13,11 +13,6 @@ import java.util.Collections;
 import java.util.Set;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
-/**
- * Generates code from your model files on save.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
- */
 @SuppressWarnings("all")
 public class ZoeJEE7Generator extends GeneratorSuite {
   @OutputConfiguration
