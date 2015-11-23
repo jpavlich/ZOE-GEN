@@ -16,7 +16,7 @@ class ZoeJEE7Generator extends GeneratorSuite{
 
 	@OutputConfiguration
 	public static final String BACKING_BEANS = "backing.beans"
-	
+
 	@OutputConfiguration
 	public static final String SERVICE_INTERFACE = "service.interface"
 	
