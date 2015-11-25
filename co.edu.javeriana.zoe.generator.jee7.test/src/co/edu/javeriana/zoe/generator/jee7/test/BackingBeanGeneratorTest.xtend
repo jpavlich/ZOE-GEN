@@ -16,6 +16,7 @@ import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
 import co.edu.javeriana.zoe.generator.jee7.templates.ZoeControllerTemplate
+import co.edu.javeriana.isml.isml.Controller
 
 @InjectWith(IsmlInjectorProvider)
 @RunWith(XtextRunner)
@@ -52,9 +53,9 @@ class BackingBeanGeneratorTest extends CommonTests {
 			
 		'''.parse(rs)
 		obj.assertNoErrors
-		val page = obj.body.head.cast(Package).body.get(2).cast(Page)
+		val controller = obj.body.head.cast(Package).body.get(2).cast(Controller)
 		assertGenerates(template,
-			page,
+			controller,
 			'''
 				Entity {
 					name = Person
