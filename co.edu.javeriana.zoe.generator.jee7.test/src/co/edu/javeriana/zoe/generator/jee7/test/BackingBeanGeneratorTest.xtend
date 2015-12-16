@@ -32,24 +32,131 @@ class BackingBeanGeneratorTest extends CommonTests {
 		val obj = '''
 			package test;
 			
-			entity MyEntity {
-				String name;
+		entity Dieta {
+
+				    String desayuno;
+				    String almuerzo;
+				    String cena;
+				    String merienda;
+				    Integer patologia;
+	
+			}
+
+
+			controller DietaManager {
+				has Persistence<Dieta> persistence;
+				
+				/**
+				* Lists all instances of Dieta.
+				*/
+				default listAll() {
+					show DietaList(persistence.findAll());
+				}
+			
+				/**
+				* Lists instances of Dieta.
+				* @param dietaList The list of instances of Dieta to show.
+				*/
+				listDieta(Collection<Dieta> dietaList) {
+					show DietaList(dietaList);
+				}
+				
+			
+			
+				
+				createDietaToAdd(Any container, Collection<Dieta> collection) {
+					show CreateDietaToAdd(container, collection, new Dieta);
+						
+				}
+			
+				
+				
+			
+				/**
+				* Views an instance of Dieta.
+				* @param dieta the Dieta to open.
+				*/		
+				viewDieta(Dieta dieta) {
+					show ViewDieta(dieta);
+				}
+			
+			
+				/**
+				* Edits an existing instance of Dieta.
+				* @param dieta the Dieta to open.
+				*/			
+				editDieta(Dieta dieta) {
+					show EditDieta(dieta);
+				}
+			
+				/**
+				* Creates a a new instance of Dieta.
+				*/			
+				createDieta() {
+					show EditDieta(new Dieta);
+				}
+			
+			
+				/**
+				* Saves an instance of Dieta.
+				* @param dieta the Dieta to save.
+				*/			
+				saveDieta(Dieta dieta) {
+				if(persistence.isPersistent(dieta)){
+					persistence.save(dieta);
+				} else {
+					persistence.create(dieta);
+				}
+				-> listAll();
+				}
+			
+			
+				/**
+				* Deletes an instance of Dieta.
+				* @param dieta the Dieta to delete.
+				*/		
+				deleteDieta(Dieta dieta) {
+					persistence.remove(dieta);
+					-> listAll();
+				}
+			
+			
 			}
 			
-			controller Controller;
 			
-			page MyPage(Collection<MyEntity> list) controlledBy Controller  {
-			        DataTable("Collection<Dieta>", null) {
-			            header : {                    
-			                Label("Name");
-			            }
-			            body : 
-			            for(MyEntity e in list) {
-			            	Label(e.name);
-			            }
+					page DietaList(Collection<Dieta> dietaList) controlledBy DietaManager  {
+					Form {
+				       Panel("Collection<Dieta>") {
+				           DataTable("Collection<Dieta>", null) {
+				               header : {                    
+				                   Label("Desayuno");
+				                   Label("Almuerzo");
+				                   Label("Cena");
+				                   Label("Merienda");
+				                   Label("Patologia");
+				                   Label("View");
+				                   Label("Edit");
+				                   Label("Delete");
+				               }
+				               body : 
+				               for(Dieta dieta in dietaList) {
+				               		Label(dieta.desayuno);
+				               		Label(dieta.almuerzo);
+				               		Label(dieta.cena);
+				               		Label(dieta.merienda);
+				               		Label(dieta.patologia);
+				                   	Button("View",false)-> viewDieta(dieta);
+				                   	Button("Edit",false) -> editDieta(dieta);
+				                   	Button("Delete",false) -> deleteDieta(dieta);
+				               }
 			
-			         }
+				           }
+				        	
+					}
+				} 
+				
 			}
+			
 			
 		'''.parse(rs)
 		obj.assertNoErrors
