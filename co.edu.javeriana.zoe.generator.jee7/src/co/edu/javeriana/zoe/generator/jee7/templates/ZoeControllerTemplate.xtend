@@ -153,9 +153,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		    «/* Se declaran los atributos*/»
 			«FOR attr : neededAttributes.entrySet»
 			«IF attr.value.isCollection»
-				/**
-				 * Attribute for the type «getCollectionString(attr.value as ParameterizedType)»<«(attr.value as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»>»  
-				 */
+			
 				private «getCollectionString(attr.value as ParameterizedType)»
 				<«(attr.value as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString»> 
 				«attr.key»;

@@ -399,46 +399,29 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
           boolean _isCollection = this._typeChecker.isCollection(_value_8);
           if (_isCollection) {
             _builder.append("\t\t");
-            _builder.append("/**");
             _builder.newLine();
             _builder.append("\t\t");
-            _builder.append(" ");
-            _builder.append("* Attribute for the type ");
+            _builder.append("\t");
+            _builder.append("private ");
             Type _value_9 = attr_1.getValue();
             String _collectionString = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_9));
-            _builder.append(_collectionString, "\t\t ");
+            _builder.append(_collectionString, "\t\t\t");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("\t");
             _builder.append("<");
             Type _value_10 = attr_1.getValue();
             EList<Type> _typeParameters_3 = ((ParameterizedType) _value_10).getTypeParameters();
             Type _get_2 = _typeParameters_3.get(0);
             TypeSpecification _typeSpecification_7 = this._ismlModelNavigation.getTypeSpecification(_get_2);
             String _typeSpecificationString_1 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_7);
-            _builder.append(_typeSpecificationString_1, "\t\t ");
-            _builder.append(">»  ");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t\t");
-            _builder.append(" ");
-            _builder.append("*/");
-            _builder.newLine();
-            _builder.append("\t\t");
-            _builder.append("private ");
-            Type _value_11 = attr_1.getValue();
-            String _collectionString_1 = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_11));
-            _builder.append(_collectionString_1, "\t\t");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t\t");
-            _builder.append("<");
-            Type _value_12 = attr_1.getValue();
-            EList<Type> _typeParameters_4 = ((ParameterizedType) _value_12).getTypeParameters();
-            Type _get_3 = _typeParameters_4.get(0);
-            TypeSpecification _typeSpecification_8 = this._ismlModelNavigation.getTypeSpecification(_get_3);
-            String _typeSpecificationString_2 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_8);
-            _builder.append(_typeSpecificationString_2, "\t\t");
+            _builder.append(_typeSpecificationString_1, "\t\t\t");
             _builder.append("> ");
             _builder.newLineIfNotEmpty();
             _builder.append("\t\t");
+            _builder.append("\t");
             String _key = attr_1.getKey();
-            _builder.append(_key, "\t\t");
+            _builder.append(_key, "\t\t\t");
             _builder.append(";");
             _builder.newLineIfNotEmpty();
           } else {
@@ -448,10 +431,10 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.append("\t\t");
             _builder.append(" ");
             _builder.append("* Attribute for the type ");
-            Type _value_13 = attr_1.getValue();
-            TypeSpecification _typeSpecification_9 = this._ismlModelNavigation.getTypeSpecification(_value_13);
-            String _typeSpecificationString_3 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_9);
-            String _firstUpper_3 = StringExtensions.toFirstUpper(_typeSpecificationString_3);
+            Type _value_11 = attr_1.getValue();
+            TypeSpecification _typeSpecification_8 = this._ismlModelNavigation.getTypeSpecification(_value_11);
+            String _typeSpecificationString_2 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_8);
+            String _firstUpper_3 = StringExtensions.toFirstUpper(_typeSpecificationString_2);
             _builder.append(_firstUpper_3, "\t\t ");
             _builder.newLineIfNotEmpty();
             _builder.append("\t\t");
@@ -460,24 +443,24 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.newLine();
             _builder.append("\t\t");
             _builder.append("private ");
-            Type _value_14 = attr_1.getValue();
-            TypeSpecification _typeSpecification_10 = this._ismlModelNavigation.getTypeSpecification(_value_14);
-            String _typeSpecificationString_4 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_10);
-            String _firstUpper_4 = StringExtensions.toFirstUpper(_typeSpecificationString_4);
+            Type _value_12 = attr_1.getValue();
+            TypeSpecification _typeSpecification_9 = this._ismlModelNavigation.getTypeSpecification(_value_12);
+            String _typeSpecificationString_3 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_9);
+            String _firstUpper_4 = StringExtensions.toFirstUpper(_typeSpecificationString_3);
             _builder.append(_firstUpper_4, "\t\t");
             _builder.append(" ");
             String _key_1 = attr_1.getKey();
             _builder.append(_key_1, "\t\t");
             {
-              Type _value_15 = attr_1.getValue();
-              TypeSpecification _typeSpecification_11 = this._ismlModelNavigation.getTypeSpecification(_value_15);
-              boolean _not_6 = (!(_typeSpecification_11 instanceof Primitive));
+              Type _value_13 = attr_1.getValue();
+              TypeSpecification _typeSpecification_10 = this._ismlModelNavigation.getTypeSpecification(_value_13);
+              boolean _not_6 = (!(_typeSpecification_10 instanceof Primitive));
               if (_not_6) {
                 _builder.append("=new ");
-                Type _value_16 = attr_1.getValue();
-                TypeSpecification _typeSpecification_12 = this._ismlModelNavigation.getTypeSpecification(_value_16);
-                String _typeSpecificationString_5 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_12);
-                String _firstUpper_5 = StringExtensions.toFirstUpper(_typeSpecificationString_5);
+                Type _value_14 = attr_1.getValue();
+                TypeSpecification _typeSpecification_11 = this._ismlModelNavigation.getTypeSpecification(_value_14);
+                String _typeSpecificationString_4 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_11);
+                String _firstUpper_5 = StringExtensions.toFirstUpper(_typeSpecificationString_4);
                 _builder.append(_firstUpper_5, "\t\t");
                 _builder.append("()");
               }
@@ -590,8 +573,8 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.append(_firstLower_4, "\t\t ");
             _builder.append(" Parameter from type ");
             Type _type_2 = param_1.getType();
-            TypeSpecification _typeSpecification_13 = this._ismlModelNavigation.getTypeSpecification(_type_2);
-            String _name_11 = _typeSpecification_13.getName();
+            TypeSpecification _typeSpecification_12 = this._ismlModelNavigation.getTypeSpecification(_type_2);
+            String _name_11 = _typeSpecification_12.getName();
             String _firstUpper_8 = StringExtensions.toFirstUpper(_name_11);
             _builder.append(_firstUpper_8, "\t\t ");
             _builder.newLineIfNotEmpty();
@@ -636,9 +619,9 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
               } else {
                 _builder.append(" ");
                 Type _type_4 = param_2.getType();
-                TypeSpecification _typeSpecification_14 = this._ismlModelNavigation.getTypeSpecification(_type_4);
-                String _typeSpecificationString_6 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_14);
-                String _firstUpper_9 = StringExtensions.toFirstUpper(_typeSpecificationString_6);
+                TypeSpecification _typeSpecification_13 = this._ismlModelNavigation.getTypeSpecification(_type_4);
+                String _typeSpecificationString_5 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_13);
+                String _firstUpper_9 = StringExtensions.toFirstUpper(_typeSpecificationString_5);
                 _builder.append(_firstUpper_9, "\t\t");
                 _builder.append(" ");
                 String _name_14 = param_2.getName();
@@ -771,8 +754,8 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
       Set<Map.Entry<String, Type>> _entrySet_3 = this.neededAttributes.entrySet();
       for(final Map.Entry<String, Type> attr_2 : _entrySet_3) {
         {
-          Type _value_17 = attr_2.getValue();
-          boolean _isCollection_2 = this._typeChecker.isCollection(_value_17);
+          Type _value_15 = attr_2.getValue();
+          boolean _isCollection_2 = this._typeChecker.isCollection(_value_15);
           if (_isCollection_2) {
             _builder.append("\t\t");
             _builder.append("/**");
@@ -801,16 +784,16 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.newLine();
             _builder.append("\t\t");
             _builder.append("public ");
-            Type _value_18 = attr_2.getValue();
-            String _collectionString_2 = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_18));
-            _builder.append(_collectionString_2, "\t\t");
+            Type _value_16 = attr_2.getValue();
+            String _collectionString_1 = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_16));
+            _builder.append(_collectionString_1, "\t\t");
             _builder.append("<");
-            Type _value_19 = attr_2.getValue();
-            EList<Type> _typeParameters_5 = ((ParameterizedType) _value_19).getTypeParameters();
-            Type _get_4 = _typeParameters_5.get(0);
-            TypeSpecification _typeSpecification_15 = this._ismlModelNavigation.getTypeSpecification(_get_4);
-            String _typeSpecificationString_7 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_15);
-            _builder.append(_typeSpecificationString_7, "\t\t");
+            Type _value_17 = attr_2.getValue();
+            EList<Type> _typeParameters_4 = ((ParameterizedType) _value_17).getTypeParameters();
+            Type _get_3 = _typeParameters_4.get(0);
+            TypeSpecification _typeSpecification_14 = this._ismlModelNavigation.getTypeSpecification(_get_3);
+            String _typeSpecificationString_6 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_14);
+            _builder.append(_typeSpecificationString_6, "\t\t");
             _builder.append("> get");
             String _key_5 = attr_2.getKey();
             String _firstUpper_12 = StringExtensions.toFirstUpper(_key_5);
@@ -857,16 +840,16 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             String _firstUpper_13 = StringExtensions.toFirstUpper(_key_9);
             _builder.append(_firstUpper_13, "\t\t");
             _builder.append("(");
-            Type _value_20 = attr_2.getValue();
-            String _collectionString_3 = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_20));
-            _builder.append(_collectionString_3, "\t\t");
+            Type _value_18 = attr_2.getValue();
+            String _collectionString_2 = this._ismlModelNavigation.getCollectionString(((ParameterizedType) _value_18));
+            _builder.append(_collectionString_2, "\t\t");
             _builder.append("<");
-            Type _value_21 = attr_2.getValue();
-            EList<Type> _typeParameters_6 = ((ParameterizedType) _value_21).getTypeParameters();
-            Type _get_5 = _typeParameters_6.get(0);
-            TypeSpecification _typeSpecification_16 = this._ismlModelNavigation.getTypeSpecification(_get_5);
-            String _typeSpecificationString_8 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_16);
-            _builder.append(_typeSpecificationString_8, "\t\t");
+            Type _value_19 = attr_2.getValue();
+            EList<Type> _typeParameters_5 = ((ParameterizedType) _value_19).getTypeParameters();
+            Type _get_4 = _typeParameters_5.get(0);
+            TypeSpecification _typeSpecification_15 = this._ismlModelNavigation.getTypeSpecification(_get_4);
+            String _typeSpecificationString_7 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_15);
+            _builder.append(_typeSpecificationString_7, "\t\t");
             _builder.append("> ");
             String _key_10 = attr_2.getKey();
             String _firstLower_10 = StringExtensions.toFirstLower(_key_10);
@@ -912,10 +895,10 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.newLine();
             _builder.append("\t\t");
             _builder.append("public ");
-            Type _value_22 = attr_2.getValue();
-            TypeSpecification _typeSpecification_17 = this._ismlModelNavigation.getTypeSpecification(_value_22);
-            String _typeSpecificationString_9 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_17);
-            String _firstUpper_14 = StringExtensions.toFirstUpper(_typeSpecificationString_9);
+            Type _value_20 = attr_2.getValue();
+            TypeSpecification _typeSpecification_16 = this._ismlModelNavigation.getTypeSpecification(_value_20);
+            String _typeSpecificationString_8 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_16);
+            String _firstUpper_14 = StringExtensions.toFirstUpper(_typeSpecificationString_8);
             _builder.append(_firstUpper_14, "\t\t");
             _builder.append(" get");
             String _key_15 = attr_2.getKey();
@@ -963,10 +946,10 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             String _firstUpper_16 = StringExtensions.toFirstUpper(_key_19);
             _builder.append(_firstUpper_16, "\t\t");
             _builder.append("(");
-            Type _value_23 = attr_2.getValue();
-            TypeSpecification _typeSpecification_18 = this._ismlModelNavigation.getTypeSpecification(_value_23);
-            String _typeSpecificationString_10 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_18);
-            String _firstUpper_17 = StringExtensions.toFirstUpper(_typeSpecificationString_10);
+            Type _value_21 = attr_2.getValue();
+            TypeSpecification _typeSpecification_17 = this._ismlModelNavigation.getTypeSpecification(_value_21);
+            String _typeSpecificationString_9 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_17);
+            String _firstUpper_17 = StringExtensions.toFirstUpper(_typeSpecificationString_9);
             _builder.append(_firstUpper_17, "\t\t");
             _builder.append(" ");
             String _key_20 = attr_2.getKey();
@@ -1016,9 +999,9 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.append(_name_22, "\t\t ");
           } else {
             Type _type_5 = service_1.getType();
-            TypeSpecification _typeSpecification_19 = this._ismlModelNavigation.getTypeSpecification(_type_5);
-            String _typeSpecificationString_11 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_19);
-            _builder.append(_typeSpecificationString_11, "\t\t ");
+            TypeSpecification _typeSpecification_18 = this._ismlModelNavigation.getTypeSpecification(_type_5);
+            String _typeSpecificationString_10 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_18);
+            _builder.append(_typeSpecificationString_10, "\t\t ");
           }
         }
         _builder.append(" EJB");
@@ -1044,9 +1027,9 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
         _builder.append("public ");
         {
           Type _type_6 = service_1.getType();
-          EList<Type> _typeParameters_7 = ((ParameterizedType) _type_6).getTypeParameters();
+          EList<Type> _typeParameters_6 = ((ParameterizedType) _type_6).getTypeParameters();
           boolean _hasElements_2 = false;
-          for(final Type param_4 : _typeParameters_7) {
+          for(final Type param_4 : _typeParameters_6) {
             if (!_hasElements_2) {
               _hasElements_2 = true;
             } else {
@@ -1107,9 +1090,9 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             _builder.append(_name_31, "\t\t ");
           } else {
             Type _type_7 = service_1.getType();
-            TypeSpecification _typeSpecification_20 = this._ismlModelNavigation.getTypeSpecification(_type_7);
-            String _typeSpecificationString_12 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_20);
-            _builder.append(_typeSpecificationString_12, "\t\t ");
+            TypeSpecification _typeSpecification_19 = this._ismlModelNavigation.getTypeSpecification(_type_7);
+            String _typeSpecificationString_11 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_19);
+            _builder.append(_typeSpecificationString_11, "\t\t ");
           }
         }
         _builder.append(" EJB");
@@ -1147,9 +1130,9 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
         _builder.append("(");
         {
           Type _type_8 = service_1.getType();
-          EList<Type> _typeParameters_8 = ((ParameterizedType) _type_8).getTypeParameters();
+          EList<Type> _typeParameters_7 = ((ParameterizedType) _type_8).getTypeParameters();
           boolean _hasElements_3 = false;
-          for(final Type param_5 : _typeParameters_8) {
+          for(final Type param_5 : _typeParameters_7) {
             if (!_hasElements_3) {
               _hasElements_3 = true;
             } else {
