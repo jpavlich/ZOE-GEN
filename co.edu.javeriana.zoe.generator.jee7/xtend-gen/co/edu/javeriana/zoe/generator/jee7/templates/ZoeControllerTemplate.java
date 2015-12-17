@@ -130,7 +130,7 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
     EObject _eContainer_1 = controller.eContainer();
     QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(_eContainer_1);
     _builder.append(_fullyQualifiedName_1, "\t");
-    _builder.append(".JsfUtil;");
+    _builder.append(".util.JsfUtil;");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("import javax.enterprise.context.*;\t\t");
@@ -995,6 +995,10 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
     }
     _builder.append("\t\t");
     _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
     {
       Iterable<Feature> _services_1 = this._ismlModelNavigation.getServices(controller);
       for(final Feature service_1 : _services_1) {
@@ -1035,50 +1039,36 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
         _builder.append(" ");
         _builder.append("*/");
         _builder.newLine();
-        _builder.append("\t\t\t");
+        _builder.append("\t\t");
+        _builder.append("\t\t\t\t    ");
         _builder.append("public ");
-        Type _type_6 = service_1.getType();
-        TypeSpecification _typeSpecification_20 = this._ismlModelNavigation.getTypeSpecification(_type_6);
-        String _typeSpecificationString_12 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_20);
-        String _firstUpper_18 = StringExtensions.toFirstUpper(_typeSpecificationString_12);
-        _builder.append(_firstUpper_18, "\t\t\t");
         {
-          Type _type_7 = service_1.getType();
-          if ((_type_7 instanceof ParameterizedType)) {
-            _builder.append("<");
-            {
-              Type _type_8 = service_1.getType();
-              EList<Type> _typeParameters_7 = ((ParameterizedType) _type_8).getTypeParameters();
-              boolean _hasElements_2 = false;
-              for(final Type param_4 : _typeParameters_7) {
-                if (!_hasElements_2) {
-                  _hasElements_2 = true;
-                } else {
-                  _builder.appendImmediate(",", "\t\t\t");
-                }
-                String _writeType_1 = this._ismlModelNavigation.writeType(param_4, true);
-                _builder.append(_writeType_1, "\t\t\t");
-              }
+          Type _type_6 = service_1.getType();
+          EList<Type> _typeParameters_7 = ((ParameterizedType) _type_6).getTypeParameters();
+          boolean _hasElements_2 = false;
+          for(final Type param_4 : _typeParameters_7) {
+            if (!_hasElements_2) {
+              _hasElements_2 = true;
+            } else {
+              _builder.appendImmediate(",", "\t\t\t\t\t\t    ");
             }
-            _builder.append(">");
+            String _writeType_1 = this._ismlModelNavigation.writeType(param_4, true);
+            _builder.append(_writeType_1, "\t\t\t\t\t\t    ");
           }
         }
-        _builder.append(" ");
+        _builder.append("General ");
         {
           String _name_24 = service_1.getName();
           boolean _notEquals_3 = (!Objects.equal(_name_24, null));
           if (_notEquals_3) {
             _builder.append("get");
             String _name_25 = service_1.getName();
-            String _firstUpper_19 = StringExtensions.toFirstUpper(_name_25);
-            _builder.append(_firstUpper_19, "\t\t\t");
+            String _firstUpper_18 = StringExtensions.toFirstUpper(_name_25);
+            _builder.append(_firstUpper_18, "\t\t\t\t\t\t    ");
           } else {
-            _builder.append("get");
-            Type _type_9 = service_1.getType();
-            TypeSpecification _typeSpecification_21 = this._ismlModelNavigation.getTypeSpecification(_type_9);
-            String _name_26 = _typeSpecification_21.getName();
-            String _firstUpper_20 = StringExtensions.toFirstUpper(_name_26);
-            _builder.append(_firstUpper_20, "\t\t\t");
+            String _name_26 = service_1.getName();
+            String _firstUpper_19 = StringExtensions.toFirstUpper(_name_26);
+            _builder.append(_firstUpper_19, "\t\t\t\t\t\t    ");
           }
         }
         _builder.append("(){");
@@ -1116,10 +1106,10 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
             String _name_31 = service_1.getName();
             _builder.append(_name_31, "\t\t ");
           } else {
-            Type _type_10 = service_1.getType();
-            TypeSpecification _typeSpecification_22 = this._ismlModelNavigation.getTypeSpecification(_type_10);
-            String _typeSpecificationString_13 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_22);
-            _builder.append(_typeSpecificationString_13, "\t\t ");
+            Type _type_7 = service_1.getType();
+            TypeSpecification _typeSpecification_20 = this._ismlModelNavigation.getTypeSpecification(_type_7);
+            String _typeSpecificationString_12 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_20);
+            _builder.append(_typeSpecificationString_12, "\t\t ");
           }
         }
         _builder.append(" EJB");
@@ -1136,7 +1126,8 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
         _builder.append(" ");
         _builder.append("*/");
         _builder.newLine();
-        _builder.append("\t\t\t");
+        _builder.append("\t\t");
+        _builder.append(" \t\t\t\t\t\t");
         _builder.append("public void ");
         {
           String _name_33 = service_1.getName();
@@ -1144,55 +1135,42 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
           if (_notEquals_6) {
             _builder.append("set");
             String _name_34 = service_1.getName();
-            String _firstUpper_21 = StringExtensions.toFirstUpper(_name_34);
-            _builder.append(_firstUpper_21, "\t\t\t");
+            String _firstUpper_20 = StringExtensions.toFirstUpper(_name_34);
+            _builder.append(_firstUpper_20, "\t\t \t\t\t\t\t\t");
           } else {
             _builder.append("set");
             String _name_35 = service_1.getName();
-            String _firstUpper_22 = StringExtensions.toFirstUpper(_name_35);
-            _builder.append(_firstUpper_22, "\t\t\t");
+            String _firstUpper_21 = StringExtensions.toFirstUpper(_name_35);
+            _builder.append(_firstUpper_21, "\t\t \t\t\t\t\t\t");
           }
         }
         _builder.append("(");
-        Type _type_11 = service_1.getType();
-        TypeSpecification _typeSpecification_23 = this._ismlModelNavigation.getTypeSpecification(_type_11);
-        String _typeSpecificationString_14 = this._ismlModelNavigation.getTypeSpecificationString(_typeSpecification_23);
-        String _firstUpper_23 = StringExtensions.toFirstUpper(_typeSpecificationString_14);
-        _builder.append(_firstUpper_23, "\t\t\t");
         {
-          Type _type_12 = service_1.getType();
-          if ((_type_12 instanceof ParameterizedType)) {
-            _builder.append("<");
-            {
-              Type _type_13 = service_1.getType();
-              EList<Type> _typeParameters_8 = ((ParameterizedType) _type_13).getTypeParameters();
-              boolean _hasElements_3 = false;
-              for(final Type param_5 : _typeParameters_8) {
-                if (!_hasElements_3) {
-                  _hasElements_3 = true;
-                } else {
-                  _builder.appendImmediate(",", "\t\t\t");
-                }
-                String _writeType_2 = this._ismlModelNavigation.writeType(param_5, true);
-                _builder.append(_writeType_2, "\t\t\t");
-              }
+          Type _type_8 = service_1.getType();
+          EList<Type> _typeParameters_8 = ((ParameterizedType) _type_8).getTypeParameters();
+          boolean _hasElements_3 = false;
+          for(final Type param_5 : _typeParameters_8) {
+            if (!_hasElements_3) {
+              _hasElements_3 = true;
+            } else {
+              _builder.appendImmediate(",", "\t\t \t\t\t\t\t\t");
             }
-            _builder.append(">");
+            String _writeType_2 = this._ismlModelNavigation.writeType(param_5, true);
+            _builder.append(_writeType_2, "\t\t \t\t\t\t\t\t");
           }
         }
-        _builder.append(" ");
+        _builder.append("General ");
         {
           String _name_36 = service_1.getName();
           boolean _notEquals_7 = (!Objects.equal(_name_36, null));
           if (_notEquals_7) {
             String _name_37 = service_1.getName();
-            String _firstLower_23 = StringExtensions.toFirstLower(_name_37);
-            _builder.append(_firstLower_23, "\t\t\t");
+            String _firstUpper_22 = StringExtensions.toFirstUpper(_name_37);
+            _builder.append(_firstUpper_22, "\t\t \t\t\t\t\t\t");
           } else {
-            _builder.append("set");
             String _name_38 = service_1.getName();
-            String _firstLower_24 = StringExtensions.toFirstLower(_name_38);
-            _builder.append(_firstLower_24, "\t\t\t");
+            String _firstUpper_23 = StringExtensions.toFirstUpper(_name_38);
+            _builder.append(_firstUpper_23, "\t\t \t\t\t\t\t\t");
           }
         }
         _builder.append("){");
@@ -1204,12 +1182,12 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
           boolean _notEquals_8 = (!Objects.equal(_name_39, null));
           if (_notEquals_8) {
             String _name_40 = service_1.getName();
-            String _firstLower_25 = StringExtensions.toFirstLower(_name_40);
-            _builder.append(_firstLower_25, "\t\t");
+            String _firstLower_23 = StringExtensions.toFirstLower(_name_40);
+            _builder.append(_firstLower_23, "\t\t");
           } else {
             String _name_41 = service_1.getName();
-            String _firstLower_26 = StringExtensions.toFirstLower(_name_41);
-            _builder.append(_firstLower_26, "\t\t");
+            String _firstLower_24 = StringExtensions.toFirstLower(_name_41);
+            _builder.append(_firstLower_24, "\t\t");
           }
         }
         _builder.append("=");
@@ -1218,12 +1196,12 @@ public class ZoeControllerTemplate extends SimpleTemplate<Controller> {
           boolean _notEquals_9 = (!Objects.equal(_name_42, null));
           if (_notEquals_9) {
             String _name_43 = service_1.getName();
-            String _firstLower_27 = StringExtensions.toFirstLower(_name_43);
-            _builder.append(_firstLower_27, "\t\t");
+            String _firstLower_25 = StringExtensions.toFirstLower(_name_43);
+            _builder.append(_firstLower_25, "\t\t");
           } else {
             String _name_44 = service_1.getName();
-            String _firstLower_28 = StringExtensions.toFirstLower(_name_44);
-            _builder.append(_firstLower_28, "\t\t");
+            String _firstLower_26 = StringExtensions.toFirstLower(_name_44);
+            _builder.append(_firstLower_26, "\t\t");
           }
         }
         _builder.append(";");
