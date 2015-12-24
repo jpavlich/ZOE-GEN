@@ -9,6 +9,7 @@ import co.edu.javeriana.zoe.generator.jee7.generators.PagesGenerator;
 import co.edu.javeriana.zoe.generator.jee7.generators.QualifierGenerator;
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceImplementationGenerator;
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceInterfaceGenerator;
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeDesignGenerator;
 import java.util.Collections;
 import java.util.Set;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -37,6 +38,7 @@ public class ZoeJEE7Generator extends GeneratorSuite {
     ServiceInterfaceGenerator _serviceInterfaceGenerator = new ServiceInterfaceGenerator();
     ServiceImplementationGenerator _serviceImplementationGenerator = new ServiceImplementationGenerator();
     QualifierGenerator _qualifierGenerator = new QualifierGenerator();
-    return Collections.<SimpleGenerator<?>>unmodifiableSet(CollectionLiterals.<SimpleGenerator<?>>newHashSet(_backingBeanGenerator, _pagesGenerator, _facesConfigXMLGenerator, _serviceInterfaceGenerator, _serviceImplementationGenerator, _qualifierGenerator));
+    ZoeDesignGenerator _zoeDesignGenerator = new ZoeDesignGenerator();
+    return Collections.<SimpleGenerator<?>>unmodifiableSet(CollectionLiterals.<SimpleGenerator<?>>newHashSet(_backingBeanGenerator, _pagesGenerator, _facesConfigXMLGenerator, _serviceInterfaceGenerator, _serviceImplementationGenerator, _qualifierGenerator, _zoeDesignGenerator));
   }
 }
