@@ -51,7 +51,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	
 			
 		<ui:composition template="/template.xhtml">
-		<ui:define name="body">
+		<ui:define name="content">
 			«IF page.body != null»
 			«widgetTemplate(page.body)»
 			«ENDIF»				

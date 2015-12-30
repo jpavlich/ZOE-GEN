@@ -55,10 +55,15 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                <ui:insert name="left">Left</ui:insert>
 		                 <h:form id="menuForm">
 		                    <p:menubar>
+		                    	
 		                        <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home"/>
+		                        «FOR page : allPages»
+		                        «IF page.controller != null && !getShowActions(page).empty»
 		                        <p:submenu label="#{bundle.Maintenance}">
-		                            <p:menuitem value="Dieta" outcome="/co/edu/javeriana/ViewDieta.xhtml" />
+		                            <p:menuitem value="Dieta" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
 		                        </p:submenu>
+		                        «ENDIF»
+		                        «ENDFOR»
 		                    </p:menubar>
 		                </h:form>
 		            </div>
