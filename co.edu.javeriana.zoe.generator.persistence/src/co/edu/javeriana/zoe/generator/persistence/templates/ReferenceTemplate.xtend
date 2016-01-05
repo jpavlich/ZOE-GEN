@@ -26,19 +26,36 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
 class ReferenceTemplate {
-	@Inject extension IsmlModelNavigation
 	@Inject extension ExpressionTemplate
+	@Inject extension IsmlModelNavigation
+
 
 	def dispatch CharSequence writeReference(MethodCall reference) '''		
 		«reference.method.name»(«IF reference.referencedElement.eContainer instanceof Service && !reference.referencedElement.type.typeSpecification.name.equalsIgnoreCase("void")»«reference.referencedElement.type.writeType(false)».class«IF !reference.parameters.empty», «ENDIF»«ENDIF»«FOR parameter : reference.parameters SEPARATOR ','»«writeExpression(parameter)»«ENDFOR»)'''
-		
-	def dispatch CharSequence writeReference(ActionCall reference) '''		
-		«IF reference.controllerIfExists != null &&
-			(reference.controllerIfExists).name.equals(reference.referencedElement.controllerIfExists.name)»return «ENDIF»«reference.
-			action.name»(«FOR parameter : validateParameterForActionCall(reference) SEPARATOR ','»«writeExpression(parameter)»«ENDFOR»)'''
-
-	def dispatch CharSequence writeReference(ResourceReference reference) '''
-		"#{messages['«reference.referencedElement.name.substring(1)»']}"'''
+	
+		def EList<Object> evaluateToCastShowParameter(Parameter param,Reference reference){
+		var doCast=false
+		var neededAttributes=getNeededAttributes(reference.findAncestor(Controller)as Controller).get("neededAttributes")as Map<String,Type>
+		var tailType=reference.tailType
+		var EList<Object> returnData=new BasicEList
+		var castText=""
+		if(neededAttributes.containsKey(param.name)){
+			doCast=!tailType.typeSpecification.typeSpecificationString.equalsIgnoreCase((neededAttributes).get(param.name).typeSpecification.typeSpecificationString)		
+		}
+		if(!doCast){
+			if(tailType instanceof ParameterizedType && neededAttributes.get(param.name) instanceof ParameterizedType){
+				doCast=!(tailType as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString.equalsIgnoreCase((neededAttributes.get(param.name)as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString)
+				if(doCast){
+					castText=tailType.typeSpecification.typeSpecificationString.toFirstUpper
+				}
+			}
+		}		
+		returnData.add(doCast)
+		returnData.add(castText)
+		return returnData
+	}
+	
+	
 
 	def ViewInstance getViewInstanceIfExists(EObject object){
 		var EObject returnObject=null
@@ -110,20 +127,7 @@ class ReferenceTemplate {
 		return str
 	}	
 
-	def dispatch CharSequence writeReference(Type reference){
-		var String text
-		if(reference.referencedElement instanceof Entity && reference.tail==null){
-			text=reference.referencedElement.name.toFirstUpper+".class"
-		} else{
-			text=reference.referencedElement.name.toFirstUpper
-			if (reference.tail!=null){
-				text+="."+writeReference(reference.tail)
-			}
-		}
-		
-		return text
-	}		
-	
+
 	
 	def evaluateReference(Reference parameter) {
 		var pass = true
@@ -151,26 +155,29 @@ class ReferenceTemplate {
 		return a
 	}
 	
-	def EList<Object> evaluateToCastShowParameter(Parameter param,Reference reference){
-		var doCast=false
-		var neededAttributes=getNeededAttributes(reference.findAncestor(Controller)as Controller).get("neededAttributes")as Map<String,Type>
-		var tailType=reference.tailType
-		var EList<Object> returnData=new BasicEList
-		var castText=""
-		if(neededAttributes.containsKey(param.name)){
-			doCast=!tailType.typeSpecification.typeSpecificationString.equalsIgnoreCase((neededAttributes).get(param.name).typeSpecification.typeSpecificationString)		
-		}
-		if(!doCast){
-			if(tailType instanceof ParameterizedType && neededAttributes.get(param.name) instanceof ParameterizedType){
-				doCast=!(tailType as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString.equalsIgnoreCase((neededAttributes.get(param.name)as ParameterizedType).typeParameters.get(0).typeSpecification.typeSpecificationString)
-				if(doCast){
-					castText=tailType.typeSpecification.typeSpecificationString.toFirstUpper
-				}
+	def dispatch CharSequence writeReference(Type reference){
+		var String text
+		if(reference.referencedElement instanceof Entity && reference.tail==null){
+			text=reference.referencedElement.name.toFirstUpper+".class"
+		} else{
+			text=reference.referencedElement.name.toFirstUpper
+			if (reference.tail!=null){
+				text+="."+writeReference(reference.tail)
 			}
-		}		
-		returnData.add(doCast)
-		returnData.add(castText)
-		return returnData
-	}
+		}
+		
+		return text
+	}		
+	
+
+	def dispatch CharSequence writeReference(ActionCall reference) '''		
+		«IF reference.controllerIfExists != null &&
+			(reference.controllerIfExists).name.equals(reference.referencedElement.controllerIfExists.name)»return «ENDIF»«reference.
+			action.name»(«FOR parameter : validateParameterForActionCall(reference) SEPARATOR ','»«writeExpression(parameter)»«ENDFOR»)'''
+			
+	def dispatch CharSequence writeReference(ResourceReference reference) '''
+		"#{messages['«reference.referencedElement.name.substring(1)»']}"'''
 
 }
+
+

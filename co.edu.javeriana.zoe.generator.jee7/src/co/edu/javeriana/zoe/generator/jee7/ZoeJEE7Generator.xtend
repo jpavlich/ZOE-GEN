@@ -8,6 +8,7 @@ import co.edu.javeriana.zoe.generator.jee7.generators.PagesGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.QualifierGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceImplementationGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceInterfaceGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeDesignGenerator
 
 class ZoeJEE7Generator extends GeneratorSuite{
 	
@@ -33,7 +34,8 @@ class ZoeJEE7Generator extends GeneratorSuite{
 			new FacesConfigXMLGenerator,
 			new ServiceInterfaceGenerator,
 			new ServiceImplementationGenerator,			
-			new QualifierGenerator
+			new QualifierGenerator,
+			new ZoeDesignGenerator
 		}
 	}
 	
