@@ -211,7 +211,10 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	'''
 
 	def CharSequence Map(ViewInstance part) '''
-		
+		<h:head>
+        		<script src="http://maps.google.com/maps/api/js?sensor=false" 
+              	type="text/javascript"></script>
+    	</h:head>
 		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» style="width:100%;height:400px" />		
 	'''
 	def CharSequence radioChooser(ViewInstance part) '''
