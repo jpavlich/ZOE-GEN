@@ -70,8 +70,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "Button": button(viewInstance)
 			case "Form": form(viewInstance)
 			case "Panel": panel(viewInstance)
-			case "RadioChooser": radioChooser(viewInstance)
-			case "Image": image(viewInstance)
+		
 			case "PanelButton": panelButton(viewInstance)
 			case "DataTable": dataTable(viewInstance)
 			case "Password": password(viewInstance)
@@ -84,6 +83,9 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "PickList": pickList(viewInstance)
 			case "OutputText": outputText(viewInstance)
 			case "GMap": Map(viewInstance)
+			case "RadioChooser": radioChooser(viewInstance)
+			case "Image": image(viewInstance)
+		    case "OrderList": orderList(viewInstance)
 		}
 		
 	}
@@ -238,6 +240,12 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 		«««»		«widgetTemplate(partBlock)»
 		«««»«ENDFOR»
 	«««» </lion:panelButton>
+	'''
+	def CharSequence orderList(ViewInstance orderList) '''
+		
+		
+		<p:orderList id= "«orderList.id»" value="#{«orderList.containerController.name.toFirstLower».«orderList.forViewInBody?.collection.referencedElement.name»}" 
+		var=var="«orderList.forViewInBody.variable.name»" controlsLocation="none" itemLabel="#{city.almuerzo}" itemValue="#{city.almuerzo}" />
 	'''
 	
 	def CharSequence dataTable(ViewInstance table) '''
