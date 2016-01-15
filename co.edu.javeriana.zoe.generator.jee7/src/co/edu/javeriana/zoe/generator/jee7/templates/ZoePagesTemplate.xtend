@@ -51,7 +51,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	
 			
 		<ui:composition template="/template.xhtml">
-		<ui:define name="body">
+		<ui:define name="content">
 			«IF page.body != null»
 			«widgetTemplate(page.body)»
 			«ENDIF»				
@@ -70,8 +70,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "Button": button(viewInstance)
 			case "Form": form(viewInstance)
 			case "Panel": panel(viewInstance)
-			case "RadioChooser": radioChooser(viewInstance)
-			case "Image": image(viewInstance)
+		
 			case "PanelButton": panelButton(viewInstance)
 			case "DataTable": dataTable(viewInstance)
 			case "Password": password(viewInstance)
@@ -83,7 +82,10 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "Spinner": spinner(viewInstance)
 			case "PickList": pickList(viewInstance)
 			case "OutputText": outputText(viewInstance)
-			case "Map": outputText(viewInstance)
+			case "GMap": Map(viewInstance)
+			case "RadioChooser": radioChooser(viewInstance)
+			case "Image": image(viewInstance)
+		    case "OrderList": orderList(viewInstance)
 		}
 		
 	}
@@ -211,8 +213,11 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	'''
 
 	def CharSequence Map(ViewInstance part) '''
-		
-		<p:gmap id= "«part.id»" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" />		
+		<h:head>
+        		<script src="http://maps.google.com/maps/api/js?sensor=false" 
+              	type="text/javascript"></script>
+    	</h:head>
+		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» style="width:100%;height:400px" />		
 	'''
 	def CharSequence radioChooser(ViewInstance part) '''
 		<p:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
@@ -235,6 +240,12 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 		«««»		«widgetTemplate(partBlock)»
 		«««»«ENDFOR»
 	«««» </lion:panelButton>
+	'''
+	def CharSequence orderList(ViewInstance orderList) '''
+		
+		
+		<p:orderList id= "«orderList.id»" value="#{«orderList.containerController.name.toFirstLower».«orderList.forViewInBody?.collection.referencedElement.name»}" 
+		var=var="«orderList.forViewInBody.variable.name»" controlsLocation="none" itemLabel="#{city.almuerzo}" itemValue="#{city.almuerzo}" />
 	'''
 	
 	def CharSequence dataTable(ViewInstance table) '''

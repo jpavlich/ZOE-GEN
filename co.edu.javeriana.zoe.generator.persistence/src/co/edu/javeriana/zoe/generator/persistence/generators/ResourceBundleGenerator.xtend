@@ -11,8 +11,9 @@ class ResourceBundleGenerator extends SimpleGenerator<ResourceBundle> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(ResourceBundle rs) {
-		return rs.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +rs.name + ".properties"
-	}
+				return rs.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +rs.name + ".properties"
+				
+					}
 
 	override getOutputConfigurationName() {
 		ZoePersistenceGenerator.RESOURCE_BUNDLE

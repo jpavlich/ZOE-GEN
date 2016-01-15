@@ -95,7 +95,7 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
     _builder.append("<ui:composition template=\"/template.xhtml\">");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("<ui:define name=\"body\">");
+    _builder.append("<ui:define name=\"content\">");
     _builder.newLine();
     {
       EList<ViewStatement> _body = page.getBody();
@@ -157,18 +157,6 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
       if (Objects.equal(_typeSpecificationString, "Panel")) {
         _matched=true;
         _switchResult = this.panel(viewInstance);
-      }
-    }
-    if (!_matched) {
-      if (Objects.equal(_typeSpecificationString, "RadioChooser")) {
-        _matched=true;
-        _switchResult = this.radioChooser(viewInstance);
-      }
-    }
-    if (!_matched) {
-      if (Objects.equal(_typeSpecificationString, "Image")) {
-        _matched=true;
-        _switchResult = this.image(viewInstance);
       }
     }
     if (!_matched) {
@@ -238,9 +226,27 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
       }
     }
     if (!_matched) {
-      if (Objects.equal(_typeSpecificationString, "Map")) {
+      if (Objects.equal(_typeSpecificationString, "GMap")) {
         _matched=true;
-        _switchResult = this.outputText(viewInstance);
+        _switchResult = this.Map(viewInstance);
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(_typeSpecificationString, "RadioChooser")) {
+        _matched=true;
+        _switchResult = this.radioChooser(viewInstance);
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(_typeSpecificationString, "Image")) {
+        _matched=true;
+        _switchResult = this.image(viewInstance);
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(_typeSpecificationString, "OrderList")) {
+        _matched=true;
+        _switchResult = this.orderList(viewInstance);
       }
     }
     return _switchResult;
@@ -1040,11 +1046,36 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
   
   public CharSequence Map(final ViewInstance part) {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<h:head>");
+    _builder.newLine();
+    _builder.append("        \t\t");
+    _builder.append("<script src=\"http://maps.google.com/maps/api/js?sensor=false\" ");
+    _builder.newLine();
+    _builder.append("              \t");
+    _builder.append("type=\"text/javascript\"></script>");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("</h:head>");
     _builder.newLine();
     _builder.append("<p:gmap id= \"");
     String _id = this.getId(part);
     _builder.append(_id, "");
-    _builder.append("\" center=\"41.381542, 2.122893\" zoom=\"15\" type=\"HYBRID\" style=\"width:100%;height:400px\" />\t\t");
+    _builder.append("\" center=");
+    EList<Expression> _parameters = part.getParameters();
+    Expression _get = _parameters.get(0);
+    CharSequence _writeExpression = this._expressionTemplate.writeExpression(_get);
+    _builder.append(_writeExpression, "");
+    _builder.append(" zoom=");
+    EList<Expression> _parameters_1 = part.getParameters();
+    Expression _get_1 = _parameters_1.get(1);
+    CharSequence _writeExpression_1 = this._expressionTemplate.writeExpression(_get_1);
+    _builder.append(_writeExpression_1, "");
+    _builder.append(" type=");
+    EList<Expression> _parameters_2 = part.getParameters();
+    Expression _get_2 = _parameters_2.get(2);
+    CharSequence _writeExpression_2 = this._expressionTemplate.writeExpression(_get_2);
+    _builder.append(_writeExpression_2, "");
+    _builder.append(" style=\"width:100%;height:400px\" />\t\t");
     _builder.newLineIfNotEmpty();
     return _builder;
   }
@@ -1121,6 +1152,39 @@ public class ZoePagesTemplate extends SimpleTemplate<Page> {
   
   public CharSequence panelButton(final ViewInstance viewAttribute) {
     StringConcatenation _builder = new StringConcatenation();
+    return _builder;
+  }
+  
+  public CharSequence orderList(final ViewInstance orderList) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("<p:orderList id= \"");
+    String _id = this.getId(orderList);
+    _builder.append(_id, "");
+    _builder.append("\" value=\"#{");
+    Controller _containerController = this._ismlModelNavigation.getContainerController(orderList);
+    String _name = _containerController.getName();
+    String _firstLower = StringExtensions.toFirstLower(_name);
+    _builder.append(_firstLower, "");
+    _builder.append(".");
+    ForView _forViewInBody = this._ismlModelNavigation.getForViewInBody(orderList);
+    Reference _collection = null;
+    if (_forViewInBody!=null) {
+      _collection=_forViewInBody.getCollection();
+    }
+    NamedElement _referencedElement = _collection.getReferencedElement();
+    String _name_1 = _referencedElement.getName();
+    _builder.append(_name_1, "");
+    _builder.append("}\" ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("var=var=\"");
+    ForView _forViewInBody_1 = this._ismlModelNavigation.getForViewInBody(orderList);
+    Variable _variable = _forViewInBody_1.getVariable();
+    String _name_2 = _variable.getName();
+    _builder.append(_name_2, "");
+    _builder.append("\" controlsLocation=\"none\" itemLabel=\"#{city.almuerzo}\" itemValue=\"#{city.almuerzo}\" />");
+    _builder.newLineIfNotEmpty();
     return _builder;
   }
   
