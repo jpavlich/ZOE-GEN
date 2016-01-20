@@ -120,7 +120,7 @@ public class Dieta implements Serializable {
     /**
      * Sets the value for the attribute desayuno
      *
-     * @param desayuno The value to set
+      @param desayuno The value to set
      */
     public void setDesayuno(String desayuno) {
         this.desayuno = desayuno;
@@ -137,7 +137,7 @@ public class Dieta implements Serializable {
 
     /**
      * Sets the value for the attribute almuerzo
-     *
+     
      * @param almuerzo The value to set
      */
     public void setAlmuerzo(String almuerzo) {
@@ -156,7 +156,7 @@ public class Dieta implements Serializable {
     /**
      * Sets the value for the attribute cena
      *
-     * @param cena The value to set
+      @param cena The value to set
      */
     public void setCena(String cena) {
         this.cena = cena;
@@ -174,7 +174,7 @@ public class Dieta implements Serializable {
     /**
      * Sets the value for the attribute merienda
      *
-     * @param merienda The value to set
+      @param merienda The value to set
      */
     public void setMerienda(String merienda) {
         this.merienda = merienda;
@@ -192,7 +192,7 @@ public class Dieta implements Serializable {
     /**
      * Sets the value for the attribute patologia
      *
-     * @param patologia The value to set
+     @param patologia The value to set
      */
     public void setPatologia(Long patologia) {
         this.patologia = patologia;
@@ -206,7 +206,7 @@ public class Dieta implements Serializable {
 
     /**
      * Sets the value for the unique id
-     *
+     
      * @param id The value to set
      */
     public void setId(final Long id) {
