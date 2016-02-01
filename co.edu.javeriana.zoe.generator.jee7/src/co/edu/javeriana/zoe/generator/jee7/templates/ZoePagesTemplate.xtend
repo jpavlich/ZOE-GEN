@@ -187,7 +187,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence button(ViewInstance part) '''
 
 	<p:commandButton id= "«part.id»" value=«part.parameters.get(0).writeExpression» 
-	 action= "#{«part.containerController.name.toFirstLower».«part.actionCall?.action?.name»(«FOR param:part.actionCall.parameters SEPARATOR ','»«IF param instanceof VariableReference && (param as VariableReference).referencedElement.eContainer instanceof Page»«(part.findAncestor(Page)as Page).controller.name.toFirstLower».«ENDIF»«writeExpression(param)»«ENDFOR»)}" update="«updateTemplate(part)»"  async="true" «IF (part.parameters.get(1) as LiteralValue).literal.equals("false")»immediate="true"«ENDIF»/>
+	 action= "#{«part.containerController.name.toFirstLower».«part.actionCall?.action?.name»(«FOR param:part.actionCall.parameters SEPARATOR ','»«IF param instanceof VariableReference && (param as VariableReference).referencedElement.eContainer instanceof Page»«(part.findAncestor(Page)as Page).controller.name.toFirstLower».«ENDIF»«writeExpression(param)»«ENDFOR»)}" update="«updateTemplate(part)»"  async="true" />
 	'''	
 	
 	def CharSequence updateTemplate(ViewInstance part){
