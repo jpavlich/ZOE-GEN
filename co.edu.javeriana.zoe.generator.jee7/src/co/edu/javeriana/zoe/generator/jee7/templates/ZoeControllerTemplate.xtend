@@ -275,12 +275,10 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 *
 				 * @return current instance for «service.name.toFirstLower» attribute
 				 */
-			public «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.name.toFirstUpper»«ENDIF»
-		   «««» public «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»get«service.name.toFirstUpper»«ELSE»«service.
-			«««name.toFirstUpper»«ENDIF»()
-			{
-		return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-		name.toFirstLower»«ENDIF»;
+			public «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
+			name.toFirstUpper»«ENDIF»(){
+				return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+			name.toFirstLower»«ENDIF»;
 				}
 				/**
 				 * Sets the value for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
