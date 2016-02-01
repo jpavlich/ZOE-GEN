@@ -5,7 +5,6 @@ import co.edu.javeriana.isml.generator.common.OutputConfiguration
 import co.edu.javeriana.zoe.generator.jee7.generators.BackingBeanGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.FacesConfigXMLGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.PagesGenerator
-import co.edu.javeriana.zoe.generator.jee7.generators.QualifierGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceImplementationGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ServiceInterfaceGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ZoeDesignGenerator
@@ -24,8 +23,6 @@ class ZoeJEE7Generator extends GeneratorSuite{
 	@OutputConfiguration
 	public static final String SERVICE_IMPL = "service.impl"
 		
-	@OutputConfiguration
-	public static final String SERVICE_QUALIFIER="service.qualifier"
 
 	override getGenerators() {
 		#{			
@@ -34,7 +31,6 @@ class ZoeJEE7Generator extends GeneratorSuite{
 			new FacesConfigXMLGenerator,
 			new ServiceInterfaceGenerator,
 			new ServiceImplementationGenerator,			
-			new QualifierGenerator,
 			new ZoeDesignGenerator
 		}
 	}

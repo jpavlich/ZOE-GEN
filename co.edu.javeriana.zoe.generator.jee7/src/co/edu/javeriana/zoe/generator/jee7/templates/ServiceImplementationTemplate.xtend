@@ -47,13 +47,12 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 		«FOR superType:service.superTypes»
 		import «superType.typeSpecification.fullyQualifiedName»Bean;
 		«ENDFOR»
-		import «service.eContainer.fullyQualifiedName».qualifier.«service.name.toFirstUpper»Qualifier;	
+		
 		
 		/**
 		 * This class represents an EJB named «service.name.toFirstUpper»Bean
 		 */
 		@Stateless
-		@«service.name.toFirstUpper»Qualifier
 		public class «service.name.toFirstUpper»Bean«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF» «IF !service.superTypes.empty»extends «service.superTypes.get(0).typeSpecification.name.toFirstUpper»«IF service.superTypes.get(0).typeSpecification instanceof Service»Bean«IF service.superTypes.get(0)instanceof ParameterizedType»<«FOR param: (service.superTypes.get(0)as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF»«ENDIF»«ENDIF» implements «service.name.toFirstUpper»«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF»,Serializable{
 		
 			«FOR gen:service.genericTypeParameters»
