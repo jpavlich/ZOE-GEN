@@ -43,11 +43,11 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 		import javax.ejb.Stateless;
 		import javax.persistence.EntityManager;	
 		import javax.persistence.PersistenceContext;
-		import «entity.eContainer?.fullyQualifiedName.toLowerCase».AbstractFacade;
+		import «entity.eContainer?.fullyQualifiedName.toLowerCase».Persistence;
 
 	
 		@Stateless
-		public class «entity.name.toFirstUpper»General extends AbstractFacade<«entity.name.toFirstUpper»>{
+		public class «entity.name.toFirstUpper»General extends Persistence<«entity.name.toFirstUpper»>{
 			    @PersistenceContext(unitName = "co.edu.javeriana.javemovil_javemovil-web_war_1.0-SNAPSHOTPU")
     			private EntityManager em;
 
