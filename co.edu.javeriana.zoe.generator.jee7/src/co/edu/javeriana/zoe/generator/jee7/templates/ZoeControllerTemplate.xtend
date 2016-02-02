@@ -145,7 +145,8 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 */
 				@EJB
 			«««»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
-			private «IF service.name == "persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»«IF service.type instanceof ParameterizedType»«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.name.toFirstLower»«ENDIF»; 
+			private «IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»«IF service.type instanceof ParameterizedType»«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.name.toFirstLower»«ENDIF»;
+			«System.out.println(service.type.typeSpecification.typeSpecificationString)»
 			«««private «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			«««name.toFirstLower»«ENDIF»; 
 			«ENDFOR»
@@ -177,15 +178,15 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se crea un metodo init con los metodos o servicios declarados como default*/»			
 		 @PostConstruct
 		 public void init() {
-					«FOR action : controller.actions»
-						«IF action.isDefault»
-							«FOR st:action.body»
-								«IF !(st instanceof Show)»
-									«writeStatement(st as MethodStatement)»
-								«ENDIF»
-							«ENDFOR»
-						«ENDIF»
-				    «ENDFOR»
+					«««»«FOR action : controller.actions»
+					«««»	«IF action.isDefault»
+						«««»	«FOR st:action.body»
+						««««»		«IF !(st instanceof Show)»
+							«««»»		«writeStatement(st as MethodStatement)»
+							«««»	«ENDIF»
+						«««»	«ENDFOR»
+				«««»		«ENDIF»
+				«««»    «ENDFOR»
 		  }
 			
 		«/* Se declaran los metodos relacionados como acciones del controlador*/»
@@ -275,7 +276,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 *
 				 * @return current instance for «service.name.toFirstLower» attribute
 				 */
-			public «IF service.name == "persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
+			public «IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
 			name.toFirstUpper»«ENDIF»(){
 				return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»;
@@ -285,7 +286,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 * @param «service.name.toFirstLower» The value to set
 				 */
 			public void «IF service.name != null»set«service.name.toFirstUpper»«ELSE»set«service.
-			name.toFirstUpper»«ENDIF»(«IF service.name == "persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»  «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
+			name.toFirstUpper»«ENDIF»(«IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'General'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»  «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
 			name.toFirstLower»«ENDIF»){
 				this.«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»=«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
