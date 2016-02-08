@@ -31,7 +31,7 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	@«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
 	override def CharSequence template(Entity entity) '''
-		package «entity.eContainer?.fullyQualifiedName.toLowerCase»;		
+		package services.«entity.eContainer?.fullyQualifiedName.toLowerCase»;		
 		
 		«FOR entiti : getNeededImportsInMethods(entity).entrySet»
 			import «entiti.value.fullyQualifiedName»;
@@ -44,6 +44,7 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 		import javax.persistence.EntityManager;	
 		import javax.persistence.PersistenceContext;
 		import «entity.eContainer?.fullyQualifiedName.toLowerCase».sesion.Persistence;
+		import «entity.eContainer?.fullyQualifiedName.toLowerCase».«entity.name.toFirstUpper»;
 
 	
 		@Stateless

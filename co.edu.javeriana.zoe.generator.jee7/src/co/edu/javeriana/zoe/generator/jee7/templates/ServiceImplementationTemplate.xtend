@@ -30,7 +30,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	@«constraint.type.classifier.name»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
 	override def CharSequence template(Service service) '''
-		package «service.eContainer?.fullyQualifiedName.toLowerCase»;				
+		package imp.«service.eContainer?.fullyQualifiedName.toLowerCase»;				
 		
 		«FOR entity : getNeededImportsInMethods(service).entrySet»
 			import «entity.value.fullyQualifiedName»;
@@ -45,15 +45,17 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 		import java.io.Serializable;
 		import javax.ejb.Stateless;
 		«FOR superType:service.superTypes»
-		import «superType.typeSpecification.fullyQualifiedName»Bean;
+		import «superType.typeSpecification.fullyQualifiedName»Imp;
 		«ENDFOR»
+		import interfaces.«service.eContainer?.fullyQualifiedName.toLowerCase».«service.name.toFirstUpper»;
+		
 		
 		
 		/**
-		 * This class represents an EJB named «service.name.toFirstUpper»Bean
+		 * This class represents an EJB named «service.name.toFirstUpper»Imp
 		 */
 		@Stateless
-		public class «service.name.toFirstUpper»Bean«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF» «IF !service.superTypes.empty»extends «service.superTypes.get(0).typeSpecification.name.toFirstUpper»«IF service.superTypes.get(0).typeSpecification instanceof Service»Bean«IF service.superTypes.get(0)instanceof ParameterizedType»<«FOR param: (service.superTypes.get(0)as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF»«ENDIF»«ENDIF» implements «service.name.toFirstUpper»«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF»,Serializable{
+		public class «service.name.toFirstUpper»Imp«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF» «IF !service.superTypes.empty»extends «service.superTypes.get(0).typeSpecification.name.toFirstUpper»«IF service.superTypes.get(0).typeSpecification instanceof Service»Imp«IF service.superTypes.get(0)instanceof ParameterizedType»<«FOR param: (service.superTypes.get(0)as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF»«ENDIF»«ENDIF» implements «service.name.toFirstUpper»«IF !service.genericTypeParameters.isEmpty»<«FOR param:service.genericTypeParameters SEPARATOR ','»«param.name»«ENDFOR»>«ENDIF»,Serializable{
 		
 			«FOR gen:service.genericTypeParameters»
 				/**
@@ -89,7 +91,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 			 * @param clazz«gen.name»Object It's the generic clazz for '«gen.name»' generic parameter 
 			«ENDFOR»
 			 */
-			public «service.name.toFirstUpper»Bean(«FOR gen:service.genericTypeParameters SEPARATOR ','»Class<«gen.name»> clazz«gen.name»Object«ENDFOR»){
+			public «service.name.toFirstUpper»Imp(«FOR gen:service.genericTypeParameters SEPARATOR ','»Class<«gen.name»> clazz«gen.name»Object«ENDFOR»){
 				«FOR gen:service.genericTypeParameters»				
 				this.clazz«gen.name»Object=clazz«gen.name»Object;
 				«ENDFOR»
@@ -99,7 +101,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 			/**
 			 * Service default constructor
 			 */
-			public «service.name.toFirstUpper»Bean(){
+			public «service.name.toFirstUpper»Imp(){
 				«FOR superType:service.superTypes»
 				«IF superType instanceof ParameterizedType»
 				super(«FOR param:superType.typeParameters SEPARATOR ','»«param.writeType(true)».class«ENDFOR»);
