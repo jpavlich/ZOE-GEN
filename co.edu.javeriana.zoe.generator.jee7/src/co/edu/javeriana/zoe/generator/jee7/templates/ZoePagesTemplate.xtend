@@ -49,6 +49,11 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 		xmlns:p="http://primefaces.org/ui">	
 		
 	
+	   <ui:define name="metadata">
+				<f:metadata>
+						<f:event type="preRenderView" listener="#{«page.containerController.name.toFirstLower».init()}" />
+				</f:metadata>
+		</ui:define>
 			
 		<ui:composition template="/template.xhtml">
 		<ui:define name="content">
