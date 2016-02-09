@@ -57,7 +57,7 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 			        return em;
 			    }
 			
-			    public «entity.name.toFirstUpper»General() {
+			    public «entity.name.toFirstUpper»__General__() {
 			        super(«entity.name.toFirstUpper».class);
 			    }
 			
