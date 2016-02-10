@@ -11,7 +11,7 @@ class ServiceImplementationGenerator extends SimpleGenerator<Service> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(Service e) {
-		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +e.name.toFirstUpper +"Impl"+ ".java"
+		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/"+ "impl" +"/" +e.name.toFirstUpper +"Impl"+ ".java"
 	}
 
 	override getOutputConfigurationName() {

@@ -17,7 +17,7 @@ class ServiceGeneralGenerator extends SimpleGenerator<Entity> {
 	}
 
 	override protected getFileName(Entity e) {
-		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" + e.name +"__General__"+ ".java"
+		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/"+ "services" +"/" + e.name +"__General__"+ ".java"
 	}
 
 	override getTemplate() {

@@ -30,7 +30,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	@«constraint.type.classifier.name»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
 	override def CharSequence template(Service service) '''
-		package imp.«service.eContainer?.fullyQualifiedName.toLowerCase»;				
+		package «service.eContainer?.fullyQualifiedName.toLowerCase».impl;				
 		
 		«FOR entity : getNeededImportsInMethods(service).entrySet»
 			import «entity.value.fullyQualifiedName»;

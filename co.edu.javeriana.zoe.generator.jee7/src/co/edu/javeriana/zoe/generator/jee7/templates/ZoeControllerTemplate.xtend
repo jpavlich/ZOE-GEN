@@ -104,13 +104,13 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«ENDFOR»		
 			«/* Se importan los package las entidades */»
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
-			import «entity.value.fullyQualifiedName»;
-			import services.«entity.value.fullyQualifiedName»__General__;
+			import «entity.value.eContainer.fullyQualifiedName».services.«entity.value.name»__General__;
+			
 		«ENDFOR»
 		«/* Se importan los package de los servicios necesarios */»
 			«FOR service : controller.services»
 			    «IF  service.type.typeSpecification.typeSpecificationString != "Persistence"»
-				import interfaces.«service.type.typeSpecification.fullyQualifiedName»;
+				import «service.type.typeSpecification.fullyQualifiedName».interfaces;
 				«ENDIF»
 		«ENDFOR»	
 		
