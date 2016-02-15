@@ -47,7 +47,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 		«FOR superType:service.superTypes»
 		import «superType.typeSpecification.fullyQualifiedName»Impl;
 		«ENDFOR»
-		import interfaces.«service.eContainer?.fullyQualifiedName.toLowerCase».«service.name.toFirstUpper»;
+		import «service.eContainer?.fullyQualifiedName.toLowerCase».interfaces.«service.name.toFirstUpper»;
 		
 		
 		

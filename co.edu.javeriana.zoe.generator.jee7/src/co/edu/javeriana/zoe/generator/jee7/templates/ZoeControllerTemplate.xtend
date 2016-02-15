@@ -110,7 +110,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se importan los package de los servicios necesarios */»
 			«FOR service : controller.services»
 			    «IF  service.type.typeSpecification.typeSpecificationString != "Persistence"»
-				import «service.type.typeSpecification.fullyQualifiedName».interfaces;
+				import «controller.eContainer.fullyQualifiedName».interfaces.«service.type.typeSpecification.typeSpecificationString.toFirstUpper»;
 				«ENDIF»
 		«ENDFOR»	
 		
