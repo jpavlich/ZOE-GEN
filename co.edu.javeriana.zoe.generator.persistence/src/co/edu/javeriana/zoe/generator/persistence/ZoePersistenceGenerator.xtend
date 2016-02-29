@@ -1,11 +1,11 @@
 package co.edu.javeriana.zoe.generator.persistence
 
-
-import co.edu.javeriana.zoe.generator.persistence.generators.EntityGenerator
-import co.edu.javeriana.zoe.generator.persistence.generators.ResourceBundleGenerator
 import co.edu.javeriana.isml.generator.common.GeneratorSuite
 import co.edu.javeriana.isml.generator.common.OutputConfiguration
+import co.edu.javeriana.zoe.generator.persistence.generators.EntityGenerator
+import co.edu.javeriana.zoe.generator.persistence.generators.ResourceBundleGenerator
 import co.edu.javeriana.zoe.generator.persistence.generators.ServiceGeneralGenerator
+import co.edu.javeriana.zoe.generator.persistence.generators.ZoePersistenceXmlGenerator
 
 /**
  * Generates code from your model files on save.
@@ -23,13 +23,17 @@ class ZoePersistenceGenerator extends GeneratorSuite {
 
 	@OutputConfiguration
 	public static final String SERVICE_GENERAL = "service.general"
-	
+
+	@OutputConfiguration
+	public static final String PERSISTENCE_XML = "persistencexml"
+		
 
 	override getGenerators() {
 		#{
 			new EntityGenerator,			
 			new ResourceBundleGenerator,
-			new ServiceGeneralGenerator
+			new ServiceGeneralGenerator,
+			new ZoePersistenceXmlGenerator
 		}
 	}
 

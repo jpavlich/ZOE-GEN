@@ -106,7 +106,7 @@ class ReferenceTemplate {
 
 		var r = reference.tail
 		while (r != null) {
-			str += "." + writeReference(r)
+		//	str += "." + writeReference(r)
 			r = r.tail
 		}
 		return str
@@ -119,7 +119,7 @@ class ReferenceTemplate {
 		} else{
 			text=reference.referencedElement.name.toFirstUpper
 			if (reference.tail!=null){
-				text+="."+writeReference(reference.tail)
+			//	text+="."+writeReference(reference.tail)
 			}
 		}
 		
