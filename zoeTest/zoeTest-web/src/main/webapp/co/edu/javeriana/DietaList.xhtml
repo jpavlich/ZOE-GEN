@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">	
+
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{dietaManager.init()}" />
+        </f:metadata>
+    </ui:define>
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+
+            <h:form id= "form1">
+
+                <p:panel id= "panel2" >
+                    <p:dataTable  id= "dataTable3" paginator="true" paginatorPosition="bottom" var="dieta" 
+
+                                  value="#{dietaManager.dietaList}" selection= "#{dietaManager.dieta}">
+                        <p:column id= "label4">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label5" value="desayuno" />
+                            </f:facet>
+                            <p:outputLabel id= "label6" value="#{dieta}" />
+                        </p:column>
+                        <p:column id= "label7">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label8" value="Almuerzo" />
+                            </f:facet>
+                            <p:outputLabel id= "label9" value="#{dieta}" />
+                        </p:column>
+                        <p:column id= "label10">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label11" value="Cena" />
+                            </f:facet>
+                            <p:outputLabel id= "label12" value="#{dieta}" />
+                        </p:column>
+                        <p:column id= "label13">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label14" value="Merienda" />
+                            </f:facet>
+                            <p:outputLabel id= "label15" value="#{dieta}" />
+                        </p:column>
+                        <p:column id= "label16">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label17" value="Patologia" />
+                            </f:facet>
+                            <p:outputLabel id= "label18" value="#{dieta}" />
+                        </p:column>
+                        <p:column id= "label19">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label20" value="View" />
+                            </f:facet>
+
+                            <p:commandButton id= "button21" value="View" 
+                                             action= "#{dietaManager.viewDieta(dieta)}" update=":form1"  async="true" />
+                        </p:column>
+                        <p:column id= "label22">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label23" value="Edit" />
+                            </f:facet>
+
+                            <p:commandButton id= "button24" value="Edit" 
+                                             action= "#{dietaManager.editDieta(dieta)}" update=":form1"  async="true" />
+                        </p:column>
+                        <p:column id= "label25">
+                            <f:facet name="header">
+                                <p:outputLabel id= "label26" value="Delete" />
+                            </f:facet>
+
+                            <p:commandButton id= "button27" value="Delete" 
+                                             action= "#{dietaManager.deleteDieta(dieta)}" update=":form1"  async="true" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:head>
+                        <script src="http://maps.google.com/maps/api/js?sensor=false" 
+                        type="text/javascript"></script>
+                    </h:head>
+                    <p:gmap id= "gMap28" center="4.627447, -74.063842" zoom="15" type="HYBRID" style="width:100%;height:400px" />		
+                </p:panel>	
+
+            </h:form>
+
+
+        </ui:define>			
+    </ui:composition>	
+
+</html>	
+

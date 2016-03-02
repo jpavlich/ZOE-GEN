@@ -1,0 +1,40 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">	
+	
+
+   <ui:define name="metadata">
+			<f:metadata>
+					<f:event type="preRenderView" listener="#{dietaManager.init()}" />
+			</f:metadata>
+	</ui:define>
+		
+	<ui:composition template="/template.xhtml">
+	<ui:define name="content">
+		
+		<h:form id= "form1">
+			
+				<p:inputText id= "text2" label="Desayuno" value="#{dietaManager.dieta}"/>
+				<p:inputText id= "text3" label="Almuerzo" value="#{dietaManager.dieta}"/>
+				<p:inputText id= "text4" label="Cena" value="#{dietaManager.dieta}"/>
+				<p:inputText id= "text5" label="Merienda" value="#{dietaManager.dieta}"/>
+				<p:inputText id= "text6" label="Patologia" value="#{dietaManager.dieta}"/>
+				
+				<p:commandButton id= "button7" value="Save" 
+				 action= "#{dietaManager.saveDieta(dietaManager.dieta)}" update=":form1"  async="true" />
+				
+				<p:commandButton id= "button8" value="Cancel" 
+				 action= "#{dietaManager.listAll()}" update=":form1"  async="true" />
+			
+		</h:form>
+		
+			
+		</ui:define>			
+	</ui:composition>	
+	
+</html>	
+	
