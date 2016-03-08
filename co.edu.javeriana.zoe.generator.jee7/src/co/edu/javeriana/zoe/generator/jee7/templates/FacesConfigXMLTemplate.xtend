@@ -50,6 +50,16 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 		
 			<!-- Write your navigation rules here. You are encouraged to use CDI for 
 				creating @Named managed beans. -->		
+			<application>
+		        <resource-bundle>
+		            <base-name>co.edu.javeriana.prenat.resource.Resources_es_CO</base-name>
+		            <var>messages</var>
+		        </resource-bundle>
+		        <locale-config>
+		            <default-locale>es</default-locale>
+		            <supported-locale>en</supported-locale>
+		        </locale-config>
+	 		</application>
 			
 			<!-- Navigation Rules -->
 			

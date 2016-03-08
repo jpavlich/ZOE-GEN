@@ -104,10 +104,16 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«ENDFOR»		
 			«/* Se importan los package las entidades */»
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
-			import «entity.value.fullyQualifiedName»;
+			import «entity.value.eContainer.fullyQualifiedName».services.«entity.value.name»__General__;
+			
 		«ENDFOR»
 		«/* Se importan los package de los servicios necesarios */»
-
+			«FOR service : controller.services»
+			    «IF  service.type.typeSpecification.typeSpecificationString != "Persistence"»
+				import «controller.eContainer.fullyQualifiedName».interfaces.«service.type.typeSpecification.typeSpecificationString.toFirstUpper»;
+				«ENDIF»
+		«ENDFOR»	
+		
 	
 		
 		/**
@@ -145,10 +151,10 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 */
 				@EJB
 			«««»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
-			«««private «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
+			private «IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'__General__'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»«IF service.type instanceof ParameterizedType»«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.name.toFirstLower»«ENDIF»;
+			
+			«««private «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			«««name.toFirstLower»«ENDIF»; 
-			private «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-			name.toFirstLower»«ENDIF»; 
 			«ENDFOR»
 		    «/* Se declaran los atributos*/»
 			«FOR attr : neededAttributes.entrySet»
@@ -178,15 +184,15 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se crea un metodo init con los metodos o servicios declarados como default*/»			
 		 @PostConstruct
 		 public void init() {
-					«FOR action : controller.actions»
-						«IF action.isDefault»
-							«FOR st:action.body»
-								«IF !(st instanceof Show)»
-									«writeStatement(st as MethodStatement)»
-								«ENDIF»
-							«ENDFOR»
-						«ENDIF»
-				    «ENDFOR»
+					«««»«FOR action : controller.actions»
+					«««»	«IF action.isDefault»
+						«««»	«FOR st:action.body»
+						««««»		«IF !(st instanceof Show)»
+							«««»»		«writeStatement(st as MethodStatement)»
+							«««»	«ENDIF»
+						«««»	«ENDFOR»
+				«««»		«ENDIF»
+				«««»    «ENDFOR»
 		  }
 			
 		«/* Se declaran los metodos relacionados como acciones del controlador*/»
@@ -276,9 +282,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 *
 				 * @return current instance for «service.name.toFirstLower» attribute
 				 */
-			«««public «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
-			«««name.toFirstUpper»«ENDIF»«««»
-		    public «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»get«service.name.toFirstUpper»«ELSE»«service.
+			public «IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'__General__'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF» «IF service.name != null»get«service.name.toFirstUpper»«ELSE»get«service.type.typeSpecification.
 			name.toFirstUpper»«ENDIF»(){
 				return «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»;
@@ -287,11 +291,9 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 * Sets the value for the «IF service.name != null»«service.name»«ELSE»«service.type.typeSpecification.typeSpecificationString»«ENDIF» EJB
 				 * @param «service.name.toFirstLower» The value to set
 				 */
-				 «««»»«service.type.typeSpecification.typeSpecificationString.toFirstUpper»«IF service.type instanceof ParameterizedType»<«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»>«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
-			«««name.toFirstLower»«ENDIF»
 			public void «IF service.name != null»set«service.name.toFirstUpper»«ELSE»set«service.
-			name.toFirstUpper»«ENDIF»(«FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»«service.name.toFirstUpper»«ELSE»«service.
-			name.toFirstUpper»«ENDIF»){
+			name.toFirstUpper»«ENDIF»(«IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'__General__'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»  «IF service.name != null»«service.name.toFirstLower»«ELSE»set«service.
+			name.toFirstLower»«ENDIF»){
 				this.«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»=«IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
 			name.toFirstLower»«ENDIF»;

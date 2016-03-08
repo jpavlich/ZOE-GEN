@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="zoeTest-ejb/src/main/java"/>
+	<classpathentry kind="src" path="zoeTest-ejb/target/generated-sources/annotations"/>
+	<classpathentry kind="src" path="zoeTest-web/src/main/java"/>
+	<classpathentry kind="lib" path="zoeTest-ear/target/zoeTest-ear-1.0-SNAPSHOT/lib/commonj.sdo-2.1.1.jar"/>
+	<classpathentry kind="lib" path="zoeTest-ear/target/zoeTest-ear-1.0-SNAPSHOT/lib/eclipselink-2.5.2.jar"/>
+	<classpathentry kind="lib" path="zoeTest-ear/target/zoeTest-ear-1.0-SNAPSHOT/lib/javax.persistence-2.1.0.jar"/>
+	<classpathentry kind="lib" path="zoeTest-ear/target/zoeTest-ear-1.0-SNAPSHOT/zoeTest-ejb-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="zoeTest-ejb/target/endorsed/javaee-endorsed-api-7.0.jar"/>
+	<classpathentry kind="lib" path="zoeTest-ejb/target/zoeTest-ejb-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/endorsed/javaee-endorsed-api-7.0.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/zoeTest-web-1.0-SNAPSHOT/WEB-INF/lib/commonj.sdo-2.1.1.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/zoeTest-web-1.0-SNAPSHOT/WEB-INF/lib/eclipselink-2.5.2.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/zoeTest-web-1.0-SNAPSHOT/WEB-INF/lib/javax.persistence-2.1.0.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/zoeTest-web-1.0-SNAPSHOT/WEB-INF/lib/primefaces-5.3.jar"/>
+	<classpathentry kind="lib" path="zoeTest-web/target/zoeTest-web-1.0-SNAPSHOT/WEB-INF/lib/zoeTest-ejb-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="zoeTest-ejb/target/classes"/>
+</classpath>

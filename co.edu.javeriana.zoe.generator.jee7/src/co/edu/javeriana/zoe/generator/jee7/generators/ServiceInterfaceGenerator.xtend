@@ -11,7 +11,7 @@ class ServiceInterfaceGenerator extends SimpleGenerator<Service> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(Service e) {
-		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/" +e.name.toFirstUpper + ".java"
+		return e.eContainer?.fullyQualifiedName.toString("/").toLowerCase + "/"+ "interfaces" +"/" +e.name.toFirstUpper + ".java"
 	}
 
 	override getOutputConfigurationName() {

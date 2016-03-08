@@ -1,0 +1,10 @@
+co/edu/javeriana/entities/Dieta_.class
+co/edu/javeriana/entities/services/Dieta__General__.class
+co/edu/javeriana/entities/Dieta.class
+co/edu/javeriana/entities/Preferencias.class
+co/edu/javeriana/sesion/Persistence.class
+co/edu/javeriana/entities/services/Preferencias__General__.class
+co/edu/javeriana/NewSessionBean.class
+co/edu/javeriana/impl/DietaPersonalImpl.class
+co/edu/javeriana/entities/Preferencias_.class
+co/edu/javeriana/interfaces/DietaPersonal.class

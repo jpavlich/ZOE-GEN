@@ -31,7 +31,7 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 	// TODO Implement hashCode and equals, based in the unique keys of the entity
 	/*	@«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
 	override def CharSequence template(Entity entity) '''
-		package «entity.eContainer?.fullyQualifiedName.toLowerCase»;		
+		package «entity.eContainer?.fullyQualifiedName.toLowerCase».services;		
 		
 		«FOR entiti : getNeededImportsInMethods(entity).entrySet»
 			import «entiti.value.fullyQualifiedName»;
@@ -43,11 +43,12 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 		import javax.ejb.Stateless;
 		import javax.persistence.EntityManager;	
 		import javax.persistence.PersistenceContext;
-		import «entity.eContainer?.fullyQualifiedName.toLowerCase».AbstractFacade;
+		import co.edu.javeriana.sesion.Persistence;
+		import «entity.eContainer?.fullyQualifiedName.toLowerCase».«entity.name.toFirstUpper»;
 
 	
 		@Stateless
-		public class «entity.name.toFirstUpper»General extends AbstractFacade<«entity.name.toFirstUpper»>{
+		public class «entity.name.toFirstUpper»__General__ extends Persistence<«entity.name.toFirstUpper»>{
 			    @PersistenceContext(unitName = "co.edu.javeriana.javemovil_javemovil-web_war_1.0-SNAPSHOTPU")
     			private EntityManager em;
 
@@ -56,7 +57,7 @@ class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
 			        return em;
 			    }
 			
-			    public «entity.name.toFirstUpper»General() {
+			    public «entity.name.toFirstUpper»__General__() {
 			        super(«entity.name.toFirstUpper».class);
 			    }
 			
