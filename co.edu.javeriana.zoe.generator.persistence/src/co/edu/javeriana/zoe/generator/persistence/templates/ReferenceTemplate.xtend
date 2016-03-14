@@ -121,7 +121,7 @@ class ReferenceTemplate {
 
 		var r = reference.tail
 		while (r != null) {
-		//	str += "." + writeReference(r)
+			str += "." + writeReference(r)
 			r = r.tail
 		}
 		return str

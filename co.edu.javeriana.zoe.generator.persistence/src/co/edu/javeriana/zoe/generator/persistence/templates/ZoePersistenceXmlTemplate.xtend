@@ -15,11 +15,11 @@ class ZoePersistenceXmlTemplate extends SimpleTemplate<List<Entity>> {
 	@Inject extension IQualifiedNameProvider
 	
 	override def CharSequence template(List<Entity> totalPages) '''
-	
 	<?xml version="1.0" encoding="UTF-8"?>
 	<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	  <persistence-unit name="co.edu.javeriana.javemovil_javemovil-web_war_1.0-SNAPSHOTPU" transaction-type="JTA">
 	    <jta-data-source>jdbc/prenat</jta-data-source>
+	    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 	    <class>co.edu.javeriana.prenat.model.Rol</class>
 	    <class>co.edu.javeriana.prenat.model.RolUsuario</class>
 	    <class>co.edu.javeriana.prenat.model.Usuario</class>

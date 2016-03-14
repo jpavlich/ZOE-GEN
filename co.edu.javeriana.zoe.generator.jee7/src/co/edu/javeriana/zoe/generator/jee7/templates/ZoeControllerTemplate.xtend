@@ -184,15 +184,15 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se crea un metodo init con los metodos o servicios declarados como default*/»			
 		 @PostConstruct
 		 public void init() {
-					«««»«FOR action : controller.actions»
-					«««»	«IF action.isDefault»
-						«««»	«FOR st:action.body»
-						««««»		«IF !(st instanceof Show)»
-							«««»»		«writeStatement(st as MethodStatement)»
-							«««»	«ENDIF»
-						«««»	«ENDFOR»
-				«««»		«ENDIF»
-				«««»    «ENDFOR»
+					«FOR action : controller.actions»
+						«IF action.isDefault»
+							«FOR st:action.body»
+								«IF !(st instanceof Show)»
+									«writeStatement(st as MethodStatement)»
+								«ENDIF»
+							«ENDFOR»
+						«ENDIF»
+				    «ENDFOR»
 		  }
 			
 		«/* Se declaran los metodos relacionados como acciones del controlador*/»

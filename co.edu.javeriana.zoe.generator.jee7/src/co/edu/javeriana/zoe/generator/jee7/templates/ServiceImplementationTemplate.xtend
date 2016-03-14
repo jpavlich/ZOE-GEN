@@ -123,6 +123,11 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 					@Override
 					public «service.getReplacedType(feature.type).writeType(true)» «feature.name»(«FOR parameter : feature.parameters SEPARATOR ','»«parameter.type.
 			writeType(true)» «parameter.name.toFirstLower»«ENDFOR»){
+						«IF !feature.body.empty»
+						   String querySql = "select «feature.parameters.get(1).name» from «feature.parameters.get(0).type.writeType(true)»"";
+						   
+						    Query query=em.createNativeQuery(querySql); 
+						«ENDIF»
 						«IF !feature.type.typeSpecification.name.equalsIgnoreCase("Void")»
 							return null;
 						«ENDIF»

@@ -38,8 +38,9 @@ public class Query {
 	
 	
 	public Query(Query previous) {
-		super();
-		previous.next = this;
+		super();			
+			next = this;
+		
 	}
 	
 	
@@ -64,7 +65,10 @@ public class Query {
 	////////////////
 
 	public static void main(String[] args) {
-		new Query(null).select("almuerzo").from("dieta").where("...");
+		System.out.println();
+		System.out.println(new Query(null).select("almuerzo").from("dieta").where("..."));
+		
+		
 
 	}
 }

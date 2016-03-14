@@ -50,7 +50,7 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 		
 			<!-- Write your navigation rules here. You are encouraged to use CDI for 
 				creating @Named managed beans. -->		
-			<application>
+			 <!-- <application>
 		        <resource-bundle>
 		            <base-name>co.edu.javeriana.prenat.resource.Resources_es_CO</base-name>
 		            <var>messages</var>
@@ -59,8 +59,8 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 		            <default-locale>es</default-locale>
 		            <supported-locale>en</supported-locale>
 		        </locale-config>
-	 		</application>
-			
+	 		</application> -->
+	 					
 			<!-- Navigation Rules -->
 			
 			<navigation-rule>

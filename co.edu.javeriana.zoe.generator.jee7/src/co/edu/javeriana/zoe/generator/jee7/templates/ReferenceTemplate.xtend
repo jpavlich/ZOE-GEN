@@ -24,6 +24,7 @@ import javax.inject.Inject
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
+import co.edu.javeriana.isml.isml.NamedElement
 
 class ReferenceTemplate {
 	@Inject extension IsmlModelNavigation
@@ -106,7 +107,7 @@ class ReferenceTemplate {
 
 		var r = reference.tail
 		while (r != null) {
-		//	str += "." + writeReference(r)
+			str += "." + writeReference(r)
 			r = r.tail
 		}
 		return str
@@ -119,7 +120,7 @@ class ReferenceTemplate {
 		} else{
 			text=reference.referencedElement.name.toFirstUpper
 			if (reference.tail!=null){
-			//	text+="."+writeReference(reference.tail)
+				text+="."+writeReference(reference.tail)
 			}
 		}
 		
