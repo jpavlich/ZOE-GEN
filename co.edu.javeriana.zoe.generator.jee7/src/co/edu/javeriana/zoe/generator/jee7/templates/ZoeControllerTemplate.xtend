@@ -193,6 +193,14 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 							«ENDFOR»
 						«ENDIF»
 				    «ENDFOR»
+				    
+				   «FOR attr : neededAttributes.entrySet»
+				    	«IF attr.value.isMapModel»
+				    			
+				    		«attr.key»«IF (attr.value.typeSpecification instanceof Primitive)»=new «attr.value.typeSpecification.typeSpecificationString.toFirstUpper»()«ENDIF»;	
+				    	«ENDIF»				
+				    «ENDFOR»
+				    
 		  }
 			
 		«/* Se declaran los metodos relacionados como acciones del controlador*/»

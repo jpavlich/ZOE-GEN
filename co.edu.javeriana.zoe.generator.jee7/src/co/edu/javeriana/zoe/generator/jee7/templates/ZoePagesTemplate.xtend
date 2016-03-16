@@ -222,7 +222,9 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
         		<script src="http://maps.google.com/maps/api/js?sensor=false" 
               	type="text/javascript"></script>
     	</h:head>
-		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» style="width:100%;height:400px" />		
+		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» 
+		model= "#{«part.containerController.name.toFirstLower».«part.parameters.get(3).writeExpression»}"
+		style="width:100%;height:400px" />		
 	'''
 	def CharSequence radioChooser(ViewInstance part) '''
 		<p:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
