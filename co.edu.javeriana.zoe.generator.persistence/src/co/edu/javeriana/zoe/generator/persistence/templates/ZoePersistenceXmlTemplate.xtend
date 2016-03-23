@@ -13,15 +13,19 @@ class ZoePersistenceXmlTemplate extends SimpleTemplate<List<Entity>> {
 	@Inject extension IsmlModelNavigation
 	@Inject extension IQualifiedNameProvider
 
-	override def CharSequence template(List<Entity> totalPages) '''
+	override def CharSequence template(List<Entity> totalEntities) '''
 		<?xml version="1.0" encoding="UTF-8"?>
 		<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 		  <persistence-unit name="co.edu.javeriana.javemovil_javemovil-web_war_1.0-SNAPSHOTPU" transaction-type="JTA">
 		    <jta-data-source>jdbc/prenat</jta-data-source>
 		    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-				<class>co.edu.javeriana.entities.Dieta</class>
-			    <class>co.edu.javeriana.entities.Lugares</class>
-			    <class>co.edu.javeriana.entities.Preferencias</class>
+		  
+		     			«FOR p : totalEntities»
+		     				
+		     						<class>«p?.eContainer?.fullyQualifiedName.toString() + "." + p.name»</class>
+		     				
+		     				
+		     			«ENDFOR»
 		    <exclude-unlisted-classes>true</exclude-unlisted-classes>
 		    <properties>
 		      <property name="javax.persistence.schema-generation.database.action" value="create"/>
