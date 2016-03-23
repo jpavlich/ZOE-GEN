@@ -56,10 +56,10 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                 <h:form id="menuForm">
 		                    <p:menubar>
 		                    	
-		                        <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home"/>
+		                     
 		                        «FOR page : allPages»
 		                        «IF page.controller != null && !getShowActions(page).empty»
-		                        <p:submenu label="#{bundle.Maintenance}">
+		                        <p:submenu label="Dieta">
 		                            <p:menuitem value="Dieta" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
 		                        </p:submenu>
 		                        «ENDIF»

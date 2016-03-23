@@ -102,9 +102,11 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				«ENDIF»
 			«ENDIF»
 		«ENDFOR»		
+		
 			«/* Se importan los package las entidades */»
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
 			import «entity.value.eContainer.fullyQualifiedName».services.«entity.value.name»__General__;
+			import «entity.value.eContainer.fullyQualifiedName».*;
 			
 		«ENDFOR»
 		«/* Se importan los package de los servicios necesarios */»
@@ -200,6 +202,18 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				    		«attr.key»«IF (attr.value.typeSpecification instanceof Primitive)»=new «attr.value.typeSpecification.typeSpecificationString.toFirstUpper»()«ENDIF»;	
 				    	«ENDIF»				
 				    «ENDFOR»
+				            
+				            /*setLugaresList(getPersistenceLugares().findAll());
+				            
+				            
+				             setSimpleModel(new DefaultMapModel());
+				              
+				            for(Lugares lugar:getLugaresList()){
+				            
+				                LatLng coord1 = new LatLng(lugar.getCoordenada1(), lugar.getCoordenada2());
+				                getSimpleModel().addOverlay(new Marker(coord1, lugar.getDescripción()));
+				            } 
+				    */
 				    
 		  }
 			

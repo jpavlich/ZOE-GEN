@@ -40,6 +40,8 @@ class ExpressionTemplate {
 				}
 			}
 		}
+		
+		
 		text += "new " + expression.type.typeSpecification.typeSpecificationString.toFirstUpper + "("
 		var int i = 0;
 		for (parameter : expression.parameters) {
@@ -50,6 +52,10 @@ class ExpressionTemplate {
 			i++
 		}
 		text += ")"
+		
+		//Lugares lugares = new Lugares();
+        "Q"+expression.type.typeSpecification.typeSpecificationString.toFirstUpper +"lugar" +
+        " = Q"+expression.type.typeSpecification.typeSpecificationString.toFirstUpper+"."+expression.type.typeSpecification.typeSpecificationString;
 
 	}
 
