@@ -60,7 +60,7 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                        «FOR page : allPages»
 		                        «IF page.controller != null && !getShowActions(page).empty»
 		                        <p:submenu label="Dieta">
-		                            <p:menuitem value="Dieta" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
+		                            <p:menuitem value="«page.name»" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
 		                        </p:submenu>
 		                        «ENDIF»
 		                        «ENDFOR»
