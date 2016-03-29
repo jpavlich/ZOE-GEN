@@ -36,6 +36,7 @@ class ExpressionTemplate {
 			for (entry : neededAttributes.entrySet) {
 				if (entry.value.typeSpecification.typeSpecificationString.equals(
 					expression.type.typeSpecification.typeSpecificationString)) {
+						
 					text += "this." + entry.key + "="
 				}
 			}
@@ -54,9 +55,9 @@ class ExpressionTemplate {
 		text += ")"
 		
 		//Lugares lugares = new Lugares();
-        "Q"+expression.type.typeSpecification.typeSpecificationString.toFirstUpper +"lugar" +
-        " = Q"+expression.type.typeSpecification.typeSpecificationString.toFirstUpper+"."+expression.type.typeSpecification.typeSpecificationString;
-
+		
+						
+        
 	}
 
 	def dispatch CharSequence writeExpression(BinaryOperator expression) '''

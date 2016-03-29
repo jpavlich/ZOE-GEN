@@ -232,7 +232,9 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«IF param.type.collection» List  «param.name.toFirstLower»«ELSE» «param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDIF»«ENDFOR»){
 
 					try{
+						
 						«FOR param : method.parameters»
+						
 							«IF neededAttributes.containsKey(param.name)»
 								if(«param.name»!=null){
 									this.set«param.name.toFirstUpper»(«param.name»);
@@ -244,7 +246,18 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 									}
 								«ENDIF»
 							«ENDIF»
-						«ENDFOR»					
+						«ENDFOR»
+						«IF !method.parameters.empty»
+							«IF !method.parameters.get(0).type.collection»
+								«IF method.parameters.get(0).type.typeSpecification instanceof Primitive»
+						
+								«ELSE»
+								//«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper» «method.parameters.get(0).name» = new «method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper»();
+								Q«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper» «method.parameters.get(0).name» = Q«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper».«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstLower»;
+								«ENDIF»
+								
+			            	«ENDIF»
+			            «ENDIF»					
 						«writeStatements(method.body)»
 						«IF method.body.actionRequiresReturnSentence»
 							return "";
