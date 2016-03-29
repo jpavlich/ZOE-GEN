@@ -246,18 +246,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 									}
 								«ENDIF»
 							«ENDIF»
-						«ENDFOR»
-						«IF !method.parameters.empty»
-							«IF !method.parameters.get(0).type.collection»
-								«IF method.parameters.get(0).type.typeSpecification instanceof Primitive»
-						
-								«ELSE»
-								//«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper» «method.parameters.get(0).name» = new «method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper»();
-								Q«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper» «method.parameters.get(0).name» = Q«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstUpper».«method.parameters.get(0).type.typeSpecification.typeSpecificationString.toFirstLower»;
-								«ENDIF»
-								
-			            	«ENDIF»
-			            «ENDIF»					
+						«ENDFOR»			
 						«writeStatements(method.body)»
 						«IF method.body.actionRequiresReturnSentence»
 							return "";
