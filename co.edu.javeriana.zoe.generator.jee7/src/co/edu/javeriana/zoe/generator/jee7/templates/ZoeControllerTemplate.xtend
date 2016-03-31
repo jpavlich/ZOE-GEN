@@ -83,6 +83,11 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import javax.faces.bean.ManagedBean;
 		import javax.annotation.PostConstruct;
 		import javax.ejb.EJB;
+		import org.primefaces.model.map.MapModel;
+		import org.primefaces.model.map.DefaultMapModel;
+		import org.primefaces.model.map.LatLng;
+		import org.primefaces.model.map.Marker;
+		
 		
 		«/* Se importan los controladores necesarios */»
 	    «FOR invokedController : getActionCallControllers(controller)»
@@ -196,12 +201,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 						«ENDIF»
 				    «ENDFOR»
 				    
-				   «FOR attr : neededAttributes.entrySet»
-				    	«IF attr.value.isMapModel»
-				    			
-				    		«attr.key»«IF (attr.value.typeSpecification instanceof Primitive)»=new «attr.value.typeSpecification.typeSpecificationString.toFirstUpper»()«ENDIF»;	
-				    	«ENDIF»				
-				    «ENDFOR»
+				  
 				            
 				            /*setLugaresList(getPersistenceLugares().findAll());
 				            

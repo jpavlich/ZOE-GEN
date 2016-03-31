@@ -32,32 +32,44 @@ class ExpressionTemplate {
 		if (expression.eContainer.eContainer instanceof Show) {
 			var Controller controller = expression.findAncestor(Controller) as Controller
 			var Map<String, Type> neededAttributes = controller.neededAttributes.get(
-				"neededAttributes") as Map<String,Type>
+				"neededAttributes") as Map<String, Type>
 			for (entry : neededAttributes.entrySet) {
 				if (entry.value.typeSpecification.typeSpecificationString.equals(
 					expression.type.typeSpecification.typeSpecificationString)) {
-						
+
 					text += "this." + entry.key + "="
 				}
 			}
 		}
-		
-		
-		text += "new " + expression.type.typeSpecification.typeSpecificationString.toFirstUpper + "("
-		var int i = 0;
-		for (parameter : expression.parameters) {
-			text += writeExpression(parameter)
-			if (i != expression.parameters.size - 1) {
-				text += ","
+		if (!expression.type.isMapModel) {
+
+			text += "new " + expression.type.typeSpecification.typeSpecificationString.toFirstUpper + "("
+			var int i = 0;
+			for (parameter : expression.parameters) {
+				text += writeExpression(parameter)
+				if (i != expression.parameters.size - 1) {
+					text += ","
+				}
+				i++
 			}
-			i++
+			text += ")"
+		} else {
+			
+				var Controller control = expression.findAncestor(Controller) as Controller
+				var Map<String, Type> neededAttributesMap = control.neededAttributes.get(
+				"neededAttributes") as Map<String, Type>
+				
+			text += "new DefaultMapModel();"
+			+
+			   "for (Lugares lugar : this."+neededAttributesMap.entrySet.get(0).key+") {
+
+                LatLng coord1 = new LatLng(Double.parseDouble(lugar.getCoordenada1()), Double.parseDouble(lugar.getCoordenada2()));
+                getSimpleModel().addOverlay(new Marker(coord1, lugar.getDescripcion()));
+            }"
+
+	
 		}
-		text += ")"
-		
-		//Lugares lugares = new Lugares();
-		
-						
-        
+
 	}
 
 	def dispatch CharSequence writeExpression(BinaryOperator expression) '''
