@@ -87,6 +87,8 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import org.primefaces.model.map.DefaultMapModel;
 		import org.primefaces.model.map.LatLng;
 		import org.primefaces.model.map.Marker;
+		import com.mysema.query.jpa.impl.JPAQuery;
+		
 		
 		
 		«/* Se importan los controladores necesarios */»
@@ -244,9 +246,12 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 									if(«param.name»!=null){
 										this.set«param.obtainAttribute.key.toFirstUpper»(«param.name»);
 									}
+									
 								«ENDIF»
 							«ENDIF»
-						«ENDFOR»			
+						«ENDFOR»	
+						JPAQuery query = new JPAQuery(getPersistence().getEntityManager());
+						QLugares lugars = QLugares.lugares;		
 						«writeStatements(method.body)»
 						«IF method.body.actionRequiresReturnSentence»
 							return "";

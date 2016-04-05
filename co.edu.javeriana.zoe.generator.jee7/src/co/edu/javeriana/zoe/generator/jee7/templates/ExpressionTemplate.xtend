@@ -37,7 +37,7 @@ class ExpressionTemplate {
 				if (entry.value.typeSpecification.typeSpecificationString.equals(
 					expression.type.typeSpecification.typeSpecificationString)) {
 
-					text += "this." + entry.key + "="
+					text += "this." + entry.key + "=" 
 				}
 			}
 		}
@@ -53,14 +53,14 @@ class ExpressionTemplate {
 				i++
 			}
 			text += ")"
-		} else {
 			
+		} else {
 				var Controller control = expression.findAncestor(Controller) as Controller
 				var Map<String, Type> neededAttributesMap = control.neededAttributes.get(
 				"neededAttributes") as Map<String, Type>
-				
-			text += "new DefaultMapModel();"
-			+
+				 
+			text += "new DefaultMapModel();" +
+			
 			   "for (Lugares lugar : this."+neededAttributesMap.entrySet.get(0).key+") {
 
                 LatLng coord1 = new LatLng(Double.parseDouble(lugar.getCoordenada1()), Double.parseDouble(lugar.getCoordenada2()));
