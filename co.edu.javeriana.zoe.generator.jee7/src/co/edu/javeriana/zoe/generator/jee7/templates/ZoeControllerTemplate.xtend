@@ -87,7 +87,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import org.primefaces.model.map.DefaultMapModel;
 		import org.primefaces.model.map.LatLng;
 		import org.primefaces.model.map.Marker;
-		import com.mysema.query.jpa.impl.JPAQuery;
+
 		
 		
 		
@@ -119,7 +119,9 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se importan los package de los servicios necesarios */»
 			«FOR service : controller.services»
 			    «IF  service.type.typeSpecification.typeSpecificationString != "Persistence"»
-				import «controller.eContainer.fullyQualifiedName».interfaces.«service.type.typeSpecification.typeSpecificationString.toFirstUpper»;
+			    	«IF  service.type.typeSpecification.typeSpecificationString != "Query"»
+						import «controller.eContainer.fullyQualifiedName».interfaces.«service.type.typeSpecification.typeSpecificationString.toFirstUpper»;
+					«ENDIF»
 				«ENDIF»
 		«ENDFOR»	
 		
@@ -250,8 +252,6 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 								«ENDIF»
 							«ENDIF»
 						«ENDFOR»	
-						JPAQuery query = new JPAQuery(getPersistence().getEntityManager());
-						QLugares lugars = QLugares.lugares;		
 						«writeStatements(method.body)»
 						«IF method.body.actionRequiresReturnSentence»
 							return "";
