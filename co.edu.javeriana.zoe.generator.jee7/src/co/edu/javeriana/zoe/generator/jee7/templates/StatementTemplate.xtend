@@ -48,17 +48,18 @@ class StatementTemplate {
 		}
 	'''
 
-	def dispatch CharSequence writeStatement(If statement) '''
+	def dispatch CharSequence writeStatement(
+		If statement) '''
 		if(«writeExpression(statement.condition)»){
 			«writeStatements(statement.body)»
 		}«IF statement.elseBody != null» else {
-			«writeStatements(statement.elseBody)»		
+				«writeStatements(statement.elseBody)»		
 		}«ELSE»
-			«IF statement.findAncestor(Action) != null»
-				«IF statement.isUniqueStatement»
-					return "";
+				«IF statement.findAncestor(Action) != null»
+					«IF statement.isUniqueStatement»
+						return "";
+					«ENDIF»
 				«ENDIF»
-			«ENDIF»
 		«ENDIF»
 	'''
 
@@ -94,7 +95,8 @@ class StatementTemplate {
 		return "goTo«(statement.expression as Instance).type.typeSpecification.typeSpecificationString.toFirstUpper»";		
 	'''
 
-	def dispatch CharSequence writeStatement(Return statement) '''
+	def dispatch CharSequence writeStatement(
+		Return statement) '''
 		return «IF statement.expression != null»«writeExpression(statement.expression)»«ENDIF»;
 	'''
 

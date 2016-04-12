@@ -87,6 +87,8 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import org.primefaces.model.map.DefaultMapModel;
 		import org.primefaces.model.map.LatLng;
 		import org.primefaces.model.map.Marker;
+		import co.edu.javeriana.sesion.Query;
+		
 
 		
 		
@@ -112,9 +114,12 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		
 			«/* Se importan los package las entidades */»
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
+			
+			
+			«IF  entity.value.typeSpecificationString != "Query"»
 			import «entity.value.eContainer.fullyQualifiedName».services.«entity.value.name»__General__;
 			import «entity.value.eContainer.fullyQualifiedName».*;
-			
+				«ENDIF»
 		«ENDFOR»
 		«/* Se importan los package de los servicios necesarios */»
 			«FOR service : controller.services»
@@ -195,29 +200,18 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se crea un metodo init con los metodos o servicios declarados como default*/»			
 		 @PostConstruct
 		 public void init() {
-					«FOR action : controller.actions»
-						«IF action.isDefault»
-							«FOR st:action.body»
-								«IF !(st instanceof Show)»
-									«writeStatement(st as MethodStatement)»
-								«ENDIF»
-							«ENDFOR»
-						«ENDIF»
-				    «ENDFOR»
+		 	listAll();
+					«««»«FOR action : controller.actions»
+					«««»	«IF action.isDefault»
+						«««»	«FOR st:action.body»
+						«««»		«IF !(st instanceof Show)»
+						«««»			«writeStatement(st as MethodStatement)»
+						«««»		«ENDIF»
+					«««»		«ENDFOR»
+				«««»		«ENDIF»
+				«««»    «ENDFOR»
 				    
-				  
-				            
-				            /*setLugaresList(getPersistenceLugares().findAll());
-				            
-				            
-				             setSimpleModel(new DefaultMapModel());
-				              
-				            for(Lugares lugar:getLugaresList()){
-				            
-				                LatLng coord1 = new LatLng(lugar.getCoordenada1(), lugar.getCoordenada2());
-				                getSimpleModel().addOverlay(new Marker(coord1, lugar.getDescripción()));
-				            } 
-				    */
+		
 				    
 		  }
 			
