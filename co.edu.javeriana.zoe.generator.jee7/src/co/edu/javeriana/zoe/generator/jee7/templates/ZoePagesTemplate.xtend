@@ -68,8 +68,9 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def dispatch CharSequence widgetTemplate(ViewInstance viewInstance) {
-		
+	
 		switch (viewInstance.type.typeSpecification.typeSpecificationString) {
+		
 			case "Label": label(viewInstance)
 			case "Text": inputText(viewInstance)
 			case "Button": button(viewInstance)
@@ -219,8 +220,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 
 	def CharSequence Map(ViewInstance part) '''
 		<h:head>
-        		<script src="http://maps.google.com/maps/api/js?sensor=false" 
-              	type="text/javascript"></script>
+        		 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     	</h:head>
 		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» 
 		model= "#{«part.containerController.name.toFirstLower».«part.parameters.get(3).writeExpression»}"
