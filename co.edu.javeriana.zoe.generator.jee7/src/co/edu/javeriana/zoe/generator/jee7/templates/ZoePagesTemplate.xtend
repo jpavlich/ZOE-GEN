@@ -210,7 +210,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 		«val id=viewInstance.id»
 		«forms.put(viewInstance,id)»
 		<h:form id= "«id»">
-			
+			<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 				«FOR partBlock : viewInstance.getBody»
 				«widgetTemplate(partBlock)»
 				«ENDFOR»
@@ -219,7 +219,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	'''
 
 	def CharSequence Map(ViewInstance part) '''
-		  <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		
 		<p:gmap id= "«part.id»" center=«part.parameters.get(0).writeExpression» zoom=«part.parameters.get(1).writeExpression» type=«part.parameters.get(2).writeExpression» 
 		model= "#{«part.containerController.name.toFirstLower».«part.parameters.get(3).writeExpression»}"
 		style="width:100%;height:400px" />		
