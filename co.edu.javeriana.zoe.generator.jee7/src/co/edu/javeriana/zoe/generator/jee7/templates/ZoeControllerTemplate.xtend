@@ -88,6 +88,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		import org.primefaces.model.map.LatLng;
 		import org.primefaces.model.map.Marker;
 		import co.edu.javeriana.sesion.Query;
+		import co.edu.javeriana.sesion.Convert;
 		
 
 		
@@ -116,7 +117,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«FOR entity : getNeededImportsInActions(controller).entrySet»
 			
 			
-			«IF  entity.value.typeSpecificationString != "Query"»
+			«IF  entity.value.typeSpecificationString != "Query" && entity.value.typeSpecificationString != "Convert"»
 			import «entity.value.eContainer.fullyQualifiedName».services.«entity.value.name»__General__;
 			import «entity.value.eContainer.fullyQualifiedName».*;
 				«ENDIF»
@@ -124,7 +125,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		«/* Se importan los package de los servicios necesarios */»
 			«FOR service : controller.services»
 			    «IF  service.type.typeSpecification.typeSpecificationString != "Persistence"»
-			    	«IF  service.type.typeSpecification.typeSpecificationString != "Query"»
+			    	«IF  service.type.typeSpecification.typeSpecificationString != "Query"  && service.type.typeSpecification.typeSpecificationString  != "Convert"»
 						import «controller.eContainer.fullyQualifiedName».interfaces.«service.type.typeSpecification.typeSpecificationString.toFirstUpper»;
 					«ENDIF»
 				«ENDIF»
