@@ -61,10 +61,10 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                </p:layoutUnit>
 		                <p:layoutUnit position="south" size="100" closable="true" collapsible="true" resizable="false" style="background: #045491">
 		                    <div>
-		                        <h:outputText value="ZOE-GEN" />
+		                        <h:outputText value="Aplicación generada con el transformador ZOE-GEN" />
 		                    </div>
 		                    <div>
-		                        <h:outputText value="Maestria" />
+		                        <h:outputText value="Maestria en Ingenieria de Sistemas y Computación" />
 		                    </div>
 		                    <div>
 		                        <h:outputText value="Pontificia Universidad Javeriana" />
@@ -81,7 +81,8 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                        <p:growl autoUpdate="true"/>
 		                        
 		                                     
-		                            <p:menubar style="width:170px">
+		                            <p:menu  style="width:170px">        
+
 		
 		
 		                                   «FOR page : allPages»
@@ -91,7 +92,7 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                                   		</p:submenu>
 		                                   	«ENDIF»
 		                                   «ENDFOR»
-		                            </p:menubar> 
+		                            </p:menu> 
 		                      
 		                    </h:form>
 		                </p:layoutUnit>
