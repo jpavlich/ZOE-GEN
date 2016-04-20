@@ -36,8 +36,6 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		    <f:view contentType="text/html">
 		        <h:head>
 		            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		            <h:outputStylesheet name="./css/default.css"/>
-		            <h:outputStylesheet name="./css/cssLayout.css"/>
 		            <link href="../resources/css/paginasControles.css" rel="stylesheet" type="text/css"/>
 		            <title>JaveMovil - 2014 III - MISyC</title>
 		        </h:head>
@@ -61,10 +59,10 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		                </p:layoutUnit>
 		                <p:layoutUnit position="south" size="100" closable="true" collapsible="true" resizable="false" style="background: #045491">
 		                    <div>
-		                        <h:outputText value="Aplicación generada con el transformador ZOE-GEN" />
+		                        <h:outputText value="Aplicacion generada con el transformador ZOE-GEN" />
 		                    </div>
 		                    <div>
-		                        <h:outputText value="Maestria en Ingenieria de Sistemas y Computación" />
+		                        <h:outputText value="Maestria en Ingenieria de Sistemas y Computacion" />
 		                    </div>
 		                    <div>
 		                        <h:outputText value="Pontificia Universidad Javeriana" />
