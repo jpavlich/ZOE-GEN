@@ -37,7 +37,7 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		        <h:head>
 		            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		            <link href="../resources/css/paginasControles.css" rel="stylesheet" type="text/css"/>
-		            <title>JaveMovil - 2014 III - MISyC</title>
+		            <title>ZOE-GEN - PRENAT - MISyC</title>
 		        </h:head>
 		        <h:body style="background: #045491" >
 		            <p:layout fullPage="true" style="background: #045491">
