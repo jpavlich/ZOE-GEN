@@ -24,7 +24,6 @@ import javax.inject.Inject
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import co.edu.javeriana.isml.isml.NamedElement
 
 class ReferenceTemplate {
 	@Inject extension IsmlModelNavigation

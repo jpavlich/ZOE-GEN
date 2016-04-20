@@ -1,15 +1,11 @@
- package co.edu.javeriana.zoe.generator.jee7.templates
+package co.edu.javeriana.zoe.generator.jee7.templates
 
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Action
 import co.edu.javeriana.isml.isml.Controller
-import co.edu.javeriana.isml.isml.For
-import co.edu.javeriana.isml.isml.If
 import co.edu.javeriana.isml.isml.Instance
 import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Show
-import co.edu.javeriana.isml.isml.Statement
-import co.edu.javeriana.isml.isml.While
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import com.google.inject.Inject
 import java.util.HashMap
@@ -25,55 +21,91 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
 
-	//	override preprocess(List<Page> is) {
-	//		allPages = new HashSet
-	//		allPages.addAll(is.eResource.getAllInstances(IsmlPackage.eINSTANCE.page).filter(Page))
-	//	}
+	// override preprocess(List<Page> is) {
+	// allPages = new HashSet
+	// allPages.addAll(is.eResource.getAllInstances(IsmlPackage.eINSTANCE.page).filter(Page))
+	// }
 	override def CharSequence template(List<Page> allPages) '''
-		<?xml version='1.0' encoding='UTF-8' ?> 
+	<?xml version='1.0' encoding='UTF-8' ?> 
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml"
-		      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-		      xmlns:h="http://xmlns.jcp.org/jsf/html"
+		      xmlns:h="http://java.sun.com/jsf/html"
+		      xmlns:f="http://java.sun.com/jsf/core"
+		      xmlns:ui="http://java.sun.com/jsf/facelets"
 		      xmlns:p="http://primefaces.org/ui">
+		    <f:view contentType="text/html">
+		        <h:head>
+		            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		            <h:outputStylesheet name="./css/default.css"/>
+		            <h:outputStylesheet name="./css/cssLayout.css"/>
+		            <link href="../resources/css/paginasControles.css" rel="stylesheet" type="text/css"/>
+		            <title>JaveMovil - 2014 III - MISyC</title>
+		        </h:head>
+		        <h:body style="background: #045491" >
+		            <p:layout fullPage="true" style="background: #045491">
+		                <p:layoutUnit position="north" size="100" resizable="false" closable="true" collapsible="true" style="background: #045491">
+		                    <p:layout style="min-width:400px;min-height:200px;">
+		                        <p:layoutUnit position="west" size="300" minSize="40" maxSize="300">
 		
-		    <h:head>
-		        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		        <h:outputStylesheet name="./css/default.css"/>
-		        <h:outputStylesheet name="./css/cssLayout.css"/>
-		        <title>Facelets Template</title>
-		    </h:head>
+		                            <ui:include src="headerLogin.xhtml"/>   
 		
-		    <h:body>
+		                        </p:layoutUnit>
+		                        <p:layoutUnit position="center" >
+		                            <div>
+		                                <h:outputLabel for="name" value="Bienvenido a Prenat" style="font-weight:bold" />
+		                            </div>
+		
+		                        </p:layoutUnit>
+		
+		                    </p:layout>
+		                </p:layoutUnit>
+		                <p:layoutUnit position="south" size="100" closable="true" collapsible="true" resizable="false" style="background: #045491">
+		                    <div>
+		                        <h:outputText value="ZOE-GEN" />
+		                    </div>
+		                    <div>
+		                        <h:outputText value="Maestria" />
+		                    </div>
+		                    <div>
+		                        <h:outputText value="Pontificia Universidad Javeriana" />
+		                    </div>
+		                    <div>
+		                        <h:outputText value="Bogota D.C:" />
+		                    </div>
+		                    <div>
+		                        <h:outputText value="Abril - 2016" />
+		                    </div>
+		                </p:layoutUnit>
+		                <p:layoutUnit position="west" size="200" closable="true" resizable="false" collapsible="true" style="background: #045491" >
+		                    <h:form>
+		                        <p:growl autoUpdate="true"/>
+		                        
+		                                     
+		                            <p:menubar style="width:170px">
 		
 		
-		        <div id="top" class="top">
-		            <ui:insert name="top">Top</ui:insert>
-		        </div>
-		        <div>
-		            <div id="left">
-		                <ui:insert name="left">Left</ui:insert>
-		                 <h:form id="menuForm">
-		                    <p:menubar>
-		                    	
-		                     
-		                        «FOR page : allPages»
-		                        «IF page.controller != null && !getShowActions(page).empty»
-		                        <p:submenu label="Dieta">
-		                            <p:menuitem value="«page.name»" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
-		                        </p:submenu>
-		                        «ENDIF»
-		                        «ENDFOR»
-		                    </p:menubar>
-		                </h:form>
-		            </div>
-		            <div id="content" class="left_content">
-		                <ui:insert name="content">Content</ui:insert>
-		            </div>
-		        </div>
-		    </h:body>
+		                                   «FOR page : allPages»
+		                                   	«IF page.controller != null && !getShowActions(page).empty»
+		                                   		<p:submenu label="Dieta">
+		                                   		    <p:menuitem value="«page.name»" outcome="/«page?.eContainer?.fullyQualifiedName.toString("/") + "/" + page.name + ".xhtml"»" />
+		                                   		</p:submenu>
+		                                   	«ENDIF»
+		                                   «ENDFOR»
+		                            </p:menubar> 
+		                      
+		                    </h:form>
+		                </p:layoutUnit>
+		                <p:layoutUnit position="center" resizable="false" style="background: #045491">
 		
-		</html>
+		                    <ui:insert name="title"></ui:insert>
+		                    <ui:insert name="content"></ui:insert>  
+		
+		                </p:layoutUnit>
+		            </p:layout>
+		        </h:body>
+		    </f:view>
+		</html>	
+			
 			
 	'''
 
@@ -83,61 +115,60 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 			var String key = "goTo" + ((stmnt.expression as Instance).type.typeSpecification as Page).name
 			if (!uniqueActions.containsKey(key)) {
 				var String value = ((stmnt.expression as Instance).type.typeSpecification as Page).eContainer.
-					fullyQualifiedName.toString("/") + "/" + ((stmnt.expression as Instance).type.typeSpecification as Page).name +
-					".xhtml"
+					fullyQualifiedName.toString("/") + "/" +
+					((stmnt.expression as Instance).type.typeSpecification as Page).name + ".xhtml"
 				uniqueActions.put(key, value);
 			}
 		}
 		return uniqueActions;
 	}
 
-	//	/**
-	//	 * Este método obtiene las acciones que contienen acciones de tipo show invocadas en una página determinada
-	//	 */
-	//	def EList<Action> getShowActions(Page page) {
-	//		var EList<Action> actions = new BasicEList
-	//		for (component : page.body.statements.filter(ViewInstance)) {
-	//			if (component instanceof ViewBlock) {
+	// /**
+	// * Este método obtiene las acciones que contienen acciones de tipo show invocadas en una página determinada
+	// */
+	// def EList<Action> getShowActions(Page page) {
+	// var EList<Action> actions = new BasicEList
+	// for (component : page.body.statements.filter(ViewInstance)) {
+	// if (component instanceof ViewBlock) {
 	//
-	//				getShowActionsViewBlock(component);
-	//			}
-	//			if (component.actionCall != null) {
-	//				if (seekOnBody((component.actionCall.action as Action).body)) {
-	//					actions.add(component.actionCall.action as Action)
-	//				}
-	//			}
-	//		}
-	//		return actions
-	//	}
+	// getShowActionsViewBlock(component);
+	// }
+	// if (component.actionCall != null) {
+	// if (seekOnBody((component.actionCall.action as Action).body)) {
+	// actions.add(component.actionCall.action as Action)
+	// }
+	// }
+	// }
+	// return actions
+	// }
 	//
-	//	def EList<Action> getShowActionsViewBlock(ViewInstance viewInstance) {
+	// def EList<Action> getShowActionsViewBlock(ViewInstance viewInstance) {
 	//
-	//		var EList<Action> actions = new BasicEList
-	//		for (component : viewInstance.parameters.filter(ViewBlock)) {
-	//			for (componentViewins : viewInstance.parameters.filter(ViewInstance)) {
-	//				if (componentViewins.actionCall != null) {
-	//					if (seekOnBody((componentViewins.actionCall.action as Action).body)) {
-	//						actions.add(componentViewins.actionCall.action as Action)
-	//					}
-	//				}
-	//			}
+	// var EList<Action> actions = new BasicEList
+	// for (component : viewInstance.parameters.filter(ViewBlock)) {
+	// for (componentViewins : viewInstance.parameters.filter(ViewInstance)) {
+	// if (componentViewins.actionCall != null) {
+	// if (seekOnBody((componentViewins.actionCall.action as Action).body)) {
+	// actions.add(componentViewins.actionCall.action as Action)
+	// }
+	// }
+	// }
 	//
-	//		}
-	//		return actions
+	// }
+	// return actions
 	//
-	//	}
+	// }
 	/**
 	 * Este método obtiene las acciones que contienen statements de tipo Show de un Controlador dado
 	 */
 	def EList<Action> getShowActions(Controller controller) {
 		var EList<Action> actions = new BasicEList
 		for (action : controller.actions) {
-			if (action.showStatements.toList.size >0)  {
+			if (action.showStatements.toList.size > 0) {
 				actions.add(action)
 			}
 		}
 		return actions
 	}
-
 
 }
