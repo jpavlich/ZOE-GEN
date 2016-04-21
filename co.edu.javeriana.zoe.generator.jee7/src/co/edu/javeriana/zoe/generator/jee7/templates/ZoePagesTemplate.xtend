@@ -30,6 +30,8 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension ExpressionTemplate
 	int i;
 	Map<ViewInstance,String> forms
+	
+	int j;
 
 	override preprocess(Page e) {
 		i = 1;
@@ -75,8 +77,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "Text": inputText(viewInstance)
 			case "Button": button(viewInstance)
 			case "Form": form(viewInstance)
-			case "Panel": panel(viewInstance)
-		
+			case "Panel": panel(viewInstance)	
 			case "PanelButton": panelButton(viewInstance)
 			case "DataTable": dataTable(viewInstance)
 			case "Password": password(viewInstance)
@@ -99,11 +100,6 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence outputText(ViewInstance part) '''
 		<p:outputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
 	'''
-	
-//	addAllLabel="#{messages['security.user.pickList.copyAll.action']}"
-//					addLabel="#{messages['security.user.pickList.copy.action']}"
-//					removeLabel="#{messages['security.user.pickList.remove.action']}"
-//					removeAllLabel="#{messages['security.user.pickList.removeAll.action']}"
 	def CharSequence pickList(ViewInstance part)'''
 	<p:pickList id="«part.id»"
 		itemLabel=«part.parameters.get(0).writeExpression» itemValue="#{pickValue}"
@@ -112,7 +108,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	''' 
 	
 	def CharSequence listChooser(ViewInstance part)'''
-		««««»<lion:objectSelectManyMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» valueList=«IF part.parameters.get(1) instanceof ResourceReference»«part.parameters.get(1).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"«ENDIF» value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» filterMatchMode="contains" widgetLabel=«part.parameters.get(3).writeExpression» />		
+		
 	''' 
 	
 	
@@ -227,24 +223,19 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence radioChooser(ViewInstance part) '''
 		<p:selectOneRadio id="«part.id»" label=«part.parameters.get(0).writeExpression»  value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF»
 		valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}"/> 
-	'''// TODO Duda en el value?
+	'''
 	
 	def CharSequence panel(ViewInstance viewInstance) '''
+	 <p:draggable for="«viewInstance.thisId»" />
 	 <p:panel id= "«viewInstance.id»" >
-		«««»» <lion:formFormat id="ident">
 		«FOR partBlock : viewInstance.body»
 			«widgetTemplate(partBlock)»
 		«ENDFOR»
-		«««»</lion:formFormat>
 	</p:panel>	
+	
 	'''
 	
 	def CharSequence panelButton(ViewInstance viewAttribute) '''
-	«««»<lion:panelButton id= "«viewAttribute.id»" align=«viewAttribute.parameters.get(0).writeExpression.toString»>
-		«««»«FOR partBlock : viewAttribute.view.body»
-		«««»		«widgetTemplate(partBlock)»
-		«««»«ENDFOR»
-	«««» </lion:panelButton>
 	'''
 	def CharSequence orderList(ViewInstance orderList) '''
 		
@@ -256,10 +247,8 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	def CharSequence dataTable(ViewInstance table) '''
 		<p:dataTable  id= "«table.id»" paginator="true" paginatorPosition="bottom" var="«table.forViewInBody.variable.name»" 
 	
-		«««»»value="#{«table.containerController.name.toFirstLower».«table.forViewInBody?.collection.referencedElement.name»}"
-		«««««»#{«table.containerController.name.toFirstLower».selectedRegisters}
+		
 		 value="#{«table.containerController.name.toFirstLower».«table.forViewInBody?.collection.referencedElement.name»}" selection= "#{«table.containerController.name.toFirstLower».«table.forViewInBody?.variable.name»}">
-		 ««««».«table.forViewInBody.collection.toText» PENDIENTE ERROR
 			«FOR pair : table.getColumnsDataTable.entrySet»
 				«val viewInstance = pair.key as ViewInstance»
 				<p:column id= "«viewInstance.id»">
@@ -271,14 +260,6 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			«ENDFOR»		
 		</p:dataTable>
 	'''
-	
-//	def CharSequence dataTableRows(ViewBlock viewBlock) '''
-//	 
-//		«FOR partBlock : viewAttribute.view.body»
-//				«widgetTemplate(partBlock)»
-//		«ENDFOR»
-//	 
-//	'''
 	
 	
 	
@@ -298,6 +279,16 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			return part.name
 		}else{
 			return part.view.name.toFirstLower + i++;
+		}		
+	}
+	
+		def getThisId(ViewInstance part){
+			j = 0;
+		if(part.name!= null){
+			return part.name
+		}else{
+			j =i;
+			return part.view.name.toFirstLower+j;
 		}		
 	}
 	
