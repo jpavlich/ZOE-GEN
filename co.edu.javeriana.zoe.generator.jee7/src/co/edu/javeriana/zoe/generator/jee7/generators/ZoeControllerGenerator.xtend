@@ -7,7 +7,7 @@ import co.edu.javeriana.isml.isml.Controller
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-class BackingBeanGenerator extends SimpleGenerator<Controller> {
+class ZoeControllerGenerator extends SimpleGenerator<Controller> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(Controller e) {

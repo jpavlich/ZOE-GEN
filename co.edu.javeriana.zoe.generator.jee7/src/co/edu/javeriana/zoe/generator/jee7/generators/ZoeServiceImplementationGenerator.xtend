@@ -7,7 +7,7 @@ import co.edu.javeriana.isml.isml.Service
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-class ServiceImplementationGenerator extends SimpleGenerator<Service> {
+class ZoeServiceImplementationGenerator extends SimpleGenerator<Service> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(Service e) {
