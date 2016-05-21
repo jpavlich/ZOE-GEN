@@ -145,10 +145,10 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"/>
 		«ELSE»
 		«IF part.parameters.get(1).writeExpression instanceof Reference && (part.parameters.get(1).writeExpression as Reference).referencedElement.type.typeSpecification instanceof Enum»
-		<lion:enumSelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
+		<p:enumSelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"
 		«ELSE»
-		<lion:objectSelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
+		<p:objectSelectOneMenu id="«part.id»" label=«part.parameters.get(0).writeExpression» 
 			valueList="#{«part.containerController.name.toFirstLower».«part.parameters.get(1).writeExpression»}" value=«IF part.parameters.get(2) instanceof ResourceReference»«part.parameters.get(2).writeExpression»«ELSE»"#{«part.containerController.name.toFirstLower».«part.parameters.get(2).writeExpression»}"«ENDIF» noSelectionLabel=«part.parameters.get(3).writeExpression» labelSelection="#{_eachItem}"/>
 			«ENDIF»
 		«ENDIF»
