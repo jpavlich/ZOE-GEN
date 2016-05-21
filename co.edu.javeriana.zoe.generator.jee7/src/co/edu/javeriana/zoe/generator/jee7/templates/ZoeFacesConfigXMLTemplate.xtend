@@ -1,24 +1,19 @@
  package co.edu.javeriana.zoe.generator.jee7.templates
 
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
-
-import co.edu.javeriana.isml.isml.For
-import co.edu.javeriana.isml.isml.If
+import co.edu.javeriana.isml.isml.Action
+import co.edu.javeriana.isml.isml.Controller
+import co.edu.javeriana.isml.isml.Instance
+import co.edu.javeriana.isml.isml.Page
+import co.edu.javeriana.isml.isml.Show
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
+import com.google.inject.Inject
+import java.util.HashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.isml.isml.Instance
-import co.edu.javeriana.isml.isml.Page
-import co.edu.javeriana.isml.isml.Show
-import co.edu.javeriana.isml.isml.Statement
-import co.edu.javeriana.isml.isml.While
-import co.edu.javeriana.isml.scoping.IsmlModelNavigation
-import com.google.inject.Inject
-import java.util.HashMap
-import co.edu.javeriana.isml.isml.Action
-import co.edu.javeriana.isml.isml.Controller
 
 class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 

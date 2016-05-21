@@ -1,14 +1,13 @@
 package co.edu.javeriana.zoe.generator.persistence.generators
 
 import co.edu.javeriana.isml.generator.common.SimpleGenerator
-import co.edu.javeriana.isml.isml.Service
+import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.zoe.generator.persistence.ZoePersistenceGenerator
+import co.edu.javeriana.zoe.generator.persistence.templates.ZoeServiceGeneralTemplate
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.isml.isml.Entity
-import co.edu.javeriana.zoe.generator.persistence.templates.ServiceGeneralTemplate
 
-class ServiceGeneralGenerator extends SimpleGenerator<Entity> {
+class ZoeServiceGeneralGenerator extends SimpleGenerator<Entity> {
 	
 	@Inject extension IQualifiedNameProvider
 
@@ -21,7 +20,7 @@ class ServiceGeneralGenerator extends SimpleGenerator<Entity> {
 	}
 
 	override getTemplate() {
-		return new ServiceGeneralTemplate
+		return new ZoeServiceGeneralTemplate
 
 	}
 	

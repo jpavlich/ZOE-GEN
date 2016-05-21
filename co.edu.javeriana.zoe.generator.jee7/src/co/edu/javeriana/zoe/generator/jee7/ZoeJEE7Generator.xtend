@@ -2,12 +2,12 @@ package co.edu.javeriana.zoe.generator.jee7
 
 import co.edu.javeriana.isml.generator.common.GeneratorSuite
 import co.edu.javeriana.isml.generator.common.OutputConfiguration
-import co.edu.javeriana.zoe.generator.jee7.generators.BackingBeanGenerator
-import co.edu.javeriana.zoe.generator.jee7.generators.FacesConfigXMLGenerator
-import co.edu.javeriana.zoe.generator.jee7.generators.PagesGenerator
-import co.edu.javeriana.zoe.generator.jee7.generators.ServiceImplementationGenerator
-import co.edu.javeriana.zoe.generator.jee7.generators.ServiceInterfaceGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeControllerGenerator
 import co.edu.javeriana.zoe.generator.jee7.generators.ZoeDesignGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeFacesConfigXMLGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoePagesGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeServiceImplementationGenerator
+import co.edu.javeriana.zoe.generator.jee7.generators.ZoeServiceInterfaceGenerator
 
 class ZoeJEE7Generator extends GeneratorSuite{
 	
@@ -26,11 +26,11 @@ class ZoeJEE7Generator extends GeneratorSuite{
 
 	override getGenerators() {
 		#{			
-			new BackingBeanGenerator,
-			new PagesGenerator,
-			new FacesConfigXMLGenerator,
-			new ServiceInterfaceGenerator,
-			new ServiceImplementationGenerator,			
+			new ZoeControllerGenerator,
+			new ZoePagesGenerator,
+			new ZoeFacesConfigXMLGenerator,
+			new ZoeServiceInterfaceGenerator,
+			new ZoeServiceImplementationGenerator,			
 			new ZoeDesignGenerator
 		}
 	}

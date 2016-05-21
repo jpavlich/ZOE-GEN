@@ -7,7 +7,7 @@ import co.edu.javeriana.isml.isml.Enum
 import co.edu.javeriana.isml.isml.Expression
 import co.edu.javeriana.isml.isml.ForView
 import co.edu.javeriana.isml.isml.IfView
-import co.edu.javeriana.isml.isml.LiteralValue
+import co.edu.javeriana.isml.isml.NamedViewBlock
 import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Reference
 import co.edu.javeriana.isml.isml.ResourceReference
@@ -22,7 +22,6 @@ import java.util.LinkedHashMap
 import java.util.Map
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import co.edu.javeriana.isml.isml.NamedViewBlock
 
 class ZoePagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
