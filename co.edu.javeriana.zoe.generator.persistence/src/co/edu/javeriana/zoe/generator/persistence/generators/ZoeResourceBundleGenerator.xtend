@@ -7,7 +7,7 @@ import co.edu.javeriana.isml.isml.ResourceBundle
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-class ResourceBundleGenerator extends SimpleGenerator<ResourceBundle> {
+class ZoeResourceBundleGenerator extends SimpleGenerator<ResourceBundle> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(ResourceBundle rs) {

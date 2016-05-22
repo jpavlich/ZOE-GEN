@@ -1,31 +1,36 @@
  package co.edu.javeriana.zoe.generator.jee7.templates
 
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
-
-import co.edu.javeriana.isml.isml.For
-import co.edu.javeriana.isml.isml.If
+import co.edu.javeriana.isml.isml.Action
+import co.edu.javeriana.isml.isml.Controller
+import co.edu.javeriana.isml.isml.Instance
+import co.edu.javeriana.isml.isml.Page
+import co.edu.javeriana.isml.isml.Show
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation
+import com.google.inject.Inject
+import java.util.HashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.isml.isml.Instance
-import co.edu.javeriana.isml.isml.Page
-import co.edu.javeriana.isml.isml.Show
-import co.edu.javeriana.isml.isml.Statement
-import co.edu.javeriana.isml.isml.While
-import co.edu.javeriana.isml.scoping.IsmlModelNavigation
-import com.google.inject.Inject
-import java.util.HashMap
-import co.edu.javeriana.isml.isml.Action
-import co.edu.javeriana.isml.isml.Controller
 
+/**
+ * 
+ * Clase que retorna la plantilla para el archivo faces config
+ * 
+ * autor:john.olarte@javeriana.edu.co
+ */
 class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 
 	/*Inyección de las clases auxiliares con metodos utilitarios*/
 	@Inject extension IsmlModelNavigation
 	@Inject extension IQualifiedNameProvider
 
+/**
+ * Método que retorna una plantilla para el archivo faces-config que recibe como parámetro la lista de paginas.
+ * 
+ */
 
 	override def CharSequence template(List<Page> totalPages) '''
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -60,7 +65,6 @@ class FacesConfigXMLTemplate extends SimpleTemplate<List<Page>> {
 		            <supported-locale>en</supported-locale>
 		        </locale-config>
 	 		</application> -->
-	 					
 			<!-- Navigation Rules -->
 			
 			<navigation-rule>

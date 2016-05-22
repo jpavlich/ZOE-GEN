@@ -17,19 +17,21 @@ import java.util.Map
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 
+
+/**
+ * Clase que genera la interfaz del servicio
+ * autor:john.olarte@javeriana.edu.co
+ */
 class ServiceInterfaceTemplate extends SimpleTemplate<Service> {
 
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 
-	override preprocess(Service service) {
-	}
-
-	
-
-	// TODO Implement hashCode and equals, based in the unique keys of the entity
-	/*	@«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
+/**
+ * Metodo que retorna la plantilla de la interfaz del servicio
+ * 
+ */ 
 	override def CharSequence template(Service service) '''
 		package «service.eContainer?.fullyQualifiedName.toLowerCase».interfaces;		
 		
@@ -89,7 +91,12 @@ class ServiceInterfaceTemplate extends SimpleTemplate<Service> {
 		
 			
 	'''
-
+ /**
+  * 
+  *
+  *  Metodo que obtiene las dependencias necesarias de los servicios 
+  */
+  
 	def Map<QualifiedName,TypeSpecification> getNeededImportsInMethods(TypeSpecification service) {
 		var Map<QualifiedName,TypeSpecification> imports = new HashMap
 		for (feature : service.features) {

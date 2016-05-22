@@ -6,7 +6,7 @@ import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Page
 import java.util.List
 
-class FacesConfigXMLGenerator  extends SimpleGenerator<List<Page>>{
+class ZoeFacesConfigXMLGenerator  extends SimpleGenerator<List<Page>>{
 
 	override protected getFileName(List<Page> is) {		
 		return "WEB-INF/faces-config.xml";

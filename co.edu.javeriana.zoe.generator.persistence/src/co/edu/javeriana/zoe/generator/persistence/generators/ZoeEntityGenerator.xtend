@@ -7,7 +7,7 @@ import co.edu.javeriana.isml.isml.Entity
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-class EntityGenerator extends SimpleGenerator<Entity> {
+class ZoeEntityGenerator extends SimpleGenerator<Entity> {
 	@Inject extension IQualifiedNameProvider
 
 	override getFileName(Entity e) {

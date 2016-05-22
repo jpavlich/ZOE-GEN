@@ -17,7 +17,7 @@ import java.util.Map
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 
-class ServiceGeneralTemplate extends SimpleTemplate<Entity> {
+class ZoeServiceGeneralTemplate extends SimpleTemplate<Entity> {
 
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
