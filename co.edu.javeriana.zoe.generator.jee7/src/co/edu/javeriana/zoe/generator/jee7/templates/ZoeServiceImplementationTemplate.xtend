@@ -17,18 +17,21 @@ import java.util.Map
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 
+/**
+ * Clase que retorna la implementación del servicio 
+ * autor: john.olarte@javeriana.edu.co
+ */
+
 class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 
-	override preprocess(Service service) {
-	}
-	
-
-	// TODO Implement hashCode and equals, based in the unique keys of the entity
-	/*	@«constraint.type.classifier.name»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
+	/**
+	 * Metodo que retorna la implementación de los servicios
+	 * 
+	 */
 	override def CharSequence template(Service service) '''
 		package «service.eContainer?.fullyQualifiedName.toLowerCase».impl;				
 		
@@ -135,7 +138,7 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 				«ELSE»
 					«IF feature instanceof Attribute»
 						/**
-						 * Returns the current value for the attribute «feature.name»
+						 * Returns the current value for the attrib7ute «feature.name»
 						 *
 						 * @return Some «feature.type.writeType(true)» object
 						 */
@@ -160,7 +163,11 @@ class ServiceImplementationTemplate extends SimpleTemplate<Service> {
 		
 			
 	'''
+/**
+ * 
 
+ * 
+ */
 	def Map<QualifiedName,TypeSpecification> getNeededImportsInMethods(TypeSpecification service) {
 		var Map<QualifiedName,TypeSpecification> imports = new HashMap
 		for (feature : service.features) {

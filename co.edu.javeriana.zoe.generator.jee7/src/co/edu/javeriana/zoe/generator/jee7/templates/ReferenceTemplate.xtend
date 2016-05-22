@@ -25,10 +25,20 @@ import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
+
+/**
+ * 
+ * Clase para utilidades de las plantillas
+ * 
+ */
 class ReferenceTemplate {
 	@Inject extension IsmlModelNavigation
 	@Inject extension ExpressionTemplate
 
+/**
+ * 
+ * 
+ */
 	def dispatch CharSequence writeReference(MethodCall reference) '''		
 		«reference.method.name»(«FOR parameter : reference.parameters SEPARATOR ','»«writeExpression(parameter)»«ENDFOR»)'''
 

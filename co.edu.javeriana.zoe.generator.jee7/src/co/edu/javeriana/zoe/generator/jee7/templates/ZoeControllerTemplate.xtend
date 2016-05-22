@@ -7,12 +7,10 @@ import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.isml.For
 import co.edu.javeriana.isml.isml.ForView
 import co.edu.javeriana.isml.isml.If
-import co.edu.javeriana.isml.isml.MethodStatement
 import co.edu.javeriana.isml.isml.Parameter
 import co.edu.javeriana.isml.isml.ParameterizedType
 import co.edu.javeriana.isml.isml.Primitive
 import co.edu.javeriana.isml.isml.Return
-import co.edu.javeriana.isml.isml.Service
 import co.edu.javeriana.isml.isml.Show
 import co.edu.javeriana.isml.isml.Type
 import co.edu.javeriana.isml.isml.While
@@ -25,29 +23,35 @@ import java.util.Map
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.isml.isml.Statement
+
+/**
+ * Clase para la generación de controladores en la plataforma Java.
+ * autor: john.olarte@javeriana.edu.co
+ */
 
 class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 
+	//Inyección de clases utilitarias
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
 	@Inject extension TypeChecker
 	@Inject extension ExpressionTemplate
 	@Inject extension StatementTemplate
-	@Inject extension ServicesValidator
 	var EList<Entity> controllerEntities
 	var Entity entityToList
 	var Map<String, Type> neededAttributes = new HashMap
 
+	
+	/**
+	 * Metodo para precargar los atributos y dependencias necesarias
+	 * para el controlador
+	 *
+	 */
 	override preprocess(Controller controller) {
 		var Map<String, Object> neededData = controller.getNeededAttributes
 		controllerEntities = neededData.get("controllerEntities") as EList<Entity>
 		entityToList = neededData.get("entityToList") as Entity
 		neededAttributes = neededData.get("neededAttributes") as Map<String, Type>
-//		if (neededData.containsKey("selectedRegisters")) {
-//			neededAttributes.put("selectedRegisters", neededData.get("selectedRegisters")as Type)
-//		}
-//		p.collection.lastReference.referencedElement.type.writeType()
 		val controlledPages = controller.controlledPages
 		val forViews = new ArrayList<ForView>()
 		for (p : controlledPages) {
@@ -66,8 +70,12 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 
 	}
 
-	// TODO Implement hashCode and equals, based in the unique keys of the entity
-	/*	@«constraint.type.typeSpecification.typeSpecificationString»(«FOR Expression ex : constraint.parameters SEPARATOR ","»«ex.toString.length»«ENDFOR»)*/
+
+/**
+ * 
+ * Metodo que retorna la plantilla del controlador generado
+ * 
+ */
 	override def CharSequence template(
 		Controller controller
 	) '''
@@ -139,7 +147,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		 «/* Se declara el controlador con scope y anotaciones */»
 		@ManagedBean(name = "«controller.name.toFirstLower»")
 		@RequestScoped
-		«««»@ConversationScoped
+		
 		public class «controller.name.toFirstUpper» implements Serializable {
 			
 			/**
@@ -147,31 +155,16 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 			 */
 			private static final long serialVersionUID = 1L;
 			
-			«««»/**
-			««««» *This represents the object to mantain the conversational state
-			««««»» */
-			««««»»@Inject
-			«««««private Conversati	n conversation;
-			
-		««««»	/**
-		««««»»	 * This is an instance from FacesContext object
-		«««»»	 */
-		««««»	 @Inject
-		«««»»	private Face	Contex	 facesContext;
-			
-		
-			
 			«/* Se inyectan los servicios en el controlador */»
 			«FOR service : controller.services»
 				/**
 				 * Injection for the component named «service.type.typeSpecification.typeSpecificationString.toFirstUpper» 
 				 */
 				@EJB
-			«««»«IF validateService(service.type.typeSpecification as Service)»@«service.type.typeSpecification.typeSpecificationString.toFirstUpper»Qualifier«ENDIF»
+			
 			private «IF service.type.typeSpecification.typeSpecificationString == "Persistence"» «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»«'__General__'»«ELSE» «service.type.typeSpecification.typeSpecificationString.toFirstUpper»«ENDIF»«IF service.type instanceof ParameterizedType»«ENDIF» «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.name.toFirstLower»«ENDIF»;
 			
-			«««private «FOR param: (service.type as ParameterizedType).typeParameters SEPARATOR ','»«param.writeType(true)»«ENDFOR»General «IF service.name != null»«service.name.toFirstLower»«ELSE»«service.
-			«««name.toFirstLower»«ENDIF»; 
+			
 			«ENDFOR»
 		    «/* Se declaran los atributos*/»
 			«FOR attr : neededAttributes.entrySet»
@@ -207,7 +200,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 						«««»	«FOR st:action.body»
 						«««»		«IF !(st instanceof Show)»
 						«««»			«writeStatement(st as MethodStatement)»
-						«««»		«ENDIF»
+				
 					«««»		«ENDFOR»
 				«««»		«ENDIF»
 				«««»    «ENDFOR»
@@ -226,7 +219,7 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 				 *
 				 * @return String value with some navigation outcome
 				 */
-				«««public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDFOR»){getCollectionString(param.value as ParameterizedType)
+		
 
 				public String «method.name»(«FOR param : method.parameters SEPARATOR ','»«IF param.type.collection» List  «param.name.toFirstLower»«ELSE» «param.type.typeSpecification.typeSpecificationString.toFirstUpper» «param.name.toFirstLower»«ENDIF»«ENDFOR»){
 
@@ -327,6 +320,11 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		}
 	'''
 
+	
+	/**
+	 *
+	 * Metodo para obtener los parametros y su tipo de especificacion 
+	 */
 	def Entry<String, Type> obtainAttribute(Parameter parameter) {
 		for (entry : neededAttributes.entrySet) {
 			if (entry.value.typeSpecification.typeSpecificationString.equalsIgnoreCase(
@@ -337,6 +335,11 @@ class ZoeControllerTemplate extends SimpleTemplate<Controller> {
 		return null
 	}
 
+	
+	/**
+	 * 
+	 * Método para obtener sentencias de return de una acción del controlador
+	 */
 	def boolean actionRequiresReturnSentence(EList<?> body) {
 		var boolean requires = true
 		if (body != null) {

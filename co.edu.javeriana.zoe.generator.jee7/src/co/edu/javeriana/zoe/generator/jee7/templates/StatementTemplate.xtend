@@ -23,6 +23,11 @@ import java.util.Map
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 
+
+/**
+ * Clase que provee los metodos utilitarios para uso general de todas las plantillas
+ * 
+ */
 class StatementTemplate {
 	@Inject extension ExpressionTemplate
 	@Inject extension IsmlModelNavigation
@@ -112,6 +117,9 @@ class StatementTemplate {
 			«writeExpression(statement.left)» «statement.symbol» «writeExpression(statement.right)»;
 		«ENDIF»
 	'''
+	/**
+	 * Metodo para determinar si es la unica instancia
+	 */
 
 	def isUniqueStatement(EObject obj) {
 		val container = obj.eContainer

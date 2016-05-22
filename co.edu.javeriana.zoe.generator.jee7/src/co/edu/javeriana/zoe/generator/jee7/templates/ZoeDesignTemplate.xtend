@@ -15,16 +15,24 @@ import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
+
+
+/**
+ * Clase para construir plantillas de menus parametrizables
+ * autor: john.olarte@javeriana.edu.co
+ * 
+ */
 class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 
 	/*Inyección de las clases auxiliares con metodos utilitarios*/
 	@Inject extension IQualifiedNameProvider
 	@Inject extension IsmlModelNavigation
 
-	// override preprocess(List<Page> is) {
-	// allPages = new HashSet
-	// allPages.addAll(is.eResource.getAllInstances(IsmlPackage.eINSTANCE.page).filter(Page))
-	// }
+	
+	/**
+	 * Método que retorna un template para jsf con las paginas que recibe como parámetro.
+	 * 
+	 */
 	override def CharSequence template(List<Page> allPages) '''
 	<?xml version='1.0' encoding='UTF-8' ?> 
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -108,6 +116,10 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 			
 	'''
 
+/**
+ * Método que obtiene acciónes de las paginas
+ * 
+ */
 	def Map<String, String> getUniqueActions(Iterable<Show> showStmnts) {
 		var Map<String, String> uniqueActions = new HashMap
 		for (stmnt : showStmnts) {
@@ -122,41 +134,7 @@ class ZoeDesignTemplate extends SimpleTemplate<List<Page>> {
 		return uniqueActions;
 	}
 
-	// /**
-	// * Este método obtiene las acciones que contienen acciones de tipo show invocadas en una página determinada
-	// */
-	// def EList<Action> getShowActions(Page page) {
-	// var EList<Action> actions = new BasicEList
-	// for (component : page.body.statements.filter(ViewInstance)) {
-	// if (component instanceof ViewBlock) {
-	//
-	// getShowActionsViewBlock(component);
-	// }
-	// if (component.actionCall != null) {
-	// if (seekOnBody((component.actionCall.action as Action).body)) {
-	// actions.add(component.actionCall.action as Action)
-	// }
-	// }
-	// }
-	// return actions
-	// }
-	//
-	// def EList<Action> getShowActionsViewBlock(ViewInstance viewInstance) {
-	//
-	// var EList<Action> actions = new BasicEList
-	// for (component : viewInstance.parameters.filter(ViewBlock)) {
-	// for (componentViewins : viewInstance.parameters.filter(ViewInstance)) {
-	// if (componentViewins.actionCall != null) {
-	// if (seekOnBody((componentViewins.actionCall.action as Action).body)) {
-	// actions.add(componentViewins.actionCall.action as Action)
-	// }
-	// }
-	// }
-	//
-	// }
-	// return actions
-	//
-	// }
+
 	/**
 	 * Este método obtiene las acciones que contienen statements de tipo Show de un Controlador dado
 	 */
