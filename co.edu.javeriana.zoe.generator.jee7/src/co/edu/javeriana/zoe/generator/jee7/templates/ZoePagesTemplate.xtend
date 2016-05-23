@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EObject
  * Clase para generar paginas con elementos graficos del framework prime faces 5.1
  * autor: john.olarte@javeriana.edu.co
  * 
+ * 
  */
 
 class ZoePagesTemplate extends SimpleTemplate<Page> {
