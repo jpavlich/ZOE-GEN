@@ -85,7 +85,8 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "Text": inputText(viewInstance)
 			case "Button": button(viewInstance)
 			case "Form": form(viewInstance)
-			case "Panel": panel(viewInstance)	
+			case "Panel": panel(viewInstance)
+			case "PanelGrid": panelGrid(viewInstance)		
 			case "PanelButton": panelButton(viewInstance)
 			case "DataTable": dataTable(viewInstance)
 			case "Password": password(viewInstance)
@@ -100,6 +101,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 			case "RadioChooser": radioChooser(viewInstance)
 			case "Image": image(viewInstance)
 		    case "OrderList": orderList(viewInstance)
+		    case "Media": Media(viewInstance)
 		}
 		
 	}
@@ -110,7 +112,7 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	 */
 	def CharSequence outputText(ViewInstance part) '''
 
-		<p:outputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate»/>
+		<p:inputText id= "«part.id»" label=«part.parameters.get(0).writeExpression» value=«part.parameters.get(1).valueTemplate» disabled="true"/>
 	'''
 	
 /**
@@ -275,6 +277,19 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 		model= "#{«part.containerController.name.toFirstLower».«part.parameters.get(3).writeExpression»}"
 		style="width:100%;height:400px" />		
 	'''
+
+/**
+	 * Metodo para generar elementos graficos de tipo media
+	 * 
+	 */
+	def CharSequence Media(ViewInstance part) '''
+
+		
+		<p:media id= "«part.id»" value=«part.parameters.get(0).writeExpression» width=«part.parameters.get(1).writeExpression» height=«part.parameters.get(2).writeExpression» 
+		player="flash" />		
+	'''
+
+
 	
 /**
 	 * Metodo para generar elementos graficos de tipo radio button
@@ -301,6 +316,20 @@ class ZoePagesTemplate extends SimpleTemplate<Page> {
 	
 	'''
 	
+	/**
+	 * Metodo para generar elementos graficos como panel grid
+	 * 
+	 */
+	
+	def CharSequence panelGrid(ViewInstance viewInstance) '''
+ 	<p:draggable for="«viewInstance.thisId»" />
+	 <p:panelGrid id= "«viewInstance.id»" columns=«viewInstance.parameters.get(0).writeExpression»>
+		«FOR partBlock : viewInstance.body»
+			«widgetTemplate(partBlock)»
+		«ENDFOR»
+	</p:panelGrid>	
+	
+	'''
 	/**
 	 * Metodo para generar elementos graficos de tipo pannel button
 	 * 
